@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Banner;
+use App\Models\News;
+use App\Models\User;
+use Illuminate\Http\Request;
+
+class SiteController extends Controller
+{
+    public function index()
+    {
+        $banner = Banner::all();
+        $news = News::orderBy('updated_at', 'desc')->skip(0)->take(5)->get();
+        return view('home', compact('banner', 'news'));
+    }
+
+    public function news($slug)
+    {
+        $news = News::where('slug', $slug)->first();
+        return view('news', compact('news'));
+    }
+
+    public function allNews()
+    {
+        $news = News::orderBy('updated_at', 'desc')->paginate(10);
+        return view('listNews', compact('news'));
+    }
+}
