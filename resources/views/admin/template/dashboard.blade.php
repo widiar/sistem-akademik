@@ -30,6 +30,8 @@
     {{-- DataTables --}}
     <link rel="stylesheet" href="{{ asset('plugins/datatables/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/datatables/responsive.bootstrap4.min.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.css') }}">
     <style>
         .description {
             max-width: 300px;
@@ -123,6 +125,8 @@
     <script src="{{ asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('dist/js/adminlte.js') }}"></script>
+
+    <script src="{{ asset('plugins/select2/js/select2.min.js') }}"></script>
 
     <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables/dataTables.bootstrap4.min.js') }}"></script>

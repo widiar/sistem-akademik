@@ -44,12 +44,50 @@
                 </li>
                 @elseif(Auth::user()->role_id == 1)
                 <li class="nav-item">
-                    <a href="#" class="nav-link{{request()->is('admin/dosen') ? ' active' : '' }}">
+                    <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             Data Dosen
+                            <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
+                    <ul class="nav nav-treeview" style="display: none;">
+                        <li class="nav-item">
+                            <a href="{{ route('admin.dosen.list', 'pengajar') }}"
+                                class="nav-link{{request()->is('admin/dosen/pengajar') ? ' active' : '' }}">
+                                <i class="fas fa-user nav-icon"></i>
+                                <p>Dosen Pengajar</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.dosen.list', 'pembimbing') }}"
+                                class="nav-link{{request()->is('admin/dosen/pembimbing') ? ' active' : '' }}">
+                                <i class="fas fa-user nav-icon"></i>
+                                <p>Dosen Pembimbing</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.dosen.list', 'penguji') }}"
+                                class="nav-link{{request()->is('admin/dosen/penguji') ? ' active' : '' }}">
+                                <i class="fas fa-user nav-icon"></i>
+                                <p>Dosen Penguji</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.dosen.list', 'koordinator') }}"
+                                class="nav-link{{request()->is('admin/dosen/koordinator') ? ' active' : '' }}">
+                                <i class="fas fa-user nav-icon"></i>
+                                <p>Dosen Koordinator</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.dosen.list', 'wali') }}"
+                                class="nav-link{{request()->is('admin/dosen/wali') ? ' active' : '' }}">
+                                <i class="fas fa-user nav-icon"></i>
+                                <p>Dosen Wali</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 @endif
             </ul>

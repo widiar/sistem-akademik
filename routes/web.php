@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\DosenController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\SiteController;
 use Illuminate\Support\Facades\Route;
@@ -39,7 +40,15 @@ Route::middleware(['auth'])->group(function () {
             Route::resource('news', NewsController::class);
 
             //akademik
-
+            Route::get('dosen', function () {
+                return redirect()->route('admin.dosen.list', 'pengajar');
+            })->name('dosen');
+            Route::get('dosen/create/{tipe}', [DosenController::class, 'create'])->name('dosen.create');
+            Route::post('dosen/create', [DosenController::class, 'store'])->name('dosen.store');
+            Route::get('dosen/{dosen}/edit/{tipe}', [DosenController::class, 'edit'])->name('dosen.edit');
+            Route::patch('dosen/{dosen}', [DosenController::class, 'update'])->name('dosen.update');
+            Route::delete('dosen/{dosen}', [DosenController::class, 'destroy'])->name('dosen.destroy');
+            Route::get('dosen/{tipe}', [DosenController::class, 'list'])->name('dosen.list');
         });
     });
 });
