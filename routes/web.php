@@ -49,6 +49,8 @@ Route::middleware(['auth'])->group(function () {
             Route::patch('dosen/{dosen}', [DosenController::class, 'update'])->name('dosen.update');
             Route::delete('dosen/{dosen}', [DosenController::class, 'destroy'])->name('dosen.destroy');
             Route::get('dosen/{tipe}', [DosenController::class, 'list'])->name('dosen.list');
+
+            Route::get('dev', [DosenController::class, 'tahunAjaran']);
         });
     });
 });

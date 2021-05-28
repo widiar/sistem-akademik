@@ -19,4 +19,25 @@ class Dosen extends Model
     {
         return $this->belongsToMany(KategoriDosen::class, 'dosen_kategoridosen', 'dosen_id', 'kategori_id');
     }
+
+    public function sks()
+    {
+        return $this->hasMany(SksDosen::class, 'dosen_id', 'id');
+    }
+    public function pembimbing()
+    {
+        return $this->hasMany(PDosen::class, 'dosen_id', 'id');
+    }
+    public function penguji()
+    {
+        return $this->hasMany(PjDosen::class, 'dosen_id', 'id');
+    }
+    public function koordinator()
+    {
+        return $this->hasMany(KDosen::class, 'dosen_id', 'id');
+    }
+    public function wali()
+    {
+        return $this->hasMany(WDosen::class, 'dosen_id', 'id');
+    }
 }

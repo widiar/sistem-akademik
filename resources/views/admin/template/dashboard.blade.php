@@ -144,6 +144,7 @@
     <script>
         $("#adminTable").dataTable({
             paging: false,
+            searching: false,
             // columnDefs: [{ orderable: false, targets: 5 }],
         });
         $(function() {
