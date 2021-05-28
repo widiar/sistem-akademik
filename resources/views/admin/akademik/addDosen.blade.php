@@ -26,7 +26,7 @@
             <div class="form-group">
                 <label for="kategori">Kategori</label>
                 <select name="kategori[]" multiple="multiple"
-                    class="kategori w-100  @error('kategori') is-invalid @enderror">
+                    class="kategori w-100  @error('kategori') is-invalid @enderror" style="width: 100%">
                     @foreach ($kategori as $k)
                     <option value="{{ $k->id }}"
                         {{ (is_array(old('kategori')) && in_array($k->id, old('kategori'))) ? ' selected' : '' }}>
@@ -50,7 +50,9 @@
 @section('script')
 <script>
     $(document).ready(function() {
-        $('.kategori').select2();
+        $('.kategori').select2({
+            theme: "bootstrap"
+        });
     });
 </script>
 @endsection

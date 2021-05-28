@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\RekapController;
 use App\Http\Controllers\SiteController;
 use Illuminate\Support\Facades\Route;
 use UniSharp\LaravelFilemanager\Lfm;
@@ -49,8 +50,11 @@ Route::middleware(['auth'])->group(function () {
             Route::patch('dosen/{dosen}', [DosenController::class, 'update'])->name('dosen.update');
             Route::delete('dosen/{dosen}', [DosenController::class, 'destroy'])->name('dosen.destroy');
             Route::get('dosen/{tipe}', [DosenController::class, 'list'])->name('dosen.list');
+            Route::get('rekap-dosen', [RekapController::class, 'dosen'])->name('rekap.dosen');
+            Route::post('dosen-rekap', [RekapController::class, 'dosenRekap'])->name('add.rekap.dosen');
+            Route::delete('rekap-dosen/{id}', [RekapController::class, 'deleteRekapDosen'])->name('delete.rekap.dosen');
 
-            Route::get('dev', [DosenController::class, 'tahunAjaran']);
+            Route::get('dev', [RekapController::class, 'cek'])->name('rekap.dev');
         });
     });
 });

@@ -35,7 +35,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link{{request()->is('admin/news') ? ' active' : '' }}">
+                    <a href="#" class="nav-link{{request()->is('admin/intensif-marketing') ? ' active' : '' }}">
                         <i class="nav-icon far fa-newspaper"></i>
                         <p>
                             Intensif Marketing
@@ -88,6 +88,15 @@
                             </a>
                         </li>
                     </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.rekap.dosen') }}"
+                        class="nav-link{{request()->is('admin/rekap-dosen') ? ' active' : '' }}">
+                        <i class="nav-icon far fa-file-alt"></i>
+                        <p>
+                            Rekap Dosen
+                        </p>
+                    </a>
                 </li>
                 @endif
             </ul>

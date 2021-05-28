@@ -189,7 +189,9 @@
 @section('script')
 <script>
     $(document).ready(function() {
-        $('.kategori').select2();
+        $('.kategori').select2({
+            theme: "bootstrap"
+        });
 
         $(".pengajar").fadeOut();
         $(".pembimbing").fadeOut();
