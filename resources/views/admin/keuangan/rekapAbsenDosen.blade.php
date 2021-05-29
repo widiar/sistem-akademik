@@ -1,12 +1,9 @@
 @extends('admin.template.dashboard')
 
-@section('title', 'Rekap Dosen')
+@section('title', 'Rekap Absen Dosen')
 
 @section('main-content')
-@if(Auth::user()->role_id == 1)
-<button class="btn btn-primary btn-sm mb-3 ml-3" data-toggle="modal" data-target="#modalAdmin">Buat Rekap
-    Dosen</button>
-@endif
+<button class="btn btn-primary btn-sm mb-3 ml-3" data-toggle="modal" data-target="#modalAdmin">Buat Rekap</button>
 @if(session('success'))
 <div class="alert alert-success alert-dismissible">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -41,10 +38,10 @@
                 <tr>
                     <td>{{ ++$no }}</td>
                     <td class="text-center">
-                        <a href="{{ Storage::url('rekap-dosen/excel/' . $ban->excel) }}" class="mx-2">
+                        <a href="{{ Storage::url('rekap-absen-dosen/excel/' . $ban->excel) }}" class="mx-2">
                             <button class="btn btn-sm btn-success"><i class="fas fa-file-excel"></i></button>
                         </a>
-                        <a href="{{ Storage::url('rekap-dosen/pdf/' . $ban->pdf) }}" class="mx-2">
+                        <a href="{{ Storage::url('rekap-absen-dosen/pdf/' . $ban->pdf) }}" class="mx-2">
                             <button class="btn btn-sm btn-danger"><i class="fas fa-file-pdf"></i></button>
                         </a>
                     </td>
@@ -52,10 +49,10 @@
                     <td>{{ date('d/m/y h:i A', strtotime($ban->updated_at)) }}</td>
                     <td class="text-center">
                         <div class="row" style="min-width: 100px">
-                            <a href="{{ Storage::url('rekap-dosen/pdf/' . $ban->pdf) }}" class="mx-3 printt">
+                            <a href="{{ Storage::url('rekap-absen-dosen/pdf/' . $ban->pdf) }}" class="mx-3 printt">
                                 <button class="btn btn-sm btn-warning"><i class="fas fa-print"></i></button>
                             </a>
-                            <form action="{{ route('admin.delete.rekap.dosen', $ban->id) }}" method="POST"
+                            <form action="{{ route('admin.delete.rekap.absen.dosen', $ban->id) }}" method="POST"
                                 class="deleted">
                                 @method("DELETE")
                                 @csrf
@@ -87,7 +84,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('admin.add.rekap.dosen') }}" method="POST" class="rekap">
+            <form action="{{ route('admin.post.rekap.absen.dosen') }}" method="POST" class="rekap">
                 @csrf
                 <div class="modal-body form-group">
                     <label for="bulan">Bulan</label>

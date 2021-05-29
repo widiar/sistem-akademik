@@ -107,6 +107,49 @@
                         </p>
                     </a>
                 </li>
+                @elseif(Auth::user()->role_id == 2)
+                <li class="nav-item">
+                    <a href="{{ route('admin.rekap.dosen') }}"
+                        class="nav-link{{request()->is('admin/rekap-dosen') ? ' active' : '' }}">
+                        <i class="nav-icon far fa-file-alt"></i>
+                        <p>
+                            Rekap Dosen
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-file-archive"></i>
+                        <p>
+                            Rekap Absensi
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview" style="display: none;">
+                        <li class="nav-item">
+                            <a href="{{ route('admin.rekap.absen.dosen') }}"
+                                class="nav-link{{request()->is('admin/rekap-absen-dosen') ? ' active' : '' }}">
+                                <i class="fas fa-folder-open nav-icon"></i>
+                                <p>Dosen</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link{{request()->is('admin/dosen/pembimbing') ? ' active' : '' }}">
+                                <i class="fas fa-folder-open nav-icon"></i>
+                                <p>Staff</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.penggajian') }}"
+                        class="nav-link{{request()->is('admin/penggajian') ? ' active' : '' }}">
+                        <i class="nav-icon fas fa-money-bill"></i>
+                        <p>
+                            Penggajian
+                        </p>
+                    </a>
+                </li>
                 @endif
             </ul>
         </nav>

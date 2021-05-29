@@ -4,6 +4,7 @@ use App\Http\Controllers\AbsenController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\DosenController;
+use App\Http\Controllers\GajiController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\RekapController;
 use App\Http\Controllers\SiteController;
@@ -51,13 +52,22 @@ Route::middleware(['auth'])->group(function () {
             Route::patch('dosen/{dosen}', [DosenController::class, 'update'])->name('dosen.update');
             Route::delete('dosen/{dosen}', [DosenController::class, 'destroy'])->name('dosen.destroy');
             Route::get('dosen/{tipe}', [DosenController::class, 'list'])->name('dosen.list');
-            Route::get('rekap-dosen', [RekapController::class, 'dosen'])->name('rekap.dosen');
+            Route::get('rekap-dosen', [RekapController::class, 'dosen'])->name('rekap.dosen'); //keuangan bisa
             Route::post('dosen-rekap', [RekapController::class, 'dosenRekap'])->name('add.rekap.dosen');
             Route::delete('rekap-dosen/{id}', [RekapController::class, 'deleteRekapDosen'])->name('delete.rekap.dosen');
             Route::get('absen-dosen', [AbsenController::class, 'dosen'])->name('absen.dosen');
             Route::get('cek-sks/{dosen}', [AbsenController::class, 'cekSks'])->name('cek.sks');
             Route::get('ambil-absen/{dosen}/{bulan}', [AbsenController::class, 'ambilAbsenDosen'])->name('cek.absen.dosen');
             Route::post('absen-dosen', [AbsenController::class, 'postAbsenDosen'])->name('post.absen.dosen');
+
+            //keuangan
+            Route::get('rekap-absen-dosen', [RekapController::class, 'absenDosen'])->name('rekap.absen.dosen');
+            Route::post('rekap-absen-dosen', [RekapController::class, 'postAbsenDosen'])->name('post.rekap.absen.dosen');
+            Route::delete('rekap-absen-dosen/{id}', [RekapController::class, 'deleteAbsenDosen'])->name('delete.rekap.absen.dosen');
+            Route::get('penggajian', [GajiController::class, 'index'])->name('penggajian');
+
+            //dev
+            Route::get('dev', [RekapController::class, 'dev']);
         });
     });
 });
