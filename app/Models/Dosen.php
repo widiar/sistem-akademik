@@ -40,4 +40,8 @@ class Dosen extends Model
     {
         return $this->hasMany(WDosen::class, 'dosen_id', 'id');
     }
+    public function absen()
+    {
+        return $this->hasMany(AbsenDosen::class, 'dosen_id', 'id');
+    }
 }

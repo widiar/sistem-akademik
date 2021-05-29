@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AbsenController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\DosenController;
@@ -53,8 +54,10 @@ Route::middleware(['auth'])->group(function () {
             Route::get('rekap-dosen', [RekapController::class, 'dosen'])->name('rekap.dosen');
             Route::post('dosen-rekap', [RekapController::class, 'dosenRekap'])->name('add.rekap.dosen');
             Route::delete('rekap-dosen/{id}', [RekapController::class, 'deleteRekapDosen'])->name('delete.rekap.dosen');
-
-            Route::get('dev', [RekapController::class, 'cek'])->name('rekap.dev');
+            Route::get('absen-dosen', [AbsenController::class, 'dosen'])->name('absen.dosen');
+            Route::get('cek-sks/{dosen}', [AbsenController::class, 'cekSks'])->name('cek.sks');
+            Route::get('ambil-absen/{dosen}/{bulan}', [AbsenController::class, 'ambilAbsenDosen'])->name('cek.absen.dosen');
+            Route::post('absen-dosen', [AbsenController::class, 'postAbsenDosen'])->name('post.absen.dosen');
         });
     });
 });

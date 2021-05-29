@@ -98,6 +98,15 @@
                         </p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.absen.dosen') }}"
+                        class="nav-link{{request()->is('admin/absen-dosen') ? ' active' : '' }}">
+                        <i class="nav-icon far fa-folder-open"></i>
+                        <p>
+                            Absen Dosen
+                        </p>
+                    </a>
+                </li>
                 @endif
             </ul>
         </nav>

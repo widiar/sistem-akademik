@@ -33,6 +33,8 @@
 
     <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap.min.css') }}">
+
+    @yield('css')
     <style>
         .description {
             max-width: 300px;

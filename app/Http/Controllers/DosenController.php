@@ -169,7 +169,7 @@ class DosenController extends Controller
         return response()->json('Sukses');
     }
 
-    public function list($tipe)
+    public function list($tipe, Request $request)
     {
         if (strcmp($tipe, 'pengajar') == 0) $kategori = KategoriDosen::find(1);
         else if (strcmp($tipe, 'pembimbing') == 0) $kategori = KategoriDosen::find(2);
@@ -177,7 +177,12 @@ class DosenController extends Controller
         else if (strcmp($tipe, 'koordinator') == 0) $kategori = KategoriDosen::find(4);
         else if (strcmp($tipe, 'wali') == 0) $kategori = KategoriDosen::find(5);
         else return redirect()->route('admin.dosen.list', 'pengajar');
-        $dosen = $kategori->dosen()->paginate(10);
+        if ($request->search) {
+            $cek = $kategori->dosen()->where('nip', 'like', "%$request->search%");
+            if ($cek->exists()) $dosen = $cek->paginate(10);
+            else $dosen = $kategori->dosen()->where('nama', 'like', "%$request->search%")->paginate(10);
+        } else
+            $dosen = $kategori->dosen()->paginate(10);
         return view('admin.akademik.dosen',  compact('tipe', 'dosen'));
     }
 

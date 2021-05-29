@@ -14,7 +14,8 @@ class RekapController extends Controller
 {
     public function dosen()
     {
-        $bulan = $this->getBulan();
+        $m = date('n');
+        $bulan = array_slice($this->getBulan(), 0, $m);
         $rekapan = RekapDosen::all();
         return view('admin.akademik.rekapDosen', compact('bulan', 'rekapan'));
     }
