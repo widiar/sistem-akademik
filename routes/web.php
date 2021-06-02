@@ -72,6 +72,11 @@ Route::middleware(['auth'])->group(function () {
             Route::post('laporan-gaji', [GajiController::class, 'buatLaporan'])->name('postLaporanGaji');
             Route::delete('laporan-gaji/{id}', [GajiController::class, 'deleteLaporan'])->name('deleteLaporanGaji');
 
+            //hrd
+            Route::get('absen-staff', [AbsenController::class, 'staff'])->name('absen.staff');
+            Route::post('absen-staff', [AbsenController::class, 'absenStaff'])->name('absen.staff.post');
+            Route::get('absen-staff/{dosen}/{bulan}', [AbsenController::class, 'cekStaff'])->name('cekAbsenStaff');
+
             //dev
             Route::get('dev', [RekapController::class, 'dev']);
         });
