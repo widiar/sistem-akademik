@@ -42,4 +42,8 @@ class Dosen extends Model
     {
         return $this->hasMany(AbsenDosen::class, 'dosen_id', 'id');
     }
+    public function intensif()
+    {
+        return $this->hasMany(IntensifMarketing::class, 'dosen_id', 'id');
+    }
 }

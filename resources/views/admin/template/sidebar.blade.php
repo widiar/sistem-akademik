@@ -35,8 +35,9 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link{{request()->is('admin/intensif-marketing') ? ' active' : '' }}">
-                        <i class="nav-icon far fa-newspaper"></i>
+                    <a href="{{ route('admin.intensif-marketing.index') }}"
+                        class="nav-link{{request()->is('admin/intensif-marketing') ? ' active' : '' }}">
+                        <i class="nav-icon fas fa-money-check"></i>
                         <p>
                             Intensif Marketing
                         </p>

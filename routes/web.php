@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\GajiController;
+use App\Http\Controllers\IntensifController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\RekapController;
 use App\Http\Controllers\SiteController;
@@ -41,6 +42,7 @@ Route::middleware(['auth'])->group(function () {
             //pemasaran
             Route::resource('banner', BannerController::class);
             Route::resource('news', NewsController::class);
+            Route::resource('intensif-marketing', IntensifController::class);
 
             //akademik
             Route::get('dosen', function () {
