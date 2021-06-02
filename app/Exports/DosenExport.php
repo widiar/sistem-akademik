@@ -14,7 +14,7 @@ class DosenExport implements FromCollection, WithMapping, WithHeadings
      */
     public function collection()
     {
-        return Dosen::all();
+        return Dosen::where('is_dosen', true)->get();
     }
 
     public function map($dosen): array

@@ -150,6 +150,15 @@
                         </p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.laporan-gaji') }}"
+                        class="nav-link{{request()->is('admin/laporan-gaji') ? ' active' : '' }}">
+                        <i class="nav-icon fas fa-chart-bar"></i>
+                        <p>
+                            Laporan Gaji
+                        </p>
+                    </a>
+                </li>
                 @endif
             </ul>
         </nav>

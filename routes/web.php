@@ -65,6 +65,10 @@ Route::middleware(['auth'])->group(function () {
             Route::post('rekap-absen-dosen', [RekapController::class, 'postAbsenDosen'])->name('post.rekap.absen.dosen');
             Route::delete('rekap-absen-dosen/{id}', [RekapController::class, 'deleteAbsenDosen'])->name('delete.rekap.absen.dosen');
             Route::get('penggajian', [GajiController::class, 'index'])->name('penggajian');
+            Route::post('penggajian', [GajiController::class, 'store']);
+            Route::get('laporan-gaji', [GajiController::class, 'laporan'])->name('laporan-gaji');
+            Route::post('laporan-gaji', [GajiController::class, 'buatLaporan'])->name('postLaporanGaji');
+            Route::delete('laporan-gaji/{id}', [GajiController::class, 'deleteLaporan'])->name('deleteLaporanGaji');
 
             //dev
             Route::get('dev', [RekapController::class, 'dev']);

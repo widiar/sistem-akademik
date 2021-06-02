@@ -142,6 +142,8 @@
 
     <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
 
+    <script src="{{ asset('plugins/simple-money/simple.money.format.js') }}"></script>
+
     <script src="{{ asset('dist/js/admin.js') }}"></script>
 
     <script>

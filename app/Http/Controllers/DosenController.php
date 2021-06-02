@@ -28,9 +28,91 @@ class DosenController extends Controller
         ]);
         $dosen = Dosen::create([
             'nip' => $request->nip,
-            'nama' =>  $request->nama
+            'nama' =>  $request->nama,
+            'is_dosen' => true,
         ]);
         $dosen->kategori()->attach($request->kategori);
+
+        //pengajar
+        $sks = $dosen->sks()->where('tahun_ajaran', tahunAjaran())->first();
+        if (in_array(1, $request->kategori)) {
+            if ($sks) {
+                $sks->semester_ganjil = $request->sksGanjil;
+                $sks->semester_genap = $request->sksGenap;
+                $sks->save();
+            } else {
+                $sksDosen = new SksDosen([
+                    'semester_ganjil' => $request->sksGanjil,
+                    'semester_genap' => $request->sksGenap,
+                    'tahun_ajaran' => tahunAjaran()
+                ]);
+                $dosen->sks()->save($sksDosen);
+            }
+        } else if ($sks) $sks->delete();
+        //pembimbing
+        $pembimbing = $dosen->pembimbing()->where('tahun_ajaran', tahunAjaran())->first();
+        if (in_array(2, $request->kategori)) {
+            if ($pembimbing) {
+                $pembimbing->semester_ganjil = $request->pGanjil;
+                $pembimbing->semester_genap = $request->pGenap;
+                $pembimbing->save();
+            } else {
+                $pembimbingDosen = new PDosen([
+                    'semester_ganjil' => $request->pGanjil,
+                    'semester_genap' => $request->pGenap,
+                    'tahun_ajaran' => tahunAjaran()
+                ]);
+                $dosen->pembimbing()->save($pembimbingDosen);
+            }
+        } else if ($pembimbing) $pembimbing->delete();
+        //penguji
+        $penguji = $dosen->penguji()->where('tahun_ajaran', tahunAjaran())->first();
+        if (in_array(3, $request->kategori)) {
+            if ($penguji) {
+                $penguji->semester_ganjil = $request->pjGanjil;
+                $penguji->semester_genap = $request->pjGenap;
+                $penguji->save();
+            } else {
+                $pengujiDosen = new PjDosen([
+                    'semester_ganjil' => $request->pjGanjil,
+                    'semester_genap' => $request->pjGenap,
+                    'tahun_ajaran' => tahunAjaran()
+                ]);
+                $dosen->penguji()->save($pengujiDosen);
+            }
+        } else if ($penguji) $penguji->delete();
+        //koordinator
+        $koordinator = $dosen->koordinator()->where('tahun_ajaran', tahunAjaran())->first();
+        if (in_array(4, $request->kategori)) {
+            if ($koordinator) {
+                $koordinator->semester_ganjil = $request->kGanjil;
+                $koordinator->semester_genap = $request->kGenap;
+                $koordinator->save();
+            } else {
+                $koordinatorDosen = new KDosen([
+                    'semester_ganjil' => $request->kGanjil,
+                    'semester_genap' => $request->kGenap,
+                    'tahun_ajaran' => tahunAjaran()
+                ]);
+                $dosen->koordinator()->save($koordinatorDosen);
+            }
+        } else if ($koordinator) $koordinator->delete();
+        //wali
+        $wali = $dosen->wali()->where('tahun_ajaran', tahunAjaran())->first();
+        if (in_array(5, $request->kategori)) {
+            if ($wali) {
+                $wali->semester_ganjil = $request->wGanjil;
+                $wali->semester_genap = $request->wGenap;
+                $wali->save();
+            } else {
+                $waliDosen = new WDosen([
+                    'semester_ganjil' => $request->wGanjil,
+                    'semester_genap' => $request->wGenap,
+                    'tahun_ajaran' => tahunAjaran()
+                ]);
+                $dosen->wali()->save($waliDosen);
+            }
+        } else if ($wali) $wali->delete();
 
         return redirect()->route('admin.dosen.list', $request->tipe)->with(['success' => 'Berhasil menambah dosen']);
     }
@@ -45,11 +127,11 @@ class DosenController extends Controller
         $tmp = [];
         foreach ($dosen->kategori as $k) array_push($tmp, $k->id);
         $kategori = KategoriDosen::whereNotIn('id', $tmp)->get();
-        $sks = $dosen->sks()->where('tahun_ajaran', $this->tahunAjaran())->first();
-        $pembimbing = $dosen->pembimbing()->where('tahun_ajaran', $this->tahunAjaran())->first();
-        $penguji = $dosen->penguji()->where('tahun_ajaran', $this->tahunAjaran())->first();
-        $koor = $dosen->koordinator()->where('tahun_ajaran', $this->tahunAjaran())->first();
-        $wali = $dosen->wali()->where('tahun_ajaran', $this->tahunAjaran())->first();
+        $sks = $dosen->sks()->where('tahun_ajaran', tahunAjaran())->first();
+        $pembimbing = $dosen->pembimbing()->where('tahun_ajaran', tahunAjaran())->first();
+        $penguji = $dosen->penguji()->where('tahun_ajaran', tahunAjaran())->first();
+        $koor = $dosen->koordinator()->where('tahun_ajaran', tahunAjaran())->first();
+        $wali = $dosen->wali()->where('tahun_ajaran', tahunAjaran())->first();
         return view('admin.akademik.editDosen', compact(
             'kategori',
             'dosen',
@@ -76,7 +158,7 @@ class DosenController extends Controller
         $dosen->save();
 
         //pengajar
-        $sks = $dosen->sks()->where('tahun_ajaran', $this->tahunAjaran())->first();
+        $sks = $dosen->sks()->where('tahun_ajaran', tahunAjaran())->first();
         if (in_array(1, $request->kategori)) {
             if ($sks) {
                 $sks->semester_ganjil = $request->sksGanjil;
@@ -86,13 +168,13 @@ class DosenController extends Controller
                 $sksDosen = new SksDosen([
                     'semester_ganjil' => $request->sksGanjil,
                     'semester_genap' => $request->sksGenap,
-                    'tahun_ajaran' => $this->tahunAjaran()
+                    'tahun_ajaran' => tahunAjaran()
                 ]);
                 $dosen->sks()->save($sksDosen);
             }
         } else if ($sks) $sks->delete();
         //pembimbing
-        $pembimbing = $dosen->pembimbing()->where('tahun_ajaran', $this->tahunAjaran())->first();
+        $pembimbing = $dosen->pembimbing()->where('tahun_ajaran', tahunAjaran())->first();
         if (in_array(2, $request->kategori)) {
             if ($pembimbing) {
                 $pembimbing->semester_ganjil = $request->pGanjil;
@@ -102,13 +184,13 @@ class DosenController extends Controller
                 $pembimbingDosen = new PDosen([
                     'semester_ganjil' => $request->pGanjil,
                     'semester_genap' => $request->pGenap,
-                    'tahun_ajaran' => $this->tahunAjaran()
+                    'tahun_ajaran' => tahunAjaran()
                 ]);
                 $dosen->pembimbing()->save($pembimbingDosen);
             }
         } else if ($pembimbing) $pembimbing->delete();
         //penguji
-        $penguji = $dosen->penguji()->where('tahun_ajaran', $this->tahunAjaran())->first();
+        $penguji = $dosen->penguji()->where('tahun_ajaran', tahunAjaran())->first();
         if (in_array(3, $request->kategori)) {
             if ($penguji) {
                 $penguji->semester_ganjil = $request->pjGanjil;
@@ -118,14 +200,14 @@ class DosenController extends Controller
                 $pengujiDosen = new PjDosen([
                     'semester_ganjil' => $request->pjGanjil,
                     'semester_genap' => $request->pjGenap,
-                    'tahun_ajaran' => $this->tahunAjaran()
+                    'tahun_ajaran' => tahunAjaran()
                 ]);
                 $dosen->penguji()->save($pengujiDosen);
             }
         } else if ($penguji) $penguji->delete();
 
         //koordinator
-        $koordinator = $dosen->koordinator()->where('tahun_ajaran', $this->tahunAjaran())->first();
+        $koordinator = $dosen->koordinator()->where('tahun_ajaran', tahunAjaran())->first();
         if (in_array(4, $request->kategori)) {
             if ($koordinator) {
                 $koordinator->semester_ganjil = $request->kGanjil;
@@ -135,13 +217,13 @@ class DosenController extends Controller
                 $koordinatorDosen = new KDosen([
                     'semester_ganjil' => $request->kGanjil,
                     'semester_genap' => $request->kGenap,
-                    'tahun_ajaran' => $this->tahunAjaran()
+                    'tahun_ajaran' => tahunAjaran()
                 ]);
                 $dosen->koordinator()->save($koordinatorDosen);
             }
         } else if ($koordinator) $koordinator->delete();
         //wali
-        $wali = $dosen->wali()->where('tahun_ajaran', $this->tahunAjaran())->first();
+        $wali = $dosen->wali()->where('tahun_ajaran', tahunAjaran())->first();
         if (in_array(5, $request->kategori)) {
             if ($wali) {
                 $wali->semester_ganjil = $request->wGanjil;
@@ -151,7 +233,7 @@ class DosenController extends Controller
                 $waliDosen = new WDosen([
                     'semester_ganjil' => $request->wGanjil,
                     'semester_genap' => $request->wGenap,
-                    'tahun_ajaran' => $this->tahunAjaran()
+                    'tahun_ajaran' => tahunAjaran()
                 ]);
                 $dosen->wali()->save($waliDosen);
             }
@@ -184,19 +266,5 @@ class DosenController extends Controller
         } else
             $dosen = $kategori->dosen()->paginate(10);
         return view('admin.akademik.dosen',  compact('tipe', 'dosen'));
-    }
-
-    public function tahunAjaran()
-    {
-        $month = date('n');
-        $year = date('Y');
-        if ($month <= 6) {
-            $y = $year - 1;
-            $tahunAjaran = $y . "/" . $year;
-        } else {
-            $y = $year + 1;
-            $tahunAjaran = $year . "/" . $y;
-        }
-        return $tahunAjaran;
     }
 }

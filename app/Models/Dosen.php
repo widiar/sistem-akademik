@@ -11,9 +11,7 @@ class Dosen extends Model
 
     protected $table = 'dosen';
 
-    protected $fillable = [
-        'nama', 'nip'
-    ];
+    protected $guarded = ['id'];
 
     public function kategori()
     {

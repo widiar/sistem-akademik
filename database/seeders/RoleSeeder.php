@@ -14,14 +14,12 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        UserRole::create([
-            "role" => "akademik"
-        ]);
-        UserRole::create([
-            "role" => "keuangan"
-        ]);
-        UserRole::create([
-            "role" => "pemasaran"
-        ]);
+        $data = [
+            ["role" => "akademik"],
+            ["role" => "keuangan"],
+            ["role" => "pemasaran"],
+            ["role" => "hrd"],
+        ];
+        UserRole::insert($data);
     }
 }
