@@ -135,7 +135,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link{{request()->is('admin/dosen/pembimbing') ? ' active' : '' }}">
+                            <a href="{{ route('admin.rekap.absen.staff') }}"
+                                class="nav-link{{request()->is('admin/rekap/absen-staff') ? ' active' : '' }}">
                                 <i class="fas fa-folder-open nav-icon"></i>
                                 <p>Staff</p>
                             </a>
@@ -167,6 +168,15 @@
                         <i class="nav-icon far fa-folder-open"></i>
                         <p>
                             Absen Staff
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.rekap.absen.staff') }}"
+                        class="nav-link{{request()->is('admin/rekap/absen-staff') ? ' active' : '' }}">
+                        <i class="nav-icon far fa-folder-open"></i>
+                        <p>
+                            Rekap Absen Staff
                         </p>
                     </a>
                 </li>

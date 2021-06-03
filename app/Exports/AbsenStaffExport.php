@@ -7,7 +7,7 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
-class AbsenDosenExport implements FromCollection, WithMapping, WithHeadings
+class AbsenStaffExport implements FromCollection, WithMapping, WithHeadings
 {
     /**
      * @return \Illuminate\Support\Collection
@@ -20,9 +20,9 @@ class AbsenDosenExport implements FromCollection, WithMapping, WithHeadings
     public function map($absen): array
     {
         $dosen = $absen->dosen;
-        $dt = true;
-        if ($dosen->is_staff) $dt = false;
-        $sks = $dosen->sks()->where('tahun_ajaran', $this->tahunAjaran())->first();
+        $dt = false;
+        if ($dosen->is_staff) $dt = true;
+        $sks = $dosen->sks()->where('tahun_ajaran', tahunAjaran())->first();
         $ganjil = -1;
         $genap = -1;
         if ($sks) {
@@ -30,22 +30,22 @@ class AbsenDosenExport implements FromCollection, WithMapping, WithHeadings
             if ($sks->semester_genap) $genap = $sks->semester_genap * 24;
         }
 
-        $jan = $dosen->absen()->where('tahun_ajaran', $this->tahunAjaran())->where('bulan', 1)->first();
-        $feb = $dosen->absen()->where('tahun_ajaran', $this->tahunAjaran())->where('bulan', 2)->first();
-        $mar = $dosen->absen()->where('tahun_ajaran', $this->tahunAjaran())->where('bulan', 3)->first();
-        $apr = $dosen->absen()->where('tahun_ajaran', $this->tahunAjaran())->where('bulan', 4)->first();
-        $mei = $dosen->absen()->where('tahun_ajaran', $this->tahunAjaran())->where('bulan', 5)->first();
-        $jun = $dosen->absen()->where('tahun_ajaran', $this->tahunAjaran())->where('bulan', 6)->first();
-        $gp = $dosen->absen()->where('tahun_ajaran', $this->tahunAjaran())->where('bulan', '<=', 6)->sum('absen');
+        $jan = $dosen->absen()->where('tahun_ajaran', tahunAjaran())->where('bulan', 1)->first();
+        $feb = $dosen->absen()->where('tahun_ajaran', tahunAjaran())->where('bulan', 2)->first();
+        $mar = $dosen->absen()->where('tahun_ajaran', tahunAjaran())->where('bulan', 3)->first();
+        $apr = $dosen->absen()->where('tahun_ajaran', tahunAjaran())->where('bulan', 4)->first();
+        $mei = $dosen->absen()->where('tahun_ajaran', tahunAjaran())->where('bulan', 5)->first();
+        $jun = $dosen->absen()->where('tahun_ajaran', tahunAjaran())->where('bulan', 6)->first();
+        $gp = $dosen->absen()->where('tahun_ajaran', tahunAjaran())->where('bulan', '<=', 6)->sum('absen');
         $pGenap = ($gp / $genap) * 100;
 
-        $jul = $dosen->absen()->where('tahun_ajaran', $this->tahunAjaran())->where('bulan', 7)->first();
-        $aug = $dosen->absen()->where('tahun_ajaran', $this->tahunAjaran())->where('bulan', 8)->first();
-        $sept = $dosen->absen()->where('tahun_ajaran', $this->tahunAjaran())->where('bulan', 9)->first();
-        $okt = $dosen->absen()->where('tahun_ajaran', $this->tahunAjaran())->where('bulan', 10)->first();
-        $nov = $dosen->absen()->where('tahun_ajaran', $this->tahunAjaran())->where('bulan', 11)->first();
-        $des = $dosen->absen()->where('tahun_ajaran', $this->tahunAjaran())->where('bulan', 12)->first();
-        $gl = $dosen->absen()->where('tahun_ajaran', $this->tahunAjaran())->where('bulan', '>', 6)->sum('absen');
+        $jul = $dosen->absen()->where('tahun_ajaran', tahunAjaran())->where('bulan', 7)->first();
+        $aug = $dosen->absen()->where('tahun_ajaran', tahunAjaran())->where('bulan', 8)->first();
+        $sept = $dosen->absen()->where('tahun_ajaran', tahunAjaran())->where('bulan', 9)->first();
+        $okt = $dosen->absen()->where('tahun_ajaran', tahunAjaran())->where('bulan', 10)->first();
+        $nov = $dosen->absen()->where('tahun_ajaran', tahunAjaran())->where('bulan', 11)->first();
+        $des = $dosen->absen()->where('tahun_ajaran', tahunAjaran())->where('bulan', 12)->first();
+        $gl = $dosen->absen()->where('tahun_ajaran', tahunAjaran())->where('bulan', '>', 6)->sum('absen');
         $pGanjil = ($gl / $ganjil) * 100;
 
         return [
@@ -65,7 +65,7 @@ class AbsenDosenExport implements FromCollection, WithMapping, WithHeadings
             ($des && $dt) ? $des->absen : '',
             ($pGanjil <= 0 && !$dt) ? '' : number_format($pGanjil, 2, ',', '.') . "%",
             ($pGenap <= 0 && !$dt) ? '' : number_format($pGenap, 2, ',', '.') . "%",
-            ($dt) ? $this->tahunAjaran() : '',
+            ($dt) ? tahunAjaran() : '',
         ];
     }
 
@@ -92,19 +92,5 @@ class AbsenDosenExport implements FromCollection, WithMapping, WithHeadings
                 'Tahun Ajaran',
             ],
         ];
-    }
-
-    public function tahunAjaran()
-    {
-        $month = date('n');
-        $year = date('Y');
-        if ($month <= 6) {
-            $y = $year - 1;
-            $tahunAjaran = $y . "/" . $year;
-        } else {
-            $y = $year + 1;
-            $tahunAjaran = $year . "/" . $y;
-        }
-        return $tahunAjaran;
     }
 }

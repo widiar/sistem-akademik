@@ -76,6 +76,9 @@ Route::middleware(['auth'])->group(function () {
             Route::get('absen-staff', [AbsenController::class, 'staff'])->name('absen.staff');
             Route::post('absen-staff', [AbsenController::class, 'absenStaff'])->name('absen.staff.post');
             Route::get('absen-staff/{dosen}/{bulan}', [AbsenController::class, 'cekStaff'])->name('cekAbsenStaff');
+            Route::get('rekap/absen-staff', [RekapController::class, 'absenStaff'])->name('rekap.absen.staff');
+            Route::post('rekap/absen-staff', [RekapController::class, 'postAbsenStaff'])->name('rekap.absen.staff.post');
+            Route::delete('rekap/absen-staff/{id}', [RekapController::class, 'deleteAbsenStaff'])->name('delete.absen.staff');
 
             //dev
             Route::get('dev', [RekapController::class, 'dev']);

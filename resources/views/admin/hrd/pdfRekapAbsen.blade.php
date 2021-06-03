@@ -58,7 +58,7 @@
         </thead>
         <tbody>
             @foreach ($absen as $data)
-            @if(!$data->dosen->is_staff)
+            @if($data->dosen->is_staff)
             <tr>
                 <td>{{ $data->dosen->nip }}</td>
                 <td>{{ $data->dosen->nama }}</td>
