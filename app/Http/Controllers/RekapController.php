@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
+use Illuminate\Support\Facades\Auth;
 
 class RekapController extends Controller
 {
@@ -115,6 +116,7 @@ class RekapController extends Controller
 
     public function absenStaff()
     {
+        if (Auth::user()->role_id != 4 && Auth::user()->role_id != 2) return redirect()->route('admin.dashboard');
         $m = date('n');
         $bulan = array_slice(getBulan(), 0, $m);
         $rekapan = RekapAbsenDosen::where('is_staff', true)->get();
