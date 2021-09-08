@@ -47,6 +47,7 @@ Route::middleware(['auth'])->group(function () {
             });
 
             //akademik
+            Route::get('rekap-dosen', [RekapController::class, 'dosen'])->name('rekap.dosen'); //keuangan bisa
             Route::middleware(['akademik'])->group(function () {
 
                 Route::get('dosen', function () {
@@ -58,7 +59,6 @@ Route::middleware(['auth'])->group(function () {
                 Route::patch('dosen/{dosen}', [DosenController::class, 'update'])->name('dosen.update');
                 Route::delete('dosen/{dosen}', [DosenController::class, 'destroy'])->name('dosen.destroy');
                 Route::get('dosen/{tipe}', [DosenController::class, 'list'])->name('dosen.list');
-                Route::get('rekap-dosen', [RekapController::class, 'dosen'])->name('rekap.dosen'); //keuangan bisa
                 Route::post('dosen-rekap', [RekapController::class, 'dosenRekap'])->name('add.rekap.dosen');
                 Route::delete('rekap-dosen/{id}', [RekapController::class, 'deleteRekapDosen'])->name('delete.rekap.dosen');
                 Route::get('absen-dosen', [AbsenController::class, 'dosen'])->name('absen.dosen');
