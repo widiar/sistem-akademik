@@ -34,6 +34,8 @@
     <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap.min.css') }}">
 
+    <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.css') }}">
+
     @yield('css')
     <style>
         .description {
@@ -144,17 +146,26 @@
 
     <script src="{{ asset('plugins/simple-money/simple.money.format.js') }}"></script>
 
+    <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
+
     <script src="{{ asset('dist/js/admin.js') }}"></script>
 
     <script>
         $("#adminTable").dataTable({
-            paging: false,
-            searching: false,
+            // paging: false,
+            // searching: false,
             // columnDefs: [{ orderable: false, targets: 5 }],
         });
         $(function() {
             bsCustomFileInput.init();
         }); 
+
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+        }
     </script>
 
     @yield('script')

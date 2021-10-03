@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRekapDosenTable extends Migration
+class CreateMataKuliahsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateRekapDosenTable extends Migration
      */
     public function up()
     {
-        Schema::create('rekap_dosen', function (Blueprint $table) {
+        Schema::create('mata_kuliah', function (Blueprint $table) {
             $table->id();
-            $table->string('excel');
-            $table->string('pdf');
-            $table->string('bulan');
-            $table->string('tahun');
+            $table->string("kode")->unique();
+            $table->string("nama");
+            $table->string("jam");
+            $table->string("hari");
+            $table->integer("sks");
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ class CreateRekapDosenTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('rekap_dosen');
+        Schema::dropIfExists('mata_kuliah');
     }
 }

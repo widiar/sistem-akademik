@@ -10,40 +10,15 @@ class Dosen extends Model
     use HasFactory;
 
     protected $table = 'dosen';
-
     protected $guarded = ['id'];
 
     public function kategori()
     {
-        return $this->belongsToMany(KategoriDosen::class, 'dosen_kategoridosen', 'dosen_id', 'kategori_id');
+        return $this->belongsToMany(KategoriDosen::class, 'dosen_kategoridosen', 'dosen_id', 'kategori_id')->withPivot('semester_ganjil', 'semester_genap');
     }
 
-    public function sks()
+    public function matakuliah()
     {
-        return $this->hasMany(SksDosen::class, 'dosen_id', 'id');
-    }
-    public function pembimbing()
-    {
-        return $this->hasMany(PDosen::class, 'dosen_id', 'id');
-    }
-    public function penguji()
-    {
-        return $this->hasMany(PjDosen::class, 'dosen_id', 'id');
-    }
-    public function koordinator()
-    {
-        return $this->hasMany(KDosen::class, 'dosen_id', 'id');
-    }
-    public function wali()
-    {
-        return $this->hasMany(WDosen::class, 'dosen_id', 'id');
-    }
-    public function absen()
-    {
-        return $this->hasMany(AbsenDosen::class, 'dosen_id', 'id');
-    }
-    public function intensif()
-    {
-        return $this->hasMany(IntensifMarketing::class, 'dosen_id', 'id');
+        return $this->belongsToMany(MataKuliah::class, 'dosen_matakuliah', 'dosen_id', 'matakuliah_id');
     }
 }

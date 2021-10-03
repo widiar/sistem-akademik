@@ -177,7 +177,6 @@
                     </div>
                 </div>
             </div>
-            <input type="hidden" name="tipe" value="{{ $tipe }}">
             <button type="submit" class="btn btn-block btn-primary">Tambah</button>
         </form>
     </div>

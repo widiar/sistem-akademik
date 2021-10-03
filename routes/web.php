@@ -6,6 +6,7 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\GajiController;
 use App\Http\Controllers\IntensifController;
+use App\Http\Controllers\MataKuliahController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\RekapController;
 use App\Http\Controllers\SiteController;
@@ -50,21 +51,27 @@ Route::middleware(['auth'])->group(function () {
             Route::get('rekap-dosen', [RekapController::class, 'dosen'])->name('rekap.dosen'); //keuangan bisa
             Route::middleware(['akademik'])->group(function () {
 
-                Route::get('dosen', function () {
-                    return redirect()->route('admin.dosen.list', 'pengajar');
-                })->name('dosen');
-                Route::get('dosen/create/{tipe}', [DosenController::class, 'create'])->name('dosen.create');
+                Route::get('dosen', [DosenController::class, 'index'])->name('dosen');
+                Route::get('dosen/create', [DosenController::class, 'create'])->name('dosen.create');
                 Route::post('dosen/create', [DosenController::class, 'store'])->name('dosen.store');
-                Route::get('dosen/{dosen}/edit/{tipe}', [DosenController::class, 'edit'])->name('dosen.edit');
+                Route::get('dosen/{dosen}/edit', [DosenController::class, 'edit'])->name('dosen.edit');
                 Route::patch('dosen/{dosen}', [DosenController::class, 'update'])->name('dosen.update');
                 Route::delete('dosen/{dosen}', [DosenController::class, 'destroy'])->name('dosen.destroy');
-                Route::get('dosen/{tipe}', [DosenController::class, 'list'])->name('dosen.list');
+                // Route::get('dosen/{tipe}', [DosenController::class, 'list'])->name('dosen.list');
                 Route::post('dosen-rekap', [RekapController::class, 'dosenRekap'])->name('add.rekap.dosen');
                 Route::delete('rekap-dosen/{id}', [RekapController::class, 'deleteRekapDosen'])->name('delete.rekap.dosen');
                 Route::get('absen-dosen', [AbsenController::class, 'dosen'])->name('absen.dosen');
                 Route::get('cek-sks/{dosen}', [AbsenController::class, 'cekSks'])->name('cek.sks');
                 Route::get('ambil-absen/{dosen}/{bulan}', [AbsenController::class, 'ambilAbsenDosen'])->name('cek.absen.dosen');
                 Route::post('absen-dosen', [AbsenController::class, 'postAbsenDosen'])->name('post.absen.dosen');
+
+                Route::get('mata-kuliah', [MataKuliahController::class, 'index'])->name('matakuliah.index');
+                Route::get('mata-kuliah/create', [MataKuliahController::class, 'create'])->name('matakuliah.create');
+                Route::post('mata-kuliah/create', [MataKuliahController::class, 'store']);
+                Route::get('mata-kuliah/{matakuliah}/edit', [MataKuliahController::class, 'edit'])->name('matakuliah.edit');
+                Route::post('mata-kuliah/{matakuliah}/edit', [MataKuliahController::class, 'update']);
+                Route::delete('mata-kuliah/{matakuliah}', [MataKuliahController::class, 'delete'])->name('matakuliah.delete');
+                Route::get('mata-kuliah/list-dosen', [DosenController::class, 'list'])->name('dosen.list');
             });
 
             //keuangan
