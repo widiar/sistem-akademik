@@ -38,25 +38,28 @@
                 $no=0;
                 @endphp
                 @foreach ($matakuliah as $matkul)
-                <td>{{ ++$no }}</td>
-                <td>{{ $matkul->kode }}</td>
-                <td>{{ $matkul->nama }}</td>
-                <td>{{ $matkul->jam }}</td>
-                <td>{{ $matkul->hari }}</td>
-                <td>{{ $matkul->sks }}</td>
-                <td class="text-center">
-                    <div class="row" style="min-width: 100px">
-                        <a href="{{ route('admin.matakuliah.edit', $matkul->id) }}" class="mx-3">
-                            <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
-                        </a>
-                        <form action="{{ route('admin.matakuliah.delete', $matkul->id) }}" method="POST"
-                            class="deleted">
-                            @method("DELETE")
-                            @csrf
-                            <button class="btn btn-sm btn-danger" type="submit"><i class="fas fa-trash"></i></button>
-                        </form>
-                    </div>
-                </td>
+                <tr>
+                    <td>{{ ++$no }}</td>
+                    <td>{{ $matkul->kode }}</td>
+                    <td>{{ $matkul->nama }}</td>
+                    <td>{{ $matkul->jam }}</td>
+                    <td>{{ $matkul->hari }}</td>
+                    <td>{{ $matkul->sks }}</td>
+                    <td class="text-center">
+                        <div class="row" style="min-width: 100px">
+                            <a href="{{ route('admin.matakuliah.edit', $matkul->id) }}" class="mx-3">
+                                <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
+                            </a>
+                            <form action="{{ route('admin.matakuliah.delete', $matkul->id) }}" method="POST"
+                                class="deleted">
+                                @method("DELETE")
+                                @csrf
+                                <button class="btn btn-sm btn-danger" type="submit"><i
+                                        class="fas fa-trash"></i></button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
                 @endforeach
             </tbody>
         </table>

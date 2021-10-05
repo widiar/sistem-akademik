@@ -21,4 +21,9 @@ class Dosen extends Model
     {
         return $this->belongsToMany(MataKuliah::class, 'dosen_matakuliah', 'dosen_id', 'matakuliah_id');
     }
+
+    public function absen()
+    {
+        return $this->hasMany(AbsenDosen::class, 'dosen_id');
+    }
 }

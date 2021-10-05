@@ -61,6 +61,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('dosen-rekap', [RekapController::class, 'dosenRekap'])->name('add.rekap.dosen');
                 Route::delete('rekap-dosen/{id}', [RekapController::class, 'deleteRekapDosen'])->name('delete.rekap.dosen');
                 Route::get('absen-dosen', [AbsenController::class, 'dosen'])->name('absen.dosen');
+                Route::get('list/absen-dosen', [AbsenController::class, 'list'])->name('list.absen.dosen');
                 Route::get('cek-sks/{dosen}', [AbsenController::class, 'cekSks'])->name('cek.sks');
                 Route::get('ambil-absen/{dosen}/{bulan}', [AbsenController::class, 'ambilAbsenDosen'])->name('cek.absen.dosen');
                 Route::post('absen-dosen', [AbsenController::class, 'postAbsenDosen'])->name('post.absen.dosen');

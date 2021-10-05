@@ -14,16 +14,16 @@ class DosenExport implements FromCollection, WithMapping, WithHeadings
      */
     public function collection()
     {
-        return Dosen::where('is_dosen', true)->get();
+        return Dosen::where('staf_akademik', true)->get();
     }
 
     public function map($dosen): array
     {
-        $sks = $dosen->sks()->where('tahun_ajaran', $this->tahunAjaran())->first();
-        $pembimbing = $dosen->pembimbing()->where('tahun_ajaran', $this->tahunAjaran())->first();
-        $penguji = $dosen->penguji()->where('tahun_ajaran', $this->tahunAjaran())->first();
-        $koor = $dosen->koordinator()->where('tahun_ajaran', $this->tahunAjaran())->first();
-        $wali = $dosen->wali()->where('tahun_ajaran', $this->tahunAjaran())->first();
+        $sks = $dosen->kategori()->where('kategori_id', 1)->wherePivot('tahun_ajaran', tahunAjaran())->first();
+        $pembimbing = $dosen->kategori()->where('kategori_id', 2)->wherePivot('tahun_ajaran', tahunAjaran())->first();
+        $penguji = $dosen->kategori()->where('kategori_id', 3)->wherePivot('tahun_ajaran', tahunAjaran())->first();
+        $koor = $dosen->kategori()->where('kategori_id', 4)->wherePivot('tahun_ajaran', tahunAjaran())->first();
+        $wali = $dosen->kategori()->where('kategori_id', 5)->wherePivot('tahun_ajaran', tahunAjaran())->first();
         $k = '';
         foreach ($dosen->kategori as $kategori) {
             $k .= $kategori->kategori . ", ";
@@ -32,16 +32,16 @@ class DosenExport implements FromCollection, WithMapping, WithHeadings
             $dosen->nip,
             $dosen->nama,
             $k,
-            ($sks) ? $sks->semester_ganjil : '',
-            ($sks) ? $sks->semester_genap : '',
-            ($pembimbing) ? $pembimbing->semester_ganjil : '',
-            ($pembimbing) ? $pembimbing->semester_genap : '',
-            ($penguji) ? $penguji->semester_ganjil : '',
-            ($penguji) ? $penguji->semester_genap : '',
-            ($koor) ? $koor->semester_ganjil : '',
-            ($koor) ? $koor->semester_genap : '',
-            ($wali) ? $wali->semester_ganjil : '',
-            ($wali) ? $wali->semester_genap : '',
+            ($sks) ? $sks->pivot->semester_ganjil : '',
+            ($sks) ? $sks->pivot->semester_genap : '',
+            ($pembimbing) ? $pembimbing->pivot->semester_ganjil : '',
+            ($pembimbing) ? $pembimbing->pivot->semester_genap : '',
+            ($penguji) ? $penguji->pivot->semester_ganjil : '',
+            ($penguji) ? $penguji->pivot->semester_genap : '',
+            ($koor) ? $koor->pivot->semester_ganjil : '',
+            ($koor) ? $koor->pivot->semester_genap : '',
+            ($wali) ? $wali->pivot->semester_ganjil : '',
+            ($wali) ? $wali->pivot->semester_genap : '',
         ];
     }
 
@@ -52,9 +52,9 @@ class DosenExport implements FromCollection, WithMapping, WithHeadings
                 'NIP',
                 'NAMA',
                 'KATEGORI',
-                'Jumlah SKS',
+                'Jumlah Pembimbing KP',
                 '',
-                'Jumlah Pembimbing',
+                'Jumlah Pembimbing TA',
                 '',
                 'Jumlah Penguji',
                 '',

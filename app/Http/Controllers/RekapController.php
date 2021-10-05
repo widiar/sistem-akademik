@@ -19,6 +19,10 @@ class RekapController extends Controller
 {
     public function dosen()
     {
+        // $dosen = Dosen::where('staf_akademik', true)->get();
+        // $tahunAjaran = tahunAjaran();
+        // return view('admin.akademik.pdfRekapDosen', compact('dosen', 'tahunAjaran'));
+
         $m = date('n');
         $bulan = array_slice(getBulan(), 0, $m);
         $rekapan = RekapDosen::all();
@@ -48,7 +52,7 @@ class RekapController extends Controller
         Excel::store(new DosenExport, 'rekap-dosen/excel/' . $excel, 'public');
 
         //pdf
-        $dosen = Dosen::where('is_dosen', true)->get();
+        $dosen = Dosen::where('staf_akademik', true)->get();
         $tahunAjaran = tahunAjaran();
         $pdf = PDF::loadView('admin.akademik.pdfRekapDosen', compact('dosen', 'tahunAjaran'));
         $pdf->setPaper('a4')->setOrientation('landscape')->save('storage/rekap-dosen/pdf/' . $fpdf);
@@ -167,9 +171,9 @@ class RekapController extends Controller
     public function dev()
     {
         // return Excel::download(new AbsenDosenExport, 'tes.xlsx');
-        $absen = AbsenDosen::groupBy('dosen_id')->get();
-        $tahunAjaran = tahunAjaran();
-        return view('admin.keuangan.pdfRekapAbsenDosen', compact('absen', 'tahunAjaran'));
+        // $absen = AbsenDosen::groupBy('dosen_id')->get();
+        // $tahunAjaran = tahunAjaran();
+        // return view('admin.keuangan.pdfRekapAbsenDosen', compact('absen', 'tahunAjaran'));
         // dd($absen->dosen->absen);
         // $c = $dosen->absen()->where('tahun_ajaran', tahunAjaran())->where('bulan', '<=', 6)->sum('absen');
         // $c = ($c / -1) * 100;

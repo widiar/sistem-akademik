@@ -17,7 +17,10 @@ class MataKuliahController extends Controller
 
     public function create()
     {
-        return view('admin.akademik.matakuliah.create');
+        $hari = [
+            'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'
+        ];
+        return view('admin.akademik.matakuliah.create', compact('hari'));
     }
 
     public function store(MataKuliahRequest $request)

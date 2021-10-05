@@ -31,10 +31,13 @@
     <link rel="stylesheet" href="{{ asset('plugins/datatables/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/datatables/responsive.bootstrap4.min.css') }}">
 
+    <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}">
+
     <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap.min.css') }}">
 
     <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/datepicker/css/bootstrap-datepicker.standalone.css') }}">
 
     @yield('css')
     <style>
@@ -147,6 +150,7 @@
     <script src="{{ asset('plugins/simple-money/simple.money.format.js') }}"></script>
 
     <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
+    <script src="{{ asset('plugins/datepicker/js/bootstrap-datepicker.js') }}"></script>
 
     <script src="{{ asset('dist/js/admin.js') }}"></script>
 

@@ -25,7 +25,7 @@
             </div>
             <div class="form-group">
                 <label for="jam">Jam</label>
-                <input type="text" required name="jam" class="form-control  @error('jam') is-invalid @enderror"
+                <input type="text" required name="jam" class="form-control jam  @error('jam') is-invalid @enderror"
                     value="{{ old('jam') }}">
                 @error('jam')
                 <div class="invalid-feedback">{{ $message }}</div>
@@ -33,8 +33,13 @@
             </div>
             <div class="form-group">
                 <label for="hari">Hari</label>
-                <input type="text" required name="hari" class="form-control  @error('hari') is-invalid @enderror"
-                    value="{{ old('hari') }}">
+                <select name="hari" class="form-control  @error('hari') is-invalid @enderror" required>
+                    @foreach ($hari as $dt)
+                    <option value="{{ $dt }}" {{(old('hari') == $dt) ? 'selected' : ''}}>{{ $dt }}</option>
+                    @endforeach
+                </select>
+                {{-- <input type="text" required name="hari" class="form-control  @error('hari') is-invalid @enderror"
+                    value="{{ old('hari') }}"> --}}
                 @error('hari')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -119,6 +124,18 @@
             return false
         }
     })
+
+    $(".jam").daterangepicker({
+        timePicker: true,
+        timePicker24Hour: true,
+        // timePickerIncrement: 1,
+        // timePickerSeconds: true,
+        locale: {
+            format: 'HH:mm'
+        }
+    }).on('show.daterangepicker', function (ev, picker) {
+        picker.container.find(".calendar-table").hide();
+    });
 
 </script>
 @endsection

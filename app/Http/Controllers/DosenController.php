@@ -169,7 +169,7 @@ class DosenController extends Controller
     public function list(Request $request)
     {
         $search = $request->search;
-        $dosen = Dosen::where("nama", 'like', "%$search%")->get();
+        $dosen = Dosen::where("nama", 'like', "%$search%")->where('staf_akademik', 1)->get();
         $data = [];
         foreach ($dosen as $ds) {
             $data[] = [

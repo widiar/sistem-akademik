@@ -40,8 +40,8 @@
                 <th rowspan="2" style="vertical-align: middle">NIP</th>
                 <th rowspan="2" style="vertical-align: middle">Nama</th>
                 <th rowspan="2" style="vertical-align: middle">Kategori</th>
-                <th colspan="2">SKS Dosen</th>
-                <th colspan="2">Jumlah Pembimbing</th>
+                <th colspan="2">Jumlah Pembimbing KP</th>
+                <th colspan="2">Jumlah Pembimbing TA</th>
                 <th colspan="2">Jumlah Penguji</th>
                 <th colspan="2">Jumlah Koordinator</th>
                 <th colspan="2">Jumlah Wali</th>
@@ -63,11 +63,11 @@
         <tbody>
             @foreach ($dosen as $d)
             @php
-            $sks = $d->sks()->where('tahun_ajaran', $tahunAjaran)->first();
-            $pembimbing = $d->pembimbing()->where('tahun_ajaran', $tahunAjaran)->first();
-            $penguji = $d->penguji()->where('tahun_ajaran', $tahunAjaran)->first();
-            $koordinator = $d->koordinator()->where('tahun_ajaran', $tahunAjaran)->first();
-            $wali = $d->wali()->where('tahun_ajaran', $tahunAjaran)->first();
+            $sks = $d->kategori()->where('kategori_id', 1)->wherePivot('tahun_ajaran', tahunAjaran())->first();
+            $pembimbing = $d->kategori()->where('kategori_id', 2)->wherePivot('tahun_ajaran', tahunAjaran())->first();
+            $penguji = $d->kategori()->where('kategori_id', 3)->wherePivot('tahun_ajaran', tahunAjaran())->first();
+            $koordinator = $d->kategori()->where('kategori_id', 4)->wherePivot('tahun_ajaran', tahunAjaran())->first();
+            $wali = $d->kategori()->where('kategori_id', 5)->wherePivot('tahun_ajaran', tahunAjaran())->first();
             @endphp
             <tr>
                 <td>{{ $d->nip }}</td>
@@ -77,16 +77,16 @@
                     {{ $k->kategori }} ,
                     @endforeach
                 </td>
-                <td>{{ ($sks) ? $sks->semester_ganjil : '' }}</td>
-                <td>{{ ($sks) ? $sks->semester_genap : '' }}</td>
-                <td>{{ ($pembimbing) ? $pembimbing->semester_ganjil : '' }}</td>
-                <td>{{ ($pembimbing) ? $pembimbing->semester_genap : '' }}</td>
-                <td>{{ ($penguji) ? $penguji->semester_ganjil : '' }}</td>
-                <td>{{ ($penguji) ? $penguji->semester_genap : '' }}</td>
-                <td>{{ ($koordinator) ? $koordinator->semester_ganjil : '' }}</td>
-                <td>{{ ($koordinator) ? $koordinator->semester_genap : '' }}</td>
-                <td>{{ ($wali) ? $wali->semester_ganjil : '' }}</td>
-                <td>{{ ($wali) ? $wali->semester_genap : '' }}</td>
+                <td>{{ ($sks) ? $sks->pivot->semester_ganjil : '-' }}</td>
+                <td>{{ ($sks) ? $sks->pivot->semester_genap : '-' }}</td>
+                <td>{{ ($pembimbing) ? $pembimbing->pivot->semester_ganjil : '-' }}</td>
+                <td>{{ ($pembimbing) ? $pembimbing->pivot->semester_genap : '-' }}</td>
+                <td>{{ ($penguji) ? $penguji->pivot->semester_ganjil : '-' }}</td>
+                <td>{{ ($penguji) ? $penguji->pivot->semester_genap : '-' }}</td>
+                <td>{{ ($koordinator) ? $koordinator->pivot->semester_ganjil : '-' }}</td>
+                <td>{{ ($koordinator) ? $koordinator->pivot->semester_genap : '-' }}</td>
+                <td>{{ ($wali) ? $wali->pivot->semester_ganjil : '-' }}</td>
+                <td>{{ ($wali) ? $wali->pivot->semester_genap : '-' }}</td>
                 <td>{{ $tahunAjaran }}</td>
             </tr>
             @endforeach
