@@ -10,6 +10,7 @@ use App\Http\Controllers\MataKuliahController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\RekapController;
 use App\Http\Controllers\SiteController;
+use App\Http\Controllers\StaffController;
 use Illuminate\Support\Facades\Route;
 use UniSharp\LaravelFilemanager\Lfm;
 
@@ -90,7 +91,10 @@ Route::middleware(['auth'])->group(function () {
 
             //hrd
             Route::middleware(['hrd'])->group(function () {
+                Route::resource('staff', StaffController::class);
+
                 Route::get('absen-staff', [AbsenController::class, 'staff'])->name('absen.staff');
+                Route::get('list/absen-staff', [AbsenController::class, 'listStaff'])->name('absen.staff.list');
                 Route::post('absen-staff', [AbsenController::class, 'absenStaff'])->name('absen.staff.post');
                 Route::get('absen-staff/{dosen}/{bulan}', [AbsenController::class, 'cekStaff'])->name('cekAbsenStaff');
                 Route::post('rekap/absen-staff', [RekapController::class, 'postAbsenStaff'])->name('rekap.absen.staff.post');

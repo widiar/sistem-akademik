@@ -26,4 +26,9 @@ class Dosen extends Model
     {
         return $this->hasMany(AbsenDosen::class, 'dosen_id');
     }
+
+    public function staff()
+    {
+        return $this->hasMany(AbsenStaff::class, 'dosen_id');
+    }
 }

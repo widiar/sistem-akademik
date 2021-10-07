@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AbsenDosen;
+use App\Models\AbsenStaff;
 use App\Models\Dosen;
 use App\Models\MataKuliah;
 use Illuminate\Http\Request;
@@ -23,7 +24,7 @@ class AbsenController extends Controller
     public function list(Request $request)
     {
         $hari = dayInIndonesia(date('D', strtotime($request->tanggal)));
-        $absen =  AbsenDosen::where('tanggal', $request->tanggal)->get();
+        $absen =  AbsenDosen::where('tanggal', date('Y-m-d', strtotime($request->tanggal)))->get();
         $dt = [];
         $no = 0;
         if ($absen->count()) {
@@ -60,48 +61,6 @@ class AbsenController extends Controller
         ]);
     }
 
-    public function cekSks(Dosen $dosen)
-    {
-
-        $sks = $dosen->sks()->where('tahun_ajaran', tahunAjaran())->first();
-        // dd($sks->semester_genap);
-        if ($sks) {
-            $m = date('n');
-            if ($m <= 6) {
-                if ($sks->semester_genap) {
-                    $a = $dosen->absen('where', tahunAjaran())->where('bulan', $m)->first();
-                    if ($a) $absen = $a->absen;
-                    else $absen = '';
-                    return response()->json([
-                        'absen' => $absen,
-                        'msg' => 'Ada'
-                    ]);
-                } else return response()->json(['msg' => 'Tidak']);
-            } else {
-                if ($sks->semester_ganjil) {
-                    $a = $dosen->absen('where', tahunAjaran())->where('bulan', $m)->first();
-                    if ($a) $absen = $a->absen;
-                    else $absen = '';
-                    return response()->json([
-                        'absen' => $absen,
-                        'msg' => 'Ada'
-                    ]);
-                } else return response()->json(['msg' => 'Tidak']);
-            }
-        } else return response()->json(['msg' => 'Tidak']);
-    }
-
-    public function ambilAbsenDosen(Dosen $dosen, $bulan)
-    {
-        $absen = $dosen->absen('where', tahunAjaran())->where('bulan', $bulan)->first();
-        if ($absen)
-            return response()->json([
-                'absen' => $absen->absen,
-                'msg' => 'Ada'
-            ]);
-        else return response()->json(['msg' => 'Tidak']);
-    }
-
     public function postAbsenDosen(Request $request)
     {
         $hadir = $request->absen;
@@ -112,14 +71,14 @@ class AbsenController extends Controller
             array_push($matkul, $tmp[0]);
             array_push($dosen, $tmp[1]);
         }
-        $absen =  AbsenDosen::where('tanggal', $request->tanggal)->get();
+        $absen =  AbsenDosen::where('tanggal', date('Y-m-d', strtotime($request->tanggal)))->get();
         foreach (array_map(NULL, $hadir, $matkul, $dosen) as $x) {
             list($h, $m, $d) = $x;
             if ($absen->count()) {
                 $cek = AbsenDosen::where([
                     ['dosen_id', $d],
                     ['matakuliah_id', $m],
-                    ['tanggal', $request->tanggal]
+                    ['tanggal', date('Y-m-d', strtotime($request->tanggal))]
                 ])->first();
                 $cek->hadir = $h;
                 $cek->save();
@@ -128,7 +87,7 @@ class AbsenController extends Controller
                     'dosen_id' => $d,
                     'matakuliah_id' => $m,
                     'hadir' => $h,
-                    'tanggal' => $request->tanggal
+                    'tanggal' => date('Y-m-d', strtotime($request->tanggal))
                 ]);
             }
         }
@@ -139,46 +98,64 @@ class AbsenController extends Controller
 
     public function staff(Request $request)
     {
-        $m = date('n');
-        $bulan = array_slice(getBulan(), 0, $m);
-
-        if ($request->search) {
-            $cek = Dosen::where('nip', 'like', "%$request->search%")->where('is_staff', true)->where('is_dosen', false);
-            if ($cek->exists()) $dosen = $cek->paginate(10);
-            else $dosen = Dosen::where('nama', 'like', "%$request->search%")->where('is_staff', true)->where('is_dosen', false)->paginate(10);
-        } else
-            $dosen = Dosen::where('is_staff', true)->where('is_dosen', false)->paginate(10);
-
-        return view('admin.hrd.absenStaff', compact('dosen', 'bulan'));
+        $now = date('d-m-Y');
+        return view('admin.hrd.absenStaff', compact('now'));
     }
 
-    public function cekStaff(Dosen $dosen, $bulan)
+    public function listStaff(Request $request)
     {
-        $absen = $dosen->absen()->where('tahun_ajaran', tahunAjaran())->where('bulan', $bulan)->first();
-        if ($absen)
-            return response()->json([
-                'absen' => $absen->absen,
-                'msg' => 'Ada'
-            ]);
-        else return response()->json(['msg' => 'Tidak']);
+        $absen =  AbsenStaff::where('tanggal', date('Y-m-d', strtotime($request->tanggal)))->get();
+        $dt = [];
+        $no = 0;
+        if ($absen->count()) {
+            foreach ($absen as $a) {
+                $dt[] = [
+                    'no' => ++$no,
+                    'nama' => $a->dosen->nama,
+                    'id' => $a->dosen->id,
+                    'f' => 1,
+                    'absen' => $a->hadir
+                ];
+            }
+        } else {
+            $data = Dosen::all();
+            foreach ($data as $ds) {
+                $dt[] = [
+                    'no' => ++$no,
+                    'nama' => $ds->nama,
+                    'id' => $ds->id,
+                    'f' => 0,
+                    'absen' => 0
+                ];
+            }
+        }
+        return response()->json([
+            'data' => $dt,
+            'total' => $no
+        ]);
     }
 
     public function absenStaff(Request $request)
     {
-        $dosen = Dosen::find($request->dosen);
-        //store
-        $cek = $dosen->absen('where', tahunAjaran())->where('bulan', $request->bulan)->first();
-        if ($cek) {
-            $cek->absen = $request->sks;
-            $cek->save();
-        } else {
-            $absen = new AbsenDosen([
-                'bulan' => $request->bulan,
-                'absen' => $request->absen,
-                'tahun_ajaran' => tahunAjaran()
-            ]);
-            $dosen->absen()->save($absen);
+        $absen =  AbsenStaff::where('tanggal', date('Y-m-d', strtotime($request->tanggal)))->get();
+        foreach (array_combine($request->id, $request->absen) as $id => $hadir) {
+            if ($absen->count()) {
+                $cek = AbsenStaff::where([
+                    ['dosen_id', $id],
+                    ['tanggal', date('Y-m-d', strtotime($request->tanggal))]
+                ])->first();
+                $cek->hadir = $hadir;
+                $cek->save();
+            } else {
+                AbsenStaff::create([
+                    'dosen_id' => $id,
+                    'hadir' => $hadir,
+                    'tanggal' => date('Y-m-d', strtotime($request->tanggal))
+                ]);
+            }
         }
-        return response()->json('Sukses');
+        return response()->json([
+            'status' => 200
+        ]);
     }
 }

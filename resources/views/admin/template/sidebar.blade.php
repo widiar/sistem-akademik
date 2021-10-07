@@ -135,6 +135,15 @@
                 </li>
                 @elseif(Auth::user()->role_id == 4)
                 <li class="nav-item">
+                    <a href="{{ route('admin.staff.index') }}"
+                        class="nav-link{{request()->is('admin/staff*') ? ' active' : '' }}">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            Data Staff
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{ route('admin.absen.staff') }}"
                         class="nav-link{{request()->is('admin/absen-staff') ? ' active' : '' }}">
                         <i class="nav-icon far fa-folder-open"></i>

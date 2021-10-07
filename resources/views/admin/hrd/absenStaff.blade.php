@@ -3,14 +3,6 @@
 @section('title', 'Absen Staff')
 
 @section('main-content')
-<form action="" method="get" class="my-2 mx-3">
-    <div class="input-group input-group-sm mb-3 w-25">
-        <input type="text" class="form-control" name="search" value="{{ Request::get('search') }}">
-        <div class="input-group-append">
-            <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
-        </div>
-    </div>
-</form>
 @if(session('success'))
 <div class="alert alert-success alert-dismissible">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -24,76 +16,30 @@
     {{session('error')}}
 </div>
 @endif
+<div class="tanggal mx-3">
+    <label for="">Pilih Tanggal</label>
+    <div class="input-group w-50">
+        <input type="text" id="tgl" class="form-control datepicker" value="{{ $now }}">
+        <div class="input-group-append">
+            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+        </div>
+    </div>
+</div>
 <div class="card shadow mx-3">
     <div class="card-body table-responsive">
-        <table id="adminTable" class="table table-bordered dt-responsive nowrap" style="width: 100%;">
+        <table id="absenTable" class="table table-bordered dt-responsive nowrap" style="width: 100%;">
             <thead>
                 <tr>
                     <th>NO</th>
-                    <th>NIP</th>
                     <th>Nama</th>
-                    <th class="text-center">Aksi</th>
+                    <th class="text-center">Hadir</th>
+                    <th class="text-center">Tidak Hadir</th>
                 </tr>
             </thead>
             <tbody class="actionz">
-                @php
-                $no=0;
-                @endphp
-                @if (!is_null($dosen))
-                @foreach ($dosen as $ban)
-                <tr>
-                    <td>{{ ++$no }}</td>
-                    <td>{{ $ban->nip }}</td>
-                    <td>{{ $ban->nama }}</td>
-                    <td class="text-center">
-                        <button class="btn btn-sm btn-primary absen-button mx-3" data-dosen="{{ $ban->id }}">
-                            <i class="fas fa-file-signature"></i>
-                        </button>
-                    </td>
-                </tr>
-                @endforeach
-                @endif
             </tbody>
         </table>
-    </div>
-    <div class="ml-3">
-        {{ $dosen->withQueryString()->links('vendor.pagination.admin-bs') }}
-    </div>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="modalAdmin" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Absen Dosen</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="{{ route('admin.absen.staff.post') }}" method="POST" class="absen-form">
-                @csrf
-                <input type="hidden" name="dosen" value="" class="idDosen">
-                <div class="modal-body form-group">
-                    <label for="bulan">Bulan</label>
-                    <select name="bulan" class="bulan w-100 form-control" style="width: 100%;">
-                        @foreach ($bulan as $k)
-                        <option value="{{ $k->id }}" {{ (date('n') == $k->id) ? 'selected' : '' }}>
-                            {{ $k->name }}
-                        </option>
-                        @endforeach
-                    </select>
-                    <div class="form-group mt-3">
-                        <label for="sks">Total Kehadiran</label>
-                        <input type="text" name="absen" class="form-control sks" value="">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Absen</button>
-                </div>
-            </form>
-        </div>
+        <button class="btn btn-primary float-right mt-3 saveBtn">Save</button>
     </div>
 </div>
 
@@ -101,60 +47,87 @@
 
 @section('script')
 <script>
-    $('.bulan').select2({
-        theme: "bootstrap"
-    });
-    let tipe = "{{ route('admin.absen.staff') }}";
-    if (performance.navigation.type == 1) window.location.href = tipe
+    let totalDosen
+    let table
+    let urlPost = `{{ route('admin.absen.staff.post') }}`
 
-    var id = '';
-    $(".absen-button").click(function(e){
-        e.preventDefault()
-        let button = $(this);
-        id = button.data('dosen');
-        var ur = "{{ route('admin.cekAbsenStaff', [':dosen', ':bulan']) }}"
-        ur = ur.replace(':dosen', id)
-        ur = ur.replace(':bulan', $(".bulan").val())
-        // console.log(ur)
-        $.ajax({
-            url: ur,
-            dataType: 'json',
-            success: function(data){
-                $(".sks").val(data.absen)
-                $(".idDosen").val(id)
-                // console.log(data.absen)
-                $("#modalAdmin").modal('show');
-            }
-        })
+    $(".datepicker").datepicker({
+        format: 'dd-mm-yyyy',
+        todayBtn: "linked",
+        daysOfWeekDisabled: "0,6",
+        autoclose: true,
+        endDate: "+0d",
+        todayHighlight: true
     });
-    $(".bulan").change(function(e){
-        var ur = "{{ route('admin.cekAbsenStaff', [':dosen', ':bulan']) }}"
-        ur = ur.replace(':dosen', id)
-        ur = ur.replace(':bulan', $(this).val())
-        // console.log(ur)
-        $.ajax({
-            url: ur,
-            dataType: 'json',
-            success: function(data){
-                if (data.msg == "Ada") $(".sks").val(data.absen)
-                else $(".sks").val("")
-            }
-        })
+
+    initTable($("#tgl").val())
+
+    $(".datepicker").change(() =>{
+        let tgl = $("#tgl").val()
+        initTable(tgl)
     });
-    $(".absen-form").submit(function(e){
-        e.preventDefault();
-        $.ajax({
-            url: $(this).attr('action'),
-            method: $(this).attr('method'),
-            dataType: 'json',
-            data: $(this).serialize(),
-            success: function(msg){
-                if (msg == 'Sukses') Swal.fire("Sukses", "Berhasil Absen", "success").then((result) => {
-                    if (result.isConfirmed) window.location.href = "";
-                });
-                else Swal.fire("Oops", "Something Wrong!", "error");
-            }
+
+    function initTable(tgl){
+        let urlTable = `{{ route('admin.absen.staff.list') }}`;
+        table = $("#absenTable").dataTable({
+            lengthChange: false,
+            destroy: true,
+            // pageLength: 1,
+            ajax: {
+                url: urlTable,
+                type: 'GET',
+                data: {
+                    tanggal: tgl
+                },
+                dataSrc: function(res){
+                    totalDosen = res.total
+                    return res.data
+                }
+            },
+            columns: [
+                {data: "no"},
+                {data: "nama"},
+                {data: null, class:"text-center", orderable: false, render:function(data, type, row){
+                    if (row.f == 1){
+                        let cheked = (row.absen == 1) ? 'checked' : ''
+                        return `<input class="form-check-input hadir" ${cheked} type="radio" value="1" name="hadir[${row.id}]" data-id="${row.id}">`
+                    }else
+                        return `<input class="form-check-input hadir" type="radio" value="1" name="hadir[${row.id}]" data-id="${row.id}">`
+                }},
+                {data: null, class:"text-center", orderable: false, render:function(data, type, row){
+                    if (row.f == 1){
+                        let cheked = (row.absen == 0) ? 'checked' : ''
+                        return `<input class="form-check-input hadir" ${cheked} type="radio" value="0" name="hadir[${row.id}]" data-id="${row.id}">`
+                    }else
+                        return `<input class="form-check-input hadir" type="radio" value="0" name="hadir[${row.id}]" data-id="${row.id}">`
+                }},
+            ]
         })
+    }
+
+    $('.saveBtn').click(() => {
+        let dt = []
+        let kehadiran = table.$(".hadir:checked").map(function(){
+            dt.push($(this).data("id"))
+            return $(this).val();
+        }).get();
+        
+        if (kehadiran.length === totalDosen){
+            let tgl = $("#tgl").val()
+            toastr.success("Mantap")
+            $.ajax({
+                url: urlPost,
+                method: 'POST',
+                data: {
+                    absen: kehadiran,
+                    id: dt,
+                    tanggal: tgl
+                },
+                success: (res) => {
+                    if (res.status == 200) window.location.href = ''
+                }
+            })
+        }else toastr.info("Harap absen semua", "Absen")
     })
 </script>
 @endsection
