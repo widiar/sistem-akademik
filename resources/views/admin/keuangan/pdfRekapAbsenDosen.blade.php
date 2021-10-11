@@ -13,6 +13,7 @@
             margin-bottom: 1rem;
             color: #212529;
             border-collapse: collapse;
+            margin: 0 auto;
         }
 
         .table td,
@@ -39,135 +40,24 @@
             <tr>
                 <th style="vertical-align: middle">NIP</th>
                 <th style="vertical-align: middle">Nama</th>
-                <th>Januari</th>
-                <th>Februari</th>
-                <th>Maret</th>
-                <th>April</th>
-                <th>Mei</th>
-                <th>Juni</th>
-                <th>Juli</th>
-                <th>Agustus</th>
-                <th>September</th>
-                <th>Oktober</th>
-                <th>November</th>
-                <th>Desember</th>
-                <th>Semester Ganjil</th>
-                <th>Semester Genap</th>
-                <th style="vertical-align: middle">Tahun Ajaran</th>
+                <th style="vertical-align: middle">Matakuliah</th>
+                <th>Tanggal</th>
+                <th>Hadir</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($absen as $data)
-            @if(!$data->dosen->is_staff)
             <tr>
                 <td>{{ $data->dosen->nip }}</td>
                 <td>{{ $data->dosen->nama }}</td>
-                <td>
-                    @foreach ($data->dosen->absen as $b)
-                    @if ($b->bulan == 1)
-                    {{ $b->absen }}
-                    @endif
-                    @endforeach
-                </td>
-                <td>
-                    @foreach ($data->dosen->absen as $b)
-                    @if ($b->bulan == 2)
-                    {{ $b->absen }}
-                    @endif
-                    @endforeach
-                </td>
-                <td>
-                    @foreach ($data->dosen->absen as $b)
-                    @if ($b->bulan == 3)
-                    {{ $b->absen }}
-                    @endif
-                    @endforeach
-                </td>
-                <td>
-                    @foreach ($data->dosen->absen as $b)
-                    @if ($b->bulan == 4)
-                    {{ $b->absen }}
-                    @endif
-                    @endforeach
-                </td>
-                <td>
-                    @foreach ($data->dosen->absen as $b)
-                    @if ($b->bulan == 5)
-                    {{ $b->absen }}
-                    @endif
-                    @endforeach
-                </td>
-                <td>
-                    @foreach ($data->dosen->absen as $b)
-                    @if ($b->bulan == 6)
-                    {{ $b->absen }}
-                    @endif
-                    @endforeach
-                </td>
-                <td>
-                    @foreach ($data->dosen->absen as $b)
-                    @if ($b->bulan == 7)
-                    {{ $b->absen }}
-                    @endif
-                    @endforeach
-                </td>
-                <td>
-                    @foreach ($data->dosen->absen as $b)
-                    @if ($b->bulan == 8)
-                    {{ $b->absen }}
-                    @endif
-                    @endforeach
-                </td>
-                <td>
-                    @foreach ($data->dosen->absen as $b)
-                    @if ($b->bulan == 9)
-                    {{ $b->absen }}
-                    @endif
-                    @endforeach
-                </td>
-                <td>
-                    @foreach ($data->dosen->absen as $b)
-                    @if ($b->bulan == 10)
-                    {{ $b->absen }}
-                    @endif
-                    @endforeach
-                </td>
-                <td>
-                    @foreach ($data->dosen->absen as $b)
-                    @if ($b->bulan == 11)
-                    {{ $b->absen }}
-                    @endif
-                    @endforeach
-                </td>
-                <td>
-                    @foreach ($data->dosen->absen as $b)
-                    @if ($b->bulan == 12)
-                    {{ $b->absen }}
-                    @endif
-                    @endforeach
-                </td>
-                <td>
-                    @php
-                    $ganjil =
-                    $data->dosen->absen()->where('tahun_ajaran', $tahunAjaran)->where('bulan', '>', 6)->sum('absen');
-                    $genap =
-                    $data->dosen->absen()->where('tahun_ajaran', $tahunAjaran)->where('bulan', '<=', 6)->sum('absen');
-                        $sks = $data->dosen->sks()->where('tahun_ajaran', $tahunAjaran)->first();
-                        $tganjil = -1;
-                        $tgenap = -1;
-                        if ($sks) {
-                        if ($sks->semester_ganjil) $tganjil = $sks->semester_ganjil * 24;
-                        if ($sks->semester_genap) $tgenap = $sks->semester_genap * 24;
-                        }
-                        $pGenap = ($genap / $tgenap) * 100;
-                        $pGanjil = ($ganjil / $tganjil) * 100;
-                        @endphp
-                        {{ ($pGanjil <= 0) ? '' : number_format($pGanjil, 2, ',', '.') . "%" }}
-                </td>
-                <td>{{ ($pGenap <= 0) ? '' : number_format($pGenap, 2, ',', '.') . "%" }}</td>
-                <td>{{ $tahunAjaran }}</td>
+                <td>{{ $data->matkul->nama }}</td>
+                <td>{{ $data->tanggal }}</td>
+                @if ($data->hadir == 1)
+                <td>&#10003;</td>
+                @else
+                <td>&#8855;</td>
+                @endif
             </tr>
-            @endif
             @endforeach
         </tbody>
     </table>

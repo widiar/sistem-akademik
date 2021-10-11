@@ -80,6 +80,15 @@
                         </p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.rekap.absen.dosen') }}"
+                        class="nav-link{{request()->is('admin/rekap/absen-dosen') ? ' active' : '' }}">
+                        <i class="nav-icon far fa-folder-open"></i>
+                        <p>
+                            Rekap Absen Dosen
+                        </p>
+                    </a>
+                </li>
                 @elseif(Auth::user()->role_id == 2)
                 <li class="nav-item">
                     <a href="{{ route('admin.rekap.dosen') }}"

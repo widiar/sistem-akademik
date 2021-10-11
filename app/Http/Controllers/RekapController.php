@@ -6,8 +6,9 @@ use App\Exports\AbsenDosenExport;
 use App\Exports\AbsenStaffExport;
 use App\Exports\DosenExport;
 use App\Models\AbsenDosen;
+use App\Models\AbsenStaff;
 use App\Models\Dosen;
-use App\Models\RekapAbsenDosen;
+use App\Models\RekapAbsen;
 use App\Models\RekapDosen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -73,13 +74,16 @@ class RekapController extends Controller
     {
         $m = date('n');
         $bulan = array_slice(getBulan(), 0, $m);
-        $rekapan = RekapAbsenDosen::where('is_staff', false)->get();
+        $rekapan = RekapAbsen::where('is_staff', false)->get();
+        // $absen = AbsenDosen::whereMonth('tanggal', $m)->whereYear('tanggal', date('Y'))->orderBy('tanggal')->get();
+        // return view('admin.keuangan.pdfRekapAbsenDosen', compact('absen'));
+
         return view('admin.keuangan.rekapAbsenDosen', compact('bulan', 'rekapan'));
     }
 
     public function postAbsenDosen(Request $request)
     {
-        $cek = RekapAbsenDosen::where('tahun', date('Y'))->where('bulan', $request->bulan)->where('is_staff', false)->first();
+        $cek = RekapAbsen::where('tahun', date('Y'))->where('bulan', $request->bulan)->where('is_staff', false)->first();
         if ($cek) return response()->json('Ada');
 
         $filename = uniqid();
@@ -89,7 +93,7 @@ class RekapController extends Controller
         $month = $request->bulan;
         $year = date('Y');
 
-        RekapAbsenDosen::create([
+        RekapAbsen::create([
             'excel' => $excel,
             'pdf' => $fpdf,
             'tahun' => $year,
@@ -98,20 +102,19 @@ class RekapController extends Controller
         ]);
 
         //add excel
-        Excel::store(new AbsenDosenExport, 'rekap-absen-dosen/excel/' . $excel, 'public');
+        Excel::store(new AbsenDosenExport($month), 'rekap-absen-dosen/excel/' . $excel, 'public');
 
         //pdf
-        $absen = AbsenDosen::groupBy('dosen_id')->get();
-        $tahunAjaran = tahunAjaran();
-        $pdf = PDF::loadView('admin.keuangan.pdfRekapAbsenDosen', compact('absen', 'tahunAjaran'));
-        $pdf->setPaper('a4')->setOrientation('landscape')->save('storage/rekap-absen-dosen/pdf/' . $fpdf);
+        $absen = AbsenDosen::whereMonth('tanggal', $month)->whereYear('tanggal', date('Y'))->orderBy('tanggal')->get();
+        $pdf = PDF::loadView('admin.keuangan.pdfRekapAbsenDosen', compact('absen'));
+        $pdf->setPaper('a4')->save('storage/rekap-absen-dosen/pdf/' . $fpdf);
 
         return response()->json('Sukses');
     }
 
     public function deleteAbsenDosen($id)
     {
-        $rekap = RekapAbsenDosen::find($id);
+        $rekap = RekapAbsen::find($id);
         Storage::disk('public')->delete('rekap-absen-dosen/pdf/' . $rekap->pdf);
         Storage::disk('public')->delete('rekap-absen-dosen/excel/' . $rekap->excel);
         $rekap->delete();
@@ -120,16 +123,21 @@ class RekapController extends Controller
 
     public function absenStaff()
     {
-        if (Auth::user()->role_id != 4 && Auth::user()->role_id != 2) return redirect()->route('admin.dashboard');
         $m = date('n');
+        $y = date('Y');
         $bulan = array_slice(getBulan(), 0, $m);
-        $rekapan = RekapAbsenDosen::where('is_staff', true)->get();
+        // $absen = AbsenStaff::whereMonth('tanggal', $m)->whereYear('tanggal', $y)->get();
+        // return view('admin.hrd.pdfRekapAbsen', compact('absen', 'm'));
+        // dd($absen);
+
+        if (Auth::user()->role_id != 4 && Auth::user()->role_id != 2) return redirect()->route('admin.dashboard');
+        $rekapan = RekapAbsen::where('is_staff', true)->get();
         return view('admin.hrd.rekapAbsen', compact('bulan', 'rekapan'));
     }
 
     public function postAbsenStaff(Request $request)
     {
-        $cek = RekapAbsenDosen::where('tahun', date('Y'))->where('bulan', $request->bulan)->where('is_staff', true)->first();
+        $cek = RekapAbsen::where('tahun', date('Y'))->where('bulan', $request->bulan)->where('is_staff', true)->first();
         if ($cek) return response()->json('Ada');
 
         $filename = uniqid();
@@ -139,7 +147,7 @@ class RekapController extends Controller
         $month = $request->bulan;
         $year = date('Y');
 
-        RekapAbsenDosen::create([
+        RekapAbsen::create([
             'excel' => $excel,
             'pdf' => $fpdf,
             'tahun' => $year,
@@ -148,20 +156,19 @@ class RekapController extends Controller
         ]);
 
         //add excel
-        Excel::store(new AbsenStaffExport, 'rekap-absen-staff/excel/' . $excel, 'public');
+        Excel::store(new AbsenStaffExport($request->bulan), 'rekap-absen-staff/excel/' . $excel, 'public');
 
         //pdf
-        $absen = AbsenDosen::groupBy('dosen_id')->get();
-        $tahunAjaran = tahunAjaran();
-        $pdf = PDF::loadView('admin.hrd.pdfRekapAbsen', compact('absen', 'tahunAjaran'));
-        $pdf->setPaper('a4')->setOrientation('landscape')->save('storage/rekap-absen-staff/pdf/' . $fpdf);
+        $absen = AbsenStaff::whereMonth('tanggal', $request->bulan)->whereYear('tanggal', $year)->get();
+        $pdf = PDF::loadView('admin.hrd.pdfRekapAbsen', compact('absen', 'month'));
+        $pdf->setPaper('a4')->save('storage/rekap-absen-staff/pdf/' . $fpdf);
 
         return response()->json('Sukses');
     }
 
     public function deleteAbsenStaff($id)
     {
-        $rekap = RekapAbsenDosen::find($id);
+        $rekap = RekapAbsen::find($id);
         Storage::disk('public')->delete('rekap-absen-staff/pdf/' . $rekap->pdf);
         Storage::disk('public')->delete('rekap-absen-staff/excel/' . $rekap->excel);
         $rekap->delete();

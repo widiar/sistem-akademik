@@ -10,7 +10,7 @@ class DosenController extends Controller
 {
     public function index()
     {
-        $dosen = Dosen::all();
+        $dosen = Dosen::where('staf_akademik', true)->get();
         return view('admin.akademik.dosen',  compact('dosen'));
     }
 
