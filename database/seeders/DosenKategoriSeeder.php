@@ -15,11 +15,12 @@ class DosenKategoriSeeder extends Seeder
     public function run()
     {
         $data = [
-            ["kategori" => "Pengajar"],
-            ["kategori" => "Pembimbing KP / TA"],
-            ["kategori" => "Penguji KP / TA"],
+            ["kategori" => "Pembimbing TA"],
+            ["kategori" => "Pembimbing Skripsi"],
+            ["kategori" => "Penguji"],
             ["kategori" => "Koordinator"],
             ["kategori" => "Wali"],
+            ["kategori" => "Kerja Praktek"],
         ];
         KategoriDosen::insert($data);
     }
