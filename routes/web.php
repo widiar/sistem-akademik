@@ -82,11 +82,21 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('rekap-absen-dosen/{id}', [RekapController::class, 'deleteAbsenDosen'])->name('delete.rekap.absen.dosen');
             Route::middleware(['keuangan'])->group(function () {
 
-                Route::get('penggajian', [GajiController::class, 'index'])->name('penggajian');
-                Route::post('penggajian', [GajiController::class, 'store']);
-                Route::get('laporan-gaji', [GajiController::class, 'laporan'])->name('laporan-gaji');
-                Route::post('laporan-gaji', [GajiController::class, 'buatLaporan'])->name('postLaporanGaji');
-                Route::delete('laporan-gaji/{id}', [GajiController::class, 'deleteLaporan'])->name('deleteLaporanGaji');
+                Route::prefix('/master-gaji')->group(function () {
+                    Route::get('staff', [GajiController::class, 'staff'])->name('gaji.staff');
+                    Route::post('staff', [GajiController::class, 'storeStaff']);
+                    Route::get('dosen', [GajiController::class, 'dosen'])->name('gaji.dosen');
+                    Route::post('dosen', [GajiController::class, 'storeDosen']);
+                });
+
+                Route::prefix('/penggajian')->group(function () {
+                    Route::get('staff', [GajiController::class, 'indexStaff'])->name('penggajian.staff');
+                    Route::get('staff/{bulan}/{id}', [GajiController::class, 'gajiStaff'])->name('penggajian.staff.detail');
+                    Route::post('staff/{bulan}/{id}', [GajiController::class, 'gajiStaffStore']);
+                    Route::get('dosen', [GajiController::class, 'indexDosen'])->name('penggajian.dosen');
+                    Route::get('dosen/{bulan}/{id}', [GajiController::class, 'gajiDosen'])->name('penggajian.dosen.detail');
+                    // Route::post('dosen/{bulan}/{id}', [GajiController::class, 'gajiStaffStore']);
+                });
             });
 
             //hrd

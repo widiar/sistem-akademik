@@ -25,39 +25,50 @@ class GajiRequest extends FormRequest
     public function rules()
     {
         return [
-            'pokokDosen' => 'required|numeric',
-            'tunjanganDosen' => 'required|numeric',
-            'bonusDosen' => 'required|numeric',
-            'pokokStaff' => 'required|numeric',
-            'tunjanganStaff' => 'required|numeric',
-            'bonusStaff' => 'required|numeric',
-            'pokokMarketing' => 'required|numeric',
-            'tunjanganMarketing' => 'required|numeric',
-            'bonusMarketing' => 'required|numeric',
-        ];
-    }
-
-    public function attributes()
-    {
-        return [
-            'pokokDosen' => 'Gaji Pokok Dosen',
-            'pokokStaff' => 'Gaji Pokok Staff',
-            'pokokMarketing' => 'Gaji Pokok Marketing',
+            'gaji' => 'required|numeric',
+            'lembur' => 'required|numeric',
+            'makan' => 'required|numeric',
+            'jabatan' => 'required|numeric',
+            'keahlian' => 'required|numeric',
+            'pulsa' => 'required|numeric',
+            'tol' => 'required|numeric',
+            'kurangGaji' => 'required|numeric',
+            'reward' => 'required|numeric',
+            'thr' => 'required|numeric',
+            'bpjsKesehatan' => 'required|numeric',
+            'bpjsKerja' => 'required|numeric',
+            'izin' => 'required|numeric',
+            'telat' => 'required|numeric',
+            'alpha' => 'required|numeric',
+            'sanksi' => 'required|numeric',
+            'kasbon' => 'required|numeric',
+            'makanNonDinas' => 'required|numeric',
+            'potonganLain' => 'required|numeric',
         ];
     }
 
     public function prepareForValidation()
     {
         $this->merge([
-            'pokokDosen' => str_replace(',', '', $this->pokokDosen),
-            'tunjanganDosen' => str_replace(',', '', $this->tunjanganDosen),
-            'bonusDosen' => str_replace(',', '', $this->bonusDosen),
-            'pokokMarketing' => str_replace(',', '', $this->pokokMarketing),
-            'tunjanganMarketing' => str_replace(',', '', $this->tunjanganMarketing),
-            'bonusMarketing' => str_replace(',', '', $this->bonusMarketing),
-            'pokokStaff' => str_replace(',', '', $this->pokokStaff),
-            'tunjanganStaff' => str_replace(',', '', $this->tunjanganStaff),
-            'bonusStaff' => str_replace(',', '', $this->bonusStaff),
+            'gaji' => str_replace(',', '', $this->gaji),
+            'lembur' => str_replace(',', '', $this->lembur),
+            'makan' => str_replace(',', '', $this->makan),
+            'tol' => str_replace(',', '', $this->tol),
+            'kurangGaji' => str_replace(',', '', $this->kurangGaji),
+            'reward' => str_replace(',', '', $this->reward),
+            'jabatan' => str_replace(',', '', $this->jabatan),
+            'keahlian' => str_replace(',', '', $this->keahlian),
+            'pulsa' => str_replace(',', '', $this->pulsa),
+            'thr' => str_replace(',', '', $this->thr),
+            'bpjsKesehatan' => str_replace(',', '', $this->bpjsKesehatan),
+            'bpjsKerja' => str_replace(',', '', $this->bpjsKerja),
+            'izin' => str_replace(',', '', $this->izin),
+            'telat' => str_replace(',', '', $this->telat),
+            'alpha' => str_replace(',', '', $this->alpha),
+            'sanksi' => str_replace(',', '', $this->sanksi),
+            'kasbon' => str_replace(',', '', $this->kasbon),
+            'makanNonDinas' => str_replace(',', '', $this->makanNonDinas),
+            'potonganLain' => str_replace(',', '', $this->potonganLain),
         ]);
     }
 }
