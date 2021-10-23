@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMasterGajiDosensTable extends Migration
+class CreateDetailDosensTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class CreateMasterGajiDosensTable extends Migration
      */
     public function up()
     {
-        Schema::create('master_gaji_dosen', function (Blueprint $table) {
+        Schema::create('detail_dosen', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('pegawai_id');
+
             $table->bigInteger('mengajar')->nullable();
             $table->bigInteger('wali')->nullable();
             $table->bigInteger('transport')->nullable();
@@ -38,11 +40,10 @@ class CreateMasterGajiDosensTable extends Migration
             $table->bigInteger('soalRegular')->nullable();
             $table->bigInteger('soalKaryawan')->nullable();
             $table->bigInteger('soalInter')->nullable();
-            $table->bigInteger('dosenWali')->nullable();
             $table->bigInteger('pengawas')->nullable();
             $table->bigInteger('lemburPengawas')->nullable();
             $table->bigInteger('koor')->nullable();
-            $table->smallInteger('status')->nullable();
+
             $table->timestamps();
         });
     }
@@ -54,6 +55,6 @@ class CreateMasterGajiDosensTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('master_gaji_dosen');
+        Schema::dropIfExists('detail_dosen');
     }
 }

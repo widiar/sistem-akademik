@@ -6,6 +6,7 @@ use App\Models\AbsenDosen;
 use App\Models\AbsenStaff;
 use App\Models\Dosen;
 use App\Models\MataKuliah;
+use App\Models\Pegawai;
 use Illuminate\Http\Request;
 
 class AbsenController extends Controller
@@ -15,7 +16,7 @@ class AbsenController extends Controller
         $m = date('n');
         $now = date('d-m-Y');
         $bulan = array_slice(getBulan(), 0, $m);
-        $dosen = Dosen::where('staf_akademik', true)->get();
+        $dosen = Pegawai::where('is_dosen', true)->get();
         $matakuliah = MataKuliah::all();
 
         return view('admin.akademik.absenDosen', compact('dosen', 'bulan', 'matakuliah', 'now'));
@@ -76,7 +77,7 @@ class AbsenController extends Controller
             list($h, $m, $d) = $x;
             if ($absen->count()) {
                 $cek = AbsenDosen::where([
-                    ['dosen_id', $d],
+                    ['pegawai_id', $d],
                     ['matakuliah_id', $m],
                     ['tanggal', date('Y-m-d', strtotime($request->tanggal))]
                 ])->first();
@@ -84,7 +85,7 @@ class AbsenController extends Controller
                 $cek->save();
             } else {
                 AbsenDosen::create([
-                    'dosen_id' => $d,
+                    'pegawai_id' => $d,
                     'matakuliah_id' => $m,
                     'hadir' => $h,
                     'tanggal' => date('Y-m-d', strtotime($request->tanggal))
@@ -111,14 +112,14 @@ class AbsenController extends Controller
             foreach ($absen as $a) {
                 $dt[] = [
                     'no' => ++$no,
-                    'nama' => $a->dosen->nama,
-                    'id' => $a->dosen->id,
+                    'nama' => $a->pegawai->nama,
+                    'id' => $a->pegawai->id,
                     'f' => 1,
                     'absen' => $a->hadir
                 ];
             }
         } else {
-            $data = Dosen::all();
+            $data = Pegawai::where('is_staff', 1)->get();
             foreach ($data as $ds) {
                 $dt[] = [
                     'no' => ++$no,
@@ -141,14 +142,14 @@ class AbsenController extends Controller
         foreach (array_combine($request->id, $request->absen) as $id => $hadir) {
             if ($absen->count()) {
                 $cek = AbsenStaff::where([
-                    ['dosen_id', $id],
+                    ['pegawai_id', $id],
                     ['tanggal', date('Y-m-d', strtotime($request->tanggal))]
                 ])->first();
                 $cek->hadir = $hadir;
                 $cek->save();
             } else {
                 AbsenStaff::create([
-                    'dosen_id' => $id,
+                    'pegawai_id' => $id,
                     'hadir' => $hadir,
                     'tanggal' => date('Y-m-d', strtotime($request->tanggal))
                 ]);

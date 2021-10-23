@@ -3,17 +3,9 @@
 @section('title', 'Dosen')
 
 @section('main-content')
-<a href="{{ route('admin.dosen.create') }}">
+{{-- <a href="{{ route('admin.dosen.create') }}">
     <button class="btn btn-primary btn-sm mb-3 ml-3">Tambah Dosen</button>
-</a>
-{{-- <form action="" method="get" class="my-2 mx-3">
-    <div class="input-group input-group-sm mb-3 w-25">
-        <input type="text" class="form-control" name="search" value="{{ Request::get('search') }}">
-<div class="input-group-append">
-    <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
-</div>
-</div>
-</form> --}}
+</a> --}}
 @if(session('success'))
 <div class="alert alert-success alert-dismissible">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -50,22 +42,22 @@
                     <td>{{ $ban->nip }}</td>
                     <td>{{ $ban->nama }}</td>
                     <td>
-                        @foreach ($ban->kategori as $kat)
+                        @foreach ($ban->dosen as $kat)
                         {{ $kat->kategori . ", " }}
                         @endforeach
                     </td>
                     <td class="text-center">
-                        <div class="row" style="min-width: 100px">
-                            <a href="{{ route('admin.dosen.edit', [$ban->id]) }}" class="mx-3">
-                                <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
-                            </a>
+                        <a href="{{ route('admin.dosen.edit', [$ban->id]) }}" class="mx-3">
+                            <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
+                        </a>
+                        {{-- <div class="row" style="min-width: 100px">
                             <form action="{{ route('admin.dosen.destroy', $ban->id) }}" method="POST" class="deleted">
                                 @method("DELETE")
                                 @csrf
                                 <button class="btn btn-sm btn-danger" type="submit"><i
                                         class="fas fa-trash"></i></button>
                             </form>
-                        </div>
+                        </div> --}}
                     </td>
                 </tr>
                 @endforeach
@@ -75,7 +67,7 @@
     </div>
     {{-- <div class="ml-3">
         {{ $dosen->withQueryString()->links('vendor.pagination.admin-bs') }}
-</div> --}}
+    </div> --}}
 </div>
 
 @endsection

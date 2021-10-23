@@ -1,6 +1,6 @@
 @extends('admin.template.dashboard')
 
-@section('title', 'Rekap Absen Dosen')
+@section('title', 'Penggajian Staff')
 
 @section('main-content')
 <div class="mx-3 row">
@@ -59,7 +59,7 @@
 @section('script')
 <script>
     let bulan = `{{ date('n') }}`;
-    let url = `{{ route('admin.penggajian.staff.detail', ['bulan' => '#bulan', 'id' => '#id']) }}`
+    let url = `{{ route('admin.penggajian.staff.detail', ['bulan' => '#bulan', 'staff' => '#id']) }}`
     $('.bulan').select2({
         theme: "bootstrap"
     });

@@ -53,9 +53,9 @@ Route::middleware(['auth'])->group(function () {
             Route::middleware(['akademik'])->group(function () {
 
                 Route::get('dosen', [DosenController::class, 'index'])->name('dosen');
-                Route::get('dosen/create', [DosenController::class, 'create'])->name('dosen.create');
-                Route::post('dosen/create', [DosenController::class, 'store'])->name('dosen.store');
-                Route::get('dosen/{dosen}/edit', [DosenController::class, 'edit'])->name('dosen.edit');
+                // Route::get('dosen/create', [DosenController::class, 'create'])->name('dosen.create');
+                // Route::post('dosen/create', [DosenController::class, 'store'])->name('dosen.store');
+                Route::get('dosen/{pegawai}/edit', [DosenController::class, 'edit'])->name('dosen.edit');
                 Route::patch('dosen/{dosen}', [DosenController::class, 'update'])->name('dosen.update');
                 Route::delete('dosen/{dosen}', [DosenController::class, 'destroy'])->name('dosen.destroy');
                 // Route::get('dosen/{tipe}', [DosenController::class, 'list'])->name('dosen.list');
@@ -82,20 +82,20 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('rekap-absen-dosen/{id}', [RekapController::class, 'deleteAbsenDosen'])->name('delete.rekap.absen.dosen');
             Route::middleware(['keuangan'])->group(function () {
 
-                Route::prefix('/master-gaji')->group(function () {
-                    Route::get('staff', [GajiController::class, 'staff'])->name('gaji.staff');
-                    Route::post('staff', [GajiController::class, 'storeStaff']);
-                    Route::get('dosen', [GajiController::class, 'dosen'])->name('gaji.dosen');
-                    Route::post('dosen', [GajiController::class, 'storeDosen']);
-                });
+                // Route::prefix('/master-gaji')->group(function () {
+                //     Route::get('staff', [GajiController::class, 'staff'])->name('gaji.staff');
+                //     Route::post('staff', [GajiController::class, 'storeStaff']);
+                //     Route::get('dosen', [GajiController::class, 'dosen'])->name('gaji.dosen');
+                //     Route::post('dosen', [GajiController::class, 'storeDosen']);
+                // });
 
                 Route::prefix('/penggajian')->group(function () {
                     Route::get('staff', [GajiController::class, 'indexStaff'])->name('penggajian.staff');
-                    Route::get('staff/{bulan}/{id}', [GajiController::class, 'gajiStaff'])->name('penggajian.staff.detail');
-                    Route::post('staff/{bulan}/{id}', [GajiController::class, 'gajiStaffStore']);
+                    Route::get('staff/{bulan}/{staff}', [GajiController::class, 'gajiStaff'])->name('penggajian.staff.detail');
+                    Route::post('staff/{bulan}/{staff}', [GajiController::class, 'gajiStaffStore']);
                     Route::get('dosen', [GajiController::class, 'indexDosen'])->name('penggajian.dosen');
-                    Route::get('dosen/{bulan}/{id}', [GajiController::class, 'gajiDosen'])->name('penggajian.dosen.detail');
-                    // Route::post('dosen/{bulan}/{id}', [GajiController::class, 'gajiStaffStore']);
+                    Route::get('dosen/{bulan}/{dosen}', [GajiController::class, 'gajiDosen'])->name('penggajian.dosen.detail');
+                    Route::post('dosen/{bulan}/{dosen}', [GajiController::class, 'gajiDosenStore']);
                 });
             });
 

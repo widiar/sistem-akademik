@@ -14,6 +14,6 @@ class MataKuliah extends Model
 
     public function dosen()
     {
-        return $this->belongsToMany(Dosen::class, 'dosen_matakuliah', 'matakuliah_id', 'dosen_id');
+        return $this->belongsToMany(Pegawai::class, 'dosen_matakuliah', 'matakuliah_id', 'pegawai_id');
     }
 }

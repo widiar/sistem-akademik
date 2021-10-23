@@ -15,8 +15,8 @@ class CreateAbsenDosensTable extends Migration
     {
         Schema::create('absen_dosen', function (Blueprint $table) {
             $table->id();
-            $table->integer('dosen_id');
-            $table->integer('matakuliah_id');
+            $table->unsignedBigInteger('pegawai_id');
+            $table->unsignedBigInteger('matakuliah_id');
             $table->boolean('hadir');
             $table->date('tanggal');
             $table->timestamps();

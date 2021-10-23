@@ -13,14 +13,13 @@ class CreateDosensTable extends Migration
      */
     public function up()
     {
-        Schema::create('dosen', function (Blueprint $table) {
+        Schema::create('pegawai', function (Blueprint $table) {
             $table->id();
             $table->string("nip")->unique();
             $table->string("nama");
-            $table->boolean('staf_akademik')->nullable();
-            $table->boolean('staf_keuangan')->nullable();
-            $table->boolean('staf_pemasaran')->nullable();
-            $table->boolean('staf_hrd')->nullable();
+            $table->string("email")->unique();
+            $table->boolean('is_dosen')->nullable();
+            $table->boolean('is_staff')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +31,6 @@ class CreateDosensTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dosen');
+        Schema::dropIfExists('pegawai');
     }
 }

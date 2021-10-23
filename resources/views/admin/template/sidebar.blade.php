@@ -125,32 +125,6 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item{{request()->is('admin/master-gaji/*') ? ' menu-open' : '' }}">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-money-bill"></i>
-                        <p>
-                            Master Gaji
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview"
-                        style="display: {{request()->is('admin/master-gaji/*') ? 'block' : 'none' }};">
-                        <li class="nav-item">
-                            <a href="{{ route('admin.gaji.dosen') }}"
-                                class="nav-link{{request()->is('admin/master-gaji/dosen') ? ' active' : '' }}">
-                                <i class="fas fa-folder-open nav-icon"></i>
-                                <p>Dosen</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('admin.gaji.staff') }}"
-                                class="nav-link{{request()->is('admin/master-gaji/staff') ? ' active' : '' }}">
-                                <i class="fas fa-folder-open nav-icon"></i>
-                                <p>Staff</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
                 <li class="nav-item{{request()->is('admin/penggajian/*') ? ' menu-open' : '' }}">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-money-bill"></i>
@@ -163,7 +137,7 @@
                         style="display: {{request()->is('admin/penggajian/*') ? 'block' : 'none' }};">
                         <li class="nav-item">
                             <a href="{{ route('admin.penggajian.dosen') }}"
-                                class="nav-link{{request()->is('admin/penggajian/dosen') ? ' active' : '' }}">
+                                class="nav-link{{request()->is('admin/penggajian/dosen*') ? ' active' : '' }}">
                                 <i class="fas fa-folder-open nav-icon"></i>
                                 <p>Dosen</p>
                             </a>
@@ -191,7 +165,7 @@
                         class="nav-link{{request()->is('admin/staff*') ? ' active' : '' }}">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
-                            Data Staff
+                            Data Pegawai
                         </p>
                     </a>
                 </li>

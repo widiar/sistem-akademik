@@ -13,6 +13,7 @@
             margin-bottom: 1rem;
             color: #212529;
             border-collapse: collapse;
+            margin: 0 auto;
         }
 
         .table td,
@@ -37,56 +38,71 @@
     <table class="table">
         <thead class="text-center">
             <tr>
-                <th rowspan="2" style="vertical-align: middle">NIP</th>
-                <th rowspan="2" style="vertical-align: middle">Nama</th>
-                <th rowspan="2" style="vertical-align: middle">Kategori</th>
-                <th colspan="2">Jumlah Pembimbing KP</th>
-                <th colspan="2">Jumlah Pembimbing TA</th>
-                <th colspan="2">Jumlah Penguji</th>
-                <th colspan="2">Jumlah Koordinator</th>
-                <th colspan="2">Jumlah Wali</th>
-                <th rowspan="2" style="vertical-align: middle">Tahun Ajaran</th>
+                <th rowspan="3" style="vertical-align: middle">NIP</th>
+                <th rowspan="3" style="vertical-align: middle">Nama</th>
+                <th rowspan="3" style="vertical-align: middle">Kategori</th>
+                <th colspan="4">Pembimbing TA</th>
+                <th colspan="4">Pembimbing Skripsi</th>
+                <th colspan="2">Koordinator</th>
+                <th colspan="2">Wali</th>
+                <th colspan="2">Kerja Praktek</th>
+                <th rowspan="3" style="vertical-align: middle">Tahun Ajaran</th>
             </tr>
             <tr>
-                <th>Ganjil</th>
-                <th>Genap</th>
-                <th>Ganjil</th>
-                <th>Genap</th>
-                <th>Ganjil</th>
-                <th>Genap</th>
-                <th>Ganjil</th>
-                <th>Genap</th>
-                <th>Ganjil</th>
-                <th>Genap</th>
+                <th colspan="2">Ganjil</th>
+                <th colspan="2">Genap</th>
+                <th colspan="2">Ganjil</th>
+                <th colspan="2">Genap</th>
+                <th rowspan="2">Ganjil</th>
+                <th rowspan="2">Genap</th>
+                <th rowspan="2">Ganjil</th>
+                <th rowspan="2">Genap</th>
+                <th rowspan="2">Ganjil</th>
+                <th rowspan="2">Genap</th>
+            </tr>
+            <tr>
+                <th>TA 1</th>
+                <th>TA 2</th>
+                <th>TA 1</th>
+                <th>TA 2</th>
+                <th>Skripsi 1</th>
+                <th>Skripsi 2</th>
+                <th>Skripsi 1</th>
+                <th>Skripsi 2</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($dosen as $d)
+            @foreach ($dosen as $pegawai)
             @php
-            $sks = $d->kategori()->where('kategori_id', 1)->wherePivot('tahun_ajaran', tahunAjaran())->first();
-            $pembimbing = $d->kategori()->where('kategori_id', 2)->wherePivot('tahun_ajaran', tahunAjaran())->first();
-            $penguji = $d->kategori()->where('kategori_id', 3)->wherePivot('tahun_ajaran', tahunAjaran())->first();
-            $koordinator = $d->kategori()->where('kategori_id', 4)->wherePivot('tahun_ajaran', tahunAjaran())->first();
-            $wali = $d->kategori()->where('kategori_id', 5)->wherePivot('tahun_ajaran', tahunAjaran())->first();
+            $ta = $pegawai->dosen()->where('kategori_id', 1)->wherePivot('tahun_ajaran', tahunAjaran())->first();
+            $skripsi = $pegawai->dosen()->where('kategori_id', 2)->wherePivot('tahun_ajaran', tahunAjaran())->first();
+            $penguji = $pegawai->dosen()->where('kategori_id', 3)->wherePivot('tahun_ajaran', tahunAjaran())->first();
+            $koor = $pegawai->dosen()->where('kategori_id', 4)->wherePivot('tahun_ajaran', tahunAjaran())->first();
+            $wali = $pegawai->dosen()->where('kategori_id', 5)->wherePivot('tahun_ajaran', tahunAjaran())->first();
+            $kp = $pegawai->dosen()->where('kategori_id', 6)->wherePivot('tahun_ajaran', tahunAjaran())->first();
             @endphp
             <tr>
-                <td>{{ $d->nip }}</td>
-                <td>{{ $d->nama }}</td>
+                <td>{{ $pegawai->nip }}</td>
+                <td>{{ $pegawai->nama }}</td>
                 <td>
-                    @foreach ($d->kategori as $k)
+                    @foreach ($pegawai->dosen as $k)
                     {{ $k->kategori }} ,
                     @endforeach
                 </td>
-                <td>{{ ($sks) ? $sks->pivot->semester_ganjil : '-' }}</td>
-                <td>{{ ($sks) ? $sks->pivot->semester_genap : '-' }}</td>
-                <td>{{ ($pembimbing) ? $pembimbing->pivot->semester_ganjil : '-' }}</td>
-                <td>{{ ($pembimbing) ? $pembimbing->pivot->semester_genap : '-' }}</td>
-                <td>{{ ($penguji) ? $penguji->pivot->semester_ganjil : '-' }}</td>
-                <td>{{ ($penguji) ? $penguji->pivot->semester_genap : '-' }}</td>
-                <td>{{ ($koordinator) ? $koordinator->pivot->semester_ganjil : '-' }}</td>
-                <td>{{ ($koordinator) ? $koordinator->pivot->semester_genap : '-' }}</td>
-                <td>{{ ($wali) ? $wali->pivot->semester_ganjil : '-' }}</td>
-                <td>{{ ($wali) ? $wali->pivot->semester_genap : '-' }}</td>
+                <td>{{ (@$ta) ? json_decode($ta->pivot->semester_ganjil)->ta1 : '-' }}</td>
+                <td>{{ (@$ta) ? json_decode($ta->pivot->semester_ganjil)->ta2 : '-' }}</td>
+                <td>{{ (@$ta) ? json_decode($ta->pivot->semester_genap)->ta1 : '-' }}</td>
+                <td>{{ (@$ta) ? json_decode($ta->pivot->semester_genap)->ta2 : '-' }}</td>
+                <td>{{ (@$skripsi) ? json_decode($skripsi->pivot->semester_ganjil)->skripsi1 : '-' }}</td>
+                <td>{{ (@$skripsi) ? json_decode($skripsi->pivot->semester_ganjil)->skripsi2 : '-' }}</td>
+                <td>{{ (@$skripsi) ? json_decode($skripsi->pivot->semester_genap)->skripsi1 : '-' }}</td>
+                <td>{{ (@$skripsi) ? json_decode($skripsi->pivot->semester_genap)->skripsi2 : '-' }}</td>
+                <td>{{ (@$koor) ? json_decode($koor->pivot->semester_ganjil)->ganjil : '-' }}</td>
+                <td>{{ (@$koor) ? json_decode($koor->pivot->semester_genap)->genap : '-' }}</td>
+                <td>{{ (@$wali) ? json_decode($wali->pivot->semester_ganjil)->ganjil : '-' }}</td>
+                <td>{{ (@$wali) ? json_decode($wali->pivot->semester_genap)->genap : '-' }}</td>
+                <td>{{ (@$kp) ? json_decode($kp->pivot->semester_ganjil)->ganjil : '-' }}</td>
+                <td>{{ (@$kp) ? json_decode($kp->pivot->semester_genap)->genap : '-' }}</td>
                 <td>{{ $tahunAjaran }}</td>
             </tr>
             @endforeach

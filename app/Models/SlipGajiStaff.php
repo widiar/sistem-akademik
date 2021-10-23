@@ -5,15 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AbsenStaff extends Model
+class SlipGajiStaff extends Model
 {
     use HasFactory;
 
-    protected $table = 'absen_staff';
+    protected $table = 'slip_gaji_staff';
+
     protected $guarded = ['id'];
 
     public function pegawai()
     {
-        return $this->belongsTo(Pegawai::class, 'pegawai_id', 'id');
+        return $this->belongsTo(Pegawai::class);
     }
 }

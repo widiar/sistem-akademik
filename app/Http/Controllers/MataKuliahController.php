@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\MataKuliahRequest;
 use App\Models\Dosen;
 use App\Models\MataKuliah;
+use App\Models\Pegawai;
 use Illuminate\Http\Request;
 
 class MataKuliahController extends Controller
@@ -39,7 +40,7 @@ class MataKuliahController extends Controller
     public function edit(MataKuliah $matakuliah)
     {
         // dd($matakuliah->dosen);
-        $dosen = Dosen::all();
+        $dosen = Pegawai::where('is_dosen', 1)->get();
         return view('admin.akademik.matakuliah.edit', compact('matakuliah', 'dosen'));
     }
 

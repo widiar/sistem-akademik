@@ -4,6 +4,7 @@ namespace App\Exports;
 
 use App\Models\AbsenDosen;
 use App\Models\AbsenStaff;
+use App\Models\Pegawai;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -21,19 +22,18 @@ class AbsenStaffExport implements FromCollection, WithMapping, WithHeadings
 
     public function collection()
     {
-        return AbsenStaff::whereMonth('tanggal', $this->bulan)->whereYear('tanggal', date('Y'))->get();
+        $bulan = $this->bulan;
+        return Pegawai::with(['absenStaff' => function ($q) use ($bulan) {
+            $q->whereMonth('tanggal', $bulan)->whereYear('tanggal', date('Y'))->where('hadir', 1);
+        }])->where('is_staff', 1)->get();
     }
 
-    public function map($absen): array
+    public function map($data): array
     {
-        $hadir = '';
-        if ($absen->hadir == 1) $hadir = 'Hadir';
-        else $hadir = 'Tidak Hadir';
         return [
-            $absen->dosen->nama,
-            $absen->dosen->nip,
-            $absen->tanggal,
-            $hadir
+            $data->nip,
+            $data->nama,
+            $data->absenStaff->count(),
         ];
     }
 
@@ -43,8 +43,7 @@ class AbsenStaffExport implements FromCollection, WithMapping, WithHeadings
             [
                 'NIP',
                 'NAMA',
-                'Tanggal',
-                'Hadir',
+                'Total Kehadiran',
             ],
         ];
     }

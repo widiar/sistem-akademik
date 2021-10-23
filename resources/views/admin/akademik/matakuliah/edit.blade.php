@@ -68,7 +68,7 @@
                 @endforeach
             </div>
 
-            <button type="button" class="btn btn-primary addButton mb-4">Tambah Dosen</button>
+            {{-- <button type="button" class="btn btn-primary addButton mb-4">Tambah Dosen</button> --}}
             <button type="submit" class="btn btn-block btn-primary">Edit</button>
         </form>
     </div>
@@ -104,7 +104,7 @@
             }
         });
     }
-    initDosen()
+    // initDosen()
     const addDosen = () => {
         let komponenDosen = `<div class="dosen">
                                 <div class="form-group mb-3">

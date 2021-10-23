@@ -6,10 +6,10 @@
 {{-- <form action="" method="get" class="my-2 mx-3">
     <div class="input-group input-group-sm mb-3 w-25">
         <input type="text" class="form-control" name="search" value="{{ Request::get('search') }}">
-<div class="input-group-append">
-    <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
-</div>
-</div>
+        <div class="input-group-append">
+            <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+        </div>
+    </div>
 </form> --}}
 @if(session('success'))
 <div class="alert alert-success alert-dismissible">
@@ -69,7 +69,7 @@
     $(".datepicker").datepicker({
         format: 'dd-mm-yyyy',
         todayBtn: "linked",
-        daysOfWeekDisabled: "0,6",
+        // daysOfWeekDisabled: "0,6",
         autoclose: true,
         endDate: "+0d",
         todayHighlight: true
@@ -131,7 +131,6 @@
         
         if (kehadiran.length === totalDosen){
             let tgl = $("#tgl").val()
-            toastr.success("Mantap")
             $.ajax({
                 url: urlPost,
                 method: 'POST',

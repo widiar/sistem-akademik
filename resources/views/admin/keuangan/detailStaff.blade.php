@@ -135,6 +135,7 @@
                     </div>
                 </div>
             </div>
+            <h3>Jumlah Gaji Kotor : Rp <span id="gaji-kotor">0</span></h3>
             <hr>
             <h3>Potongan</h3>
             <hr>
@@ -239,6 +240,12 @@
                     </div>
                 </div>
             </div>
+            <h3>Jumlah Potongan : Rp <span id="potongan">0</span></h3>
+            <hr>
+            <h3>Jumlah Gaji Bersih : Rp <span id="gaji-bersih">0</span></h3>
+            <input type="hidden" name="gajiBersih">
+            <input type="hidden" name="gajiKotor">
+            <input type="hidden" name="potongan">
             <div class="float-right">
                 <button class="btn btn-primary" type="submit">Save</button>
             </div>
@@ -250,6 +257,46 @@
 
 @section('script')
 <script>
-    $('.form-control').simpleMoneyFormat();
+    $(document).ready(function(){
+        let gaji = parseInt($("input[name='gaji']").val())
+        let lembur = parseInt($("input[name='lembur']").val())
+        let absen = parseInt($("input[name='absen']").val())
+        let makan = parseInt($("input[name='makan']").val())
+        let uangMakan = absen * makan
+        let jabatan = parseInt($("input[name='jabatan']").val())
+        let keahlian = parseInt($("input[name='keahlian']").val())
+        let pulsa = parseInt($("input[name='pulsa']").val())
+        let tol = parseInt($("input[name='tol']").val())
+        let kurangGaji = parseInt($("input[name='kurangGaji']").val())
+        let reward = parseInt($("input[name='reward']").val())
+        let thr = parseInt($("input[name='thr']").val())
+        let gajiKotor  = gaji + lembur + uangMakan + jabatan + keahlian + pulsa + tol + kurangGaji + reward + thr
+        $("#gaji-kotor").text(gajiKotor)
+        $("#gaji-kotor").simpleMoneyFormat()
+        
+        let bpjsKesehatan = parseInt($("input[name='bpjsKesehatan']").val())
+        let bpjsKerja = parseInt($("input[name='bpjsKerja']").val())
+        let izin = parseInt($("input[name='izin']").val())
+        let telat = parseInt($("input[name='telat']").val())
+        let alpha = parseInt($("input[name='alpha']").val())
+        let sanksi = parseInt($("input[name='sanksi']").val())
+        let kasbon = parseInt($("input[name='kasbon']").val())
+        let makanNonDinas = parseInt($("input[name='makanNonDinas']").val())
+        let potonganLain = parseInt($("input[name='potonganLain']").val())
+        let potongan = bpjsKerja + bpjsKesehatan + izin + telat + alpha + sanksi + kasbon + makanNonDinas + potonganLain
+        $("#potongan").text(potongan)
+        $("#potongan").simpleMoneyFormat()
+
+        let gajiBersih = gajiKotor - potongan
+        $("#gaji-bersih").text(gajiBersih)
+        $("#gaji-bersih").simpleMoneyFormat()
+
+        $(".form-gaji").submit(function(e){
+            $("input[name='gajiBersih']").val(gajiBersih)
+            $("input[name='gajiKotor']").val(gajiKotor)
+            $("input[name='potongan']").val(potongan)
+            return true;
+        })
+    })
 </script>
 @endsection

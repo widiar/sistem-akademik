@@ -54,7 +54,7 @@
     $(".datepicker").datepicker({
         format: 'dd-mm-yyyy',
         todayBtn: "linked",
-        daysOfWeekDisabled: "0,6",
+        // daysOfWeekDisabled: "0,6",
         autoclose: true,
         endDate: "+0d",
         todayHighlight: true

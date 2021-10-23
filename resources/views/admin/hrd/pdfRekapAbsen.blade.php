@@ -34,27 +34,21 @@
 </head>
 
 <body>
-    <h3 class="text-center">Hasil Rekap Absensi Staff</h3>
+    <h2 class="text-center">Hasil Rekap Absensi Staff Bulan {{ date('F', mktime(0, 0, 0, $month, 10)) }} </h2>
     <table class="table">
         <thead class="text-center">
             <tr>
                 <th style="vertical-align: middle">NIP</th>
                 <th style="vertical-align: middle">Nama</th>
-                <th>Tanggal</th>
-                <th>Hadir</th>
+                <th>Total Kehadiran</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($absen as $data)
             <tr>
-                <td>{{ $data->dosen->nip }}</td>
-                <td>{{ $data->dosen->nama }}</td>
-                <td>{{ $data->tanggal }}</td>
-                @if ($data->hadir == 1)
-                <td>&#10003;</td>
-                @else
-                <td>&#8855;</td>
-                @endif
+                <td>{{ $data->nip }}</td>
+                <td>{{ $data->nama }}</td>
+                <td class="text-center">{{ $data->absenStaff->count() }}</td>
             </tr>
             @endforeach
         </tbody>

@@ -19,6 +19,6 @@ class AbsenDosen extends Model
 
     public function dosen()
     {
-        return $this->belongsTo(Dosen::class, 'dosen_id', 'id');
+        return $this->belongsTo(Pegawai::class, 'pegawai_id', 'id');
     }
 }

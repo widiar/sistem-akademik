@@ -35,7 +35,7 @@
                 <label for="hari">Hari</label>
                 <select name="hari" class="form-control  @error('hari') is-invalid @enderror" required>
                     @foreach ($hari as $dt)
-                    <option value="{{ $dt }}" {{(old('hari') == $dt) ? 'selected' : ''}}>{{ $dt }}</option>
+                    <option value="{{ $dt }}" {{(old('hari')==$dt) ? 'selected' : '' }}>{{ $dt }}</option>
                     @endforeach
                 </select>
                 {{-- <input type="text" required name="hari" class="form-control  @error('hari') is-invalid @enderror"
@@ -63,7 +63,7 @@
                 </div>
             </div>
 
-            <button type="button" class="btn btn-primary addButton mb-4">Tambah Dosen</button>
+            {{-- <button type="button" class="btn btn-primary addButton mb-4">Tambah Dosen</button> --}}
             <button type="submit" class="btn btn-block btn-primary">Tambah</button>
         </form>
     </div>

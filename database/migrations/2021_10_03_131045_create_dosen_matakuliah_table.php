@@ -15,8 +15,8 @@ class CreateDosenMatakuliahTable extends Migration
     {
         Schema::create('dosen_matakuliah', function (Blueprint $table) {
             $table->id();
-            $table->integer('dosen_id');
-            $table->integer('matakuliah_id');
+            $table->unsignedBigInteger('pegawai_id');
+            $table->unsignedBigInteger('matakuliah_id');
             $table->timestamps();
         });
     }

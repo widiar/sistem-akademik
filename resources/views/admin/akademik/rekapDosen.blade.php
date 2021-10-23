@@ -41,10 +41,10 @@
                 <tr>
                     <td>{{ ++$no }}</td>
                     <td class="text-center">
-                        <a href="{{ Storage::url('rekap-dosen/excel/' . $ban->excel) }}" class="mx-2">
+                        {{-- <a href="{{ Storage::url('rekap-dosen/excel/' . $ban->excel) }}" class="mx-2">
                             <button class="btn btn-sm btn-success"><i class="fas fa-file-excel"></i></button>
-                        </a>
-                        <a href="{{ Storage::url('rekap-dosen/pdf/' . $ban->pdf) }}" class="mx-2">
+                        </a> --}}
+                        <a href="{{ Storage::url('rekap-dosen/pdf/' . $ban->pdf) }}" target="_blank" class="mx-2">
                             <button class="btn btn-sm btn-danger"><i class="fas fa-file-pdf"></i></button>
                         </a>
                     </td>
@@ -93,7 +93,7 @@
                     <label for="bulan">Bulan</label>
                     <select name="bulan" class="bulan w-100 form-control" style="width: 100%;">
                         @foreach ($bulan as $k)
-                        <option value="{{ $k->id }}" {{ (date('n') == $k->id) ? 'selected' : '' }}>
+                        <option value="{{ $k->id }}" {{ (date('n')==$k->id) ? 'selected' : '' }}>
                             {{ $k->name }}
                         </option>
                         @endforeach

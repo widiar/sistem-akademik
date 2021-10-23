@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDosenKategoridosenTable extends Migration
+class CreateStaffTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class CreateDosenKategoridosenTable extends Migration
      */
     public function up()
     {
-        Schema::create('dosen', function (Blueprint $table) {
+        Schema::create('staff', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('pegawai_id');
-            $table->unsignedBigInteger('kategori_id');
-            $table->text('semester_ganjil')->nullable();
-            $table->text('semester_genap')->nullable();
-            $table->string('tahun_ajaran');
+            $table->string('jabatan');
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ class CreateDosenKategoridosenTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dosen');
+        Schema::dropIfExists('staff');
     }
 }

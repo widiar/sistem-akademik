@@ -1,10 +1,10 @@
 @extends('admin.template.dashboard')
 
-@section('title', 'Staff')
+@section('title', 'Pegawai')
 
 @section('main-content')
 <a href="{{ route('admin.staff.create') }}">
-    <button class="btn btn-primary btn-sm mb-3 ml-3">Tambah Staff</button>
+    <button class="btn btn-primary btn-sm mb-3 ml-3">Tambah Pegawai</button>
 </a>
 @if(session('success'))
 <div class="alert alert-success alert-dismissible">
@@ -27,6 +27,7 @@
                     <th>NO</th>
                     <th>NIP</th>
                     <th>Nama</th>
+                    <th>Email</th>
                     <th>Jabatan</th>
                     <th class="text-center">Aksi</th>
                 </tr>
@@ -37,19 +38,17 @@
                 @endphp
                 @if (!is_null($dosen))
                 @foreach ($dosen as $ban)
+                @php
+                $jabatan = '';
+                if($ban->is_dosen) $jabatan .= 'Dosen, ';
+                if($ban->is_staff) $jabatan .= 'Staff, ';
+                @endphp
                 <tr>
                     <td>{{ ++$no }}</td>
                     <td>{{ $ban->nip }}</td>
                     <td>{{ $ban->nama }}</td>
-                    <td>
-                        @php
-                        $jabatan = '';
-                        if ($ban->staf_hrd) $jabatan .= 'HRD, ';
-                        if ($ban->staf_keuangan) $jabatan .= 'Keuangan, ';
-                        if ($ban->staf_pemasaran) $jabatan .= 'Pemasaran, ';
-                        @endphp
-                        {{ $jabatan }}
-                    </td>
+                    <td>{{ $ban->email }}</td>
+                    <td>{{ $jabatan }}</td>
                     <td class="text-center">
                         <div class="row" style="min-width: 100px">
                             <a href="{{ route('admin.staff.edit', [$ban->id]) }}" class="mx-3">
