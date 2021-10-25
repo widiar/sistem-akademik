@@ -6,6 +6,7 @@ use App\Models\Banner;
 use App\Models\News;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
 
 class SiteController extends Controller
 {
@@ -26,5 +27,13 @@ class SiteController extends Controller
     {
         $news = News::orderBy('updated_at', 'desc')->paginate(10);
         return view('listNews', compact('news'));
+    }
+
+    public function dev()
+    {
+        $pdf = PDF::loadView('pdf');
+        $pdf->setOption('header-html', view('header'));
+        return $pdf->stream();
+        return view('pdf');
     }
 }

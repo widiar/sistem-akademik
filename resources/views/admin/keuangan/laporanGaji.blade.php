@@ -23,7 +23,8 @@
             <thead>
                 <tr>
                     <th>NO</th>
-                    <th>File</th>
+                    <th>Slip Dosen</th>
+                    <th>Slip Staf</th>
                     <th>Bulan</th>
                     <th>Tanggal Pembuatan</th>
                     <th class="text-center">Aksi</th>
@@ -38,18 +39,26 @@
                 <tr>
                     <td>{{ ++$no }}</td>
                     <td class="text-center">
-                        <a href="{{ Storage::url('laporan-gaji/' . $ban->file) }}" class="mx-2">
+                        <a href="{{ Storage::url('laporan-gaji/dosen/' . $ban->dosen) }}" class="mx-2">
                             <button class="btn btn-sm btn-danger"><i class="fas fa-file-pdf"></i></button>
                         </a>
+                        <a href="{{ Storage::url('laporan-gaji/dosen/' . $ban->dosen) }}" class="mx-3 printt">
+                            <button class="btn btn-sm btn-warning"><i class="fas fa-print"></i></button>
+                        </a>
                     </td>
-                    <td>{{ date('F', mktime(0, 0, 0, $ban->bulan, 10)) }}</td>
+                    <td class="text-center">
+                        <a href="{{ Storage::url('laporan-gaji/staff/' . $ban->staff) }}" class="mx-2">
+                            <button class="btn btn-sm btn-danger"><i class="fas fa-file-pdf"></i></button>
+                        </a>
+                        <a href="{{ Storage::url('laporan-gaji/staff/' . $ban->staff) }}" class="mx-3 printt">
+                            <button class="btn btn-sm btn-warning"><i class="fas fa-print"></i></button>
+                        </a>
+                    </td>
+                    <td>{{ date('F', mktime(0, 0, 0, $ban->bulan, 10)) . ", " . $ban->tahun }}</td>
                     <td>{{ date('d/m/y h:i A', strtotime($ban->updated_at)) }}</td>
                     <td class="text-center">
                         <div class="row" style="min-width: 100px">
-                            <a href="{{ Storage::url('laporan-gaji/' . $ban->file) }}" class="mx-3 printt">
-                                <button class="btn btn-sm btn-warning"><i class="fas fa-print"></i></button>
-                            </a>
-                            <form action="{{ route('admin.deleteLaporanGaji', $ban->id) }}" method="POST"
+                            <form action="{{ route('admin.laporan.gaji.delete', $ban->id) }}" method="POST"
                                 class="deleted">
                                 @method("DELETE")
                                 @csrf
@@ -81,13 +90,13 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('admin.postLaporanGaji') }}" method="POST" class="rekap">
+            <form action="{{ route('admin.laporan.gaji.create') }}" method="POST" class="rekap">
                 @csrf
                 <div class="modal-body form-group">
                     <label for="bulan">Bulan</label>
                     <select name="bulan" class="bulan w-100 form-control" style="width: 100%;">
                         @foreach ($bulan as $k)
-                        <option value="{{ $k->id }}" {{ (date('n') == $k->id) ? 'selected' : '' }}>
+                        <option value="{{ $k->id }}" {{ (date('n')==$k->id) ? 'selected' : '' }}>
                             {{ $k->name }}
                         </option>
                         @endforeach

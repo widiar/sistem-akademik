@@ -46,6 +46,11 @@ class Pegawai extends Model
         return $this->hasOne(DetailStaff::class, 'pegawai_id', 'id');
     }
 
+    public function slipStaff()
+    {
+        return $this->hasMany(SlipGajiStaff::class);
+    }
+
     public function slipDosen()
     {
         return $this->hasMany(SlipGajiDosen::class);

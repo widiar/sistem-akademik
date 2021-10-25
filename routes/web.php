@@ -25,6 +25,8 @@ use UniSharp\LaravelFilemanager\Lfm;
 |
 */
 
+Route::get('dev', [SiteController::class, 'dev']);
+
 Route::get('/', [SiteController::class, 'index'])->name("home");
 Route::get('news/{slug}', [SiteController::class, 'news'])->name('news');
 Route::get('news', [SiteController::class, 'allNews'])->name('news.all');
@@ -82,21 +84,22 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('rekap-absen-dosen/{id}', [RekapController::class, 'deleteAbsenDosen'])->name('delete.rekap.absen.dosen');
             Route::middleware(['keuangan'])->group(function () {
 
-                // Route::prefix('/master-gaji')->group(function () {
-                //     Route::get('staff', [GajiController::class, 'staff'])->name('gaji.staff');
-                //     Route::post('staff', [GajiController::class, 'storeStaff']);
-                //     Route::get('dosen', [GajiController::class, 'dosen'])->name('gaji.dosen');
-                //     Route::post('dosen', [GajiController::class, 'storeDosen']);
-                // });
-
                 Route::prefix('/penggajian')->group(function () {
                     Route::get('staff', [GajiController::class, 'indexStaff'])->name('penggajian.staff');
                     Route::get('staff/{bulan}/{staff}', [GajiController::class, 'gajiStaff'])->name('penggajian.staff.detail');
                     Route::post('staff/{bulan}/{staff}', [GajiController::class, 'gajiStaffStore']);
+                    Route::get('staff/list', [GajiController::class, 'listStaff'])->name('list.staff.gaji');
+                    Route::get('staff/pdf/{bulan}/{pegawai}', [GajiController::class, 'pdfStaff'])->name('pdf.gaji.staff');
+
                     Route::get('dosen', [GajiController::class, 'indexDosen'])->name('penggajian.dosen');
+                    Route::get('dosen/list', [GajiController::class, 'listDosen'])->name('list.dosen.gaji');
                     Route::get('dosen/{bulan}/{dosen}', [GajiController::class, 'gajiDosen'])->name('penggajian.dosen.detail');
                     Route::post('dosen/{bulan}/{dosen}', [GajiController::class, 'gajiDosenStore']);
+                    Route::get('dosen/pdf/{bulan}/{pegawai}', [GajiController::class, 'pdfDosen'])->name('pdf.gaji.dosen');
                 });
+                Route::get('laporan/penggajian', [GajiController::class, 'laporan'])->name('laporan.gaji');
+                Route::post('laporan/penggajian', [GajiController::class, 'buatLaporan'])->name('laporan.gaji.create');
+                Route::delete('laporan/penggajian/{id}', [GajiController::class, 'deleteLaporan'])->name('laporan.gaji.delete');
             });
 
             //hrd

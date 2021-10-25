@@ -64,6 +64,42 @@ class GajiController extends Controller
         return view('admin.keuangan.indexStaff', compact('bulan', 'data'));
     }
 
+    public function listStaff(Request $request)
+    {
+        $pegawai = Pegawai::with(['slipStaff' => function ($q) use ($request) {
+            $q->where('bulan', $request->bulan)->where('tahun', $request->tahun);
+        }])->where('is_staff', 1)->get();
+        $no = 0;
+        $data = [];
+        foreach ($pegawai as $dt) {
+            $data[] = [
+                'id' => $dt->id,
+                'no' => ++$no,
+                'nip' => $dt->nip,
+                'nama' => $dt->nama,
+                'aksi' => $dt->slipStaff->count()
+            ];
+        }
+        return response()->json($data);
+    }
+
+    public function pdfStaff($bulan, Pegawai $pegawai)
+    {
+        if ($pegawai->is_staff != 1) abort(404);
+        // $pegawai = $pegawai->load(['slipStaff' => function ($q) use ($bulan) {
+        //     $q->where('bulan', $bulan)->where('tahun', date('Y'));
+        // }]);
+        $gaji = SlipGajiStaff::where([
+            ['pegawai_id', $pegawai->id],
+            ['bulan', $bulan],
+            ['tahun', date('Y')]
+        ])->first();
+        // dd($pegawai, $gaji);
+        $pdf = PDF::loadView('admin.keuangan.pdf.staff', compact('pegawai', 'gaji'));
+        $pdf->setOption('header-html', view('header'));
+        return $pdf->stream();
+    }
+
     public function gajiStaff($bulan, Pegawai $staff)
     {
         if ($staff->is_staff != 1) abort(404);
@@ -158,6 +194,42 @@ class GajiController extends Controller
         $bulan = array_slice(getBulan(), 0, $m);
         $data = Pegawai::where('is_dosen', 1)->get();
         return view('admin.keuangan.indexDosen', compact('bulan', 'data'));
+    }
+
+    public function listDosen(Request $request)
+    {
+        $pegawai = Pegawai::with(['slipDosen' => function ($q) use ($request) {
+            $q->where('bulan', $request->bulan)->where('tahun', $request->tahun);
+        }])->where('is_dosen', 1)->get();
+        $no = 0;
+        $data = [];
+        foreach ($pegawai as $dt) {
+            $data[] = [
+                'id' => $dt->id,
+                'no' => ++$no,
+                'nip' => $dt->nip,
+                'nama' => $dt->nama,
+                'aksi' => $dt->slipDosen->count()
+            ];
+        }
+        return response()->json($data);
+    }
+
+    public function pdfDosen($bulan, Pegawai $pegawai)
+    {
+        if ($pegawai->is_dosen != 1) abort(403);
+        // $pegawai = $pegawai->load(['slipStaff' => function ($q) use ($bulan) {
+        //     $q->where('bulan', $bulan)->where('tahun', date('Y'));
+        // }]);
+        $gaji = SlipGajiDosen::where([
+            ['pegawai_id', $pegawai->id],
+            ['bulan', $bulan],
+            ['tahun', date('Y')]
+        ])->first();
+        // dd($pegawai, $gaji);
+        $pdf = PDF::loadView('admin.keuangan.pdf.dosen', compact('pegawai', 'gaji'));
+        $pdf->setOption('header-html', view('header'));
+        return $pdf->stream();
     }
 
     public function gajiDosen($bulan, Pegawai $dosen)
@@ -260,7 +332,14 @@ class GajiController extends Controller
         return redirect()->route('admin.penggajian.dosen')->with(['success' => 'Berhasil menyimpan slip']);
     }
 
-    /*
+    public function laporan()
+    {
+        $m = date('n');
+        $bulan = array_slice(getBulan(), 0, $m);
+        $laporan = LaporanGaji::all();
+        return view('admin.keuangan.laporanGaji', compact('bulan', 'laporan'));
+    }
+
     public function buatLaporan(Request $request)
     {
         $cek = LaporanGaji::where('tahun', date('Y'))->where('bulan', $request->bulan)->first();
@@ -271,35 +350,29 @@ class GajiController extends Controller
         $bulan = $request->bulan;
 
         LaporanGaji::create([
-            'file' => $filename,
+            'dosen' => "dosen" . $filename,
+            'staff' => "staff" . $filename,
             'bulan' => $bulan,
             'tahun' => $tahun
         ]);
 
         //pdf
-        $dataDosen = Dosen::all();
-        $dosen = GajiDosen::where('jabatan', 'dosen')->first();
-        $staff = GajiDosen::where('jabatan', 'staff')->first();
-        $marketing = GajiDosen::where('jabatan', 'marketing')->first();
-        $pdf = PDF::loadView('admin.keuangan.pdfLaporanKeuangan', compact('bulan', 'dataDosen', 'dosen', 'staff', 'marketing'));
-        $pdf->setPaper('a4')->setOrientation('landscape')->save('storage/laporan-gaji/' . $filename);
+        $gajiStaff = SlipGajiStaff::with('pegawai')->where('bulan', $bulan)->where('tahun', date('Y'))->get();
+        $pdfStaff = PDF::loadView('admin.keuangan.pdf.laporanStaff', compact('gajiStaff'));
+        $pdfStaff->setOption('header-html', view('header'))->save('storage/laporan-gaji/staff/staff' . $filename);
+
+        $gajiDosen = SlipGajiDosen::with('pegawai')->where('bulan', $bulan)->where('tahun', date('Y'))->get();
+        $pdfDosen = PDF::loadView('admin.keuangan.pdf.laporanDosen', compact('gajiDosen'));
+        $pdfDosen->setOption('header-html', view('header'))->save('storage/laporan-gaji/dosen/dosen' . $filename);
+
         return response()->json('Sukses');
     }
-
-    public function laporan()
-    {
-        $m = date('n');
-        $bulan = array_slice(getBulan(), 0, $m);
-        $laporan = LaporanGaji::all();
-        return view('admin.keuangan.laporanGaji', compact('bulan', 'laporan'));
-    }
-
     public function deleteLaporan($id)
     {
         $laporan = LaporanGaji::find($id);
-        Storage::disk('public')->delete('laporan-gaji/' . $laporan->file);
+        Storage::disk('public')->delete('laporan-gaji/dosen/' . $laporan->dosen);
+        Storage::disk('public')->delete('laporan-gaji/staff/' . $laporan->staff);
         $laporan->delete();
         return response()->json('Sukses');
     }
-    */
 }
