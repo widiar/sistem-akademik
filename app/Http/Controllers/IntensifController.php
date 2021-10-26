@@ -2,22 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Dosen;
-use App\Models\IntensifMarketing;
+use App\Models\InsentifMarketing;
+use App\Models\Pegawai;
 use Illuminate\Http\Request;
 
 class IntensifController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->search) {
-            $cek = Dosen::where('nip', 'like', "%$request->search%")->where('is_marketing', true);
-            if ($cek->exists()) $dosen = $cek->paginate(10);
-            else $dosen = Dosen::where('nama', 'like', "%$request->search%")->where('is_marketing', true)->paginate(10);
-        } else
-            $dosen = Dosen::where('is_marketing', true)->paginate(10);
+        $pegawai = Pegawai::with(['staff' => function ($q) {
+            $q->where('jabatan', 'pemasaran');
+        }])->where('is_staff', 1)->get();
 
-        return view('admin.pemasaran.intensifMarketing', compact('dosen'));
+        return view('admin.pemasaran.intensifMarketing', compact('pegawai'));
     }
 
 
@@ -28,25 +25,19 @@ class IntensifController extends Controller
 
     public function store(Request $request)
     {
-        $dosen = Dosen::find($request->dosen);
-        $jumlah = $request->jumlah;
-        $cek = $dosen->intensif()->where('tahun_ajaran', tahunAjaran())->first();
-        if ($cek) {
-            $cek->jumlah = $jumlah;
-            $cek->save();
-        } else {
-            $intensif = new IntensifMarketing([
-                'jumlah' => $jumlah,
-                'tahun_ajaran' => tahunAjaran()
-            ]);
-            $dosen->intensif()->save($intensif);
-        }
+        $insentif = InsentifMarketing::firstOrCreate([
+            'pegawai_id' => $request->dosen,
+            'tahun_ajaran' => tahunAjaran()
+        ]);
+        $insentif->jumlah = $request->jumlah;
+        $insentif->save();
+
         return redirect()->route('admin.intensif-marketing.index')->with(['success' => 'Berhasil update data']);
     }
 
     public function show($id)
     {
-        $cek = IntensifMarketing::where('dosen_id', $id)->where('tahun_ajaran', tahunAjaran())->first();
+        $cek = InsentifMarketing::where('pegawai_id', $id)->where('tahun_ajaran', tahunAjaran())->first();
         if ($cek) return response()->json(["jumlah" => $cek->jumlah]);
         else return response()->json(["jumlah" => 0]);
     }

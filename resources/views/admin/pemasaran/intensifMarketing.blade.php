@@ -3,14 +3,6 @@
 @section('title', 'Dosen')
 
 @section('main-content')
-<form action="" method="get" class="my-2 mx-3">
-    <div class="input-group input-group-sm mb-3 w-25">
-        <input type="text" class="form-control" name="search" value="{{ Request::get('search') }}">
-        <div class="input-group-append">
-            <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
-        </div>
-    </div>
-</form>
 @if(session('success'))
 <div class="alert alert-success alert-dismissible">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -39,8 +31,9 @@
                 @php
                 $no=0;
                 @endphp
-                @if (!is_null($dosen))
-                @foreach ($dosen as $ban)
+                @if (!is_null($pegawai))
+                @foreach ($pegawai as $ban)
+                @if($ban->staff->count() > 0)
                 <tr>
                     <td>{{ ++$no }}</td>
                     <td>{{ $ban->nip }}</td>
@@ -51,13 +44,11 @@
                         </button>
                     </td>
                 </tr>
+                @endif
                 @endforeach
                 @endif
             </tbody>
         </table>
-    </div>
-    <div class="ml-3">
-        {{ $dosen->withQueryString()->links('vendor.pagination.admin-bs') }}
     </div>
 </div>
 
@@ -96,8 +87,8 @@
     $('.bulan').select2({
         theme: "bootstrap"
     });
-    let tipe = "{{ route('admin.intensif-marketing.index') }}";
-    if (performance.navigation.type == 1) window.location.href = tipe
+    // let tipe = "{{ route('admin.intensif-marketing.index') }}";
+    // if (performance.navigation.type == 1) window.location.href = tipe
 
     var id = '';
     $(".intensif-button").click(function(e){
