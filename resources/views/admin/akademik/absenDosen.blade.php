@@ -165,6 +165,7 @@
                 data: {
                     absen: kehadiran,
                     id: dt,
+                    kategori: kategori,
                     tanggal: tgl
                 },
                 success: (res) => {

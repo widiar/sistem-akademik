@@ -69,6 +69,7 @@ class AbsenController extends Controller
                 'tanggal' => date('Y-m-d', strtotime($request->tanggal))
             ]);
             $cek->hadir = $h;
+            $cek->kategori = $request->kategori;
             $cek->save();
         }
         return response()->json([

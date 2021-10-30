@@ -76,13 +76,28 @@ class RekapController extends Controller
         $m = date('n');
         $bulan = array_slice(getBulan(), 0, $m);
         $rekapan = RekapAbsen::where('is_staff', false)->get();
-        $month = $m;
-        $absen = Pegawai::with(['absenDosen' => function ($q) use ($m) {
-            $q->whereMonth('tanggal', $m)->whereYear('tanggal', date('Y'))->where('hadir', 1);
-        }])->where('is_dosen', 1)->get();
-        $ck = $absen[0]->absenDosen;
-        dd($ck);
-        return view('admin.keuangan.pdfRekapAbsenDosen', compact('absen', 'month'));
+        // $month = $m;
+        // $regular = Pegawai::with(['absenDosen' => function ($q) use ($m) {
+        //     $q->whereMonth('tanggal', $m)->whereYear('tanggal', date('Y'))->where('hadir', 1)->where('kategori', 'Regular');
+        // }])->where('is_dosen', 1)->get();
+        // $karyawan = Pegawai::with(['absenDosen' => function ($q) use ($m) {
+        //     $q->whereMonth('tanggal', $m)->whereYear('tanggal', date('Y'))->where('hadir', 1)->where('kategori', 'Karyawan');
+        // }])->where('is_dosen', 1)->get();
+        // $eksekutif = Pegawai::with(['absenDosen' => function ($q) use ($m) {
+        //     $q->whereMonth('tanggal', $m)->whereYear('tanggal', date('Y'))->where('hadir', 1)->where('kategori', 'Eksekutif / Semester Pendek');
+        // }])->where('is_dosen', 1)->get();
+        // $inter = Pegawai::with(['absenDosen' => function ($q) use ($m) {
+        //     $q->whereMonth('tanggal', $m)->whereYear('tanggal', date('Y'))->where('hadir', 1)->where('kategori', 'International Teori');
+        // }])->where('is_dosen', 1)->get();
+        // $pdf = PDF::loadView('admin.keuangan.pdfRekapAbsenDosen', compact(
+        //     'regular',
+        //     'month',
+        //     'karyawan',
+        //     'eksekutif',
+        //     'inter'
+        // ));
+        // return $pdf->setOption('header-html', view('header'))->stream();
+        // return Excel::download(new AbsenDosenExport($m), 'cek.xlsx');
 
         return view('admin.keuangan.rekapAbsenDosen', compact('bulan', 'rekapan'));
     }
@@ -111,11 +126,26 @@ class RekapController extends Controller
         Excel::store(new AbsenDosenExport($month), 'rekap-absen-dosen/excel/' . $excel, 'public');
 
         //pdf
-        $absen = Pegawai::with(['absenDosen' => function ($q) use ($month) {
-            $q->whereMonth('tanggal', $month)->whereYear('tanggal', date('Y'))->where('hadir', 1);
+        $regular = Pegawai::with(['absenDosen' => function ($q) use ($month) {
+            $q->whereMonth('tanggal', $month)->whereYear('tanggal', date('Y'))->where('hadir', 1)->where('kategori', 'Regular');
         }])->where('is_dosen', 1)->get();
-        $pdf = PDF::loadView('admin.keuangan.pdfRekapAbsenDosen', compact('absen', 'month'));
-        $pdf->setPaper('a4')->save('storage/rekap-absen-dosen/pdf/' . $fpdf);
+        $karyawan = Pegawai::with(['absenDosen' => function ($q) use ($month) {
+            $q->whereMonth('tanggal', $month)->whereYear('tanggal', date('Y'))->where('hadir', 1)->where('kategori', 'Karyawan');
+        }])->where('is_dosen', 1)->get();
+        $eksekutif = Pegawai::with(['absenDosen' => function ($q) use ($month) {
+            $q->whereMonth('tanggal', $month)->whereYear('tanggal', date('Y'))->where('hadir', 1)->where('kategori', 'Eksekutif / Semester Pendek');
+        }])->where('is_dosen', 1)->get();
+        $inter = Pegawai::with(['absenDosen' => function ($q) use ($month) {
+            $q->whereMonth('tanggal', $month)->whereYear('tanggal', date('Y'))->where('hadir', 1)->where('kategori', 'International Teori');
+        }])->where('is_dosen', 1)->get();
+        $pdf = PDF::loadView('admin.keuangan.pdfRekapAbsenDosen', compact(
+            'regular',
+            'month',
+            'karyawan',
+            'eksekutif',
+            'inter'
+        ));
+        $pdf->setPaper('a4')->setOption('header-html', view('header'))->save('storage/rekap-absen-dosen/pdf/' . $fpdf);
 
         return response()->json('Sukses');
     }
