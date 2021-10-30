@@ -30,6 +30,7 @@
                     <th>Jam</th>
                     <th>Hari</th>
                     <th>SKS</th>
+                    <th>Kategori</th>
                     <th class="text-center">Aksi</th>
                 </tr>
             </thead>
@@ -45,6 +46,7 @@
                     <td>{{ $matkul->jam }}</td>
                     <td>{{ $matkul->hari }}</td>
                     <td>{{ $matkul->sks }}</td>
+                    <td>{{ $matkul->kategori }}</td>
                     <td class="text-center">
                         <div class="row" style="min-width: 100px">
                             <a href="{{ route('admin.matakuliah.edit', $matkul->id) }}" class="mx-3">

@@ -35,6 +35,24 @@
 </div>
 <div class="card shadow mx-3">
     <div class="card-body table-responsive">
+        <ul class="nav nav-tabs mb-3">
+            <li class="nav-item">
+                <a class="nav-link tab-link active" data-toggle="tab" data-id="Regular" href="#Regular">Regular</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link tab-link" data-toggle="tab" data-id="Karyawan" href="#Karyawan">Karyawan</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link tab-link" data-toggle="tab" data-id="Eksekutif / Semester Pendek"
+                    href="#Eksekutif">Eksekutif
+                    / Semester Pendek</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link tab-link" data-toggle="tab" data-id="International Teori"
+                    href="#International">International
+                    Teori</a>
+            </li>
+        </ul>
         <table id="absenTable" class="table table-bordered dt-responsive nowrap" style="width: 100%;">
             <thead>
                 <tr>
@@ -61,9 +79,18 @@
     let totalDosen
     let table
     let urlPost = `{{ route('admin.post.absen.dosen') }}`
+    let kategori = 'Regular'
     
     $('.bulan').select2({
         theme: "bootstrap"
+    });
+
+    $(".tab-link").click(function(){
+        // $(".tab-link").removeClass('active');
+        // $(this).addClass('active');
+        kategori = $(this).data('id');
+        let tgl = $("#tgl").val();
+        initTable(tgl, kategori)
     });
 
     $(".datepicker").datepicker({
@@ -75,14 +102,14 @@
         todayHighlight: true
     });
 
-    initTable($("#tgl").val())
+    initTable($("#tgl").val(), kategori)
 
     $(".datepicker").change(() =>{
         let tgl = $("#tgl").val()
-        initTable(tgl)
+        initTable(tgl, kategori)
     });
 
-    function initTable(tgl){
+    function initTable(tgl, kategori){
         let urlTable = `{{ route('admin.list.absen.dosen') }}`;
         table = $("#absenTable").dataTable({
             lengthChange: false,
@@ -92,7 +119,8 @@
                 url: urlTable,
                 type: 'GET',
                 data: {
-                    tanggal: tgl
+                    tanggal: tgl,
+                    kategori: kategori
                 },
                 dataSrc: function(res){
                     totalDosen = res.total
@@ -128,7 +156,7 @@
             dt.push($(this).data("id"))
             return $(this).val();
         }).get();
-        
+        // return false
         if (kehadiran.length === totalDosen){
             let tgl = $("#tgl").val()
             $.ajax({
@@ -140,7 +168,7 @@
                     tanggal: tgl
                 },
                 success: (res) => {
-                    if (res.status == 200) window.location.href = ''
+                    if (res.status == 200) toastr.success("Berhasil Menyimpan absen", "Absen")
                 }
             })
         }else toastr.info("Harap absen semua", "Absen")

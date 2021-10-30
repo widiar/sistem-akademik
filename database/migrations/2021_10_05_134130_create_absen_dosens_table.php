@@ -17,7 +17,7 @@ class CreateAbsenDosensTable extends Migration
             $table->id();
             $table->unsignedBigInteger('pegawai_id');
             $table->unsignedBigInteger('matakuliah_id');
-            $table->boolean('hadir');
+            $table->boolean('hadir')->nullable();
             $table->date('tanggal');
             $table->timestamps();
         });

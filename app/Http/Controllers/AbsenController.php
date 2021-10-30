@@ -25,40 +25,28 @@ class AbsenController extends Controller
     public function list(Request $request)
     {
         $hari = dayInIndonesia(date('D', strtotime($request->tanggal)));
-        $absen =  AbsenDosen::where('tanggal', date('Y-m-d', strtotime($request->tanggal)))->get();
         $dt = [];
         $no = 0;
-        if ($absen->count()) {
-            foreach ($absen as $a) {
-                $dt[] = [
-                    'no' => ++$no,
-                    'matakuliah' => $a->matkul->nama,
-                    'nama' => $a->dosen->nama,
-                    'jam' => $a->matkul->jam,
-                    'id' => $a->matkul->id . "|" . $a->dosen->id,
-                    'f' => 1,
-                    'absen' => $a->hadir
-                ];
-            }
-        } else {
-            $matakuliah = MataKuliah::where('hari', $hari)->get();
-            foreach ($matakuliah as $mt) {
-                foreach ($mt->dosen as $ds) {
-                    $dt[] = [
-                        'no' => ++$no,
-                        'matakuliah' => $mt->nama,
-                        'nama' => $ds->nama,
-                        'jam' => $mt->jam,
-                        'id' => "$mt->id|$ds->id",
-                        'f' => 0,
-                        'absen' => 0
-                    ];
-                }
-            }
+        $matakuliah = MataKuliah::with('dosen')->where('hari', $hari)->where('kategori', $request->kategori)->get();
+        foreach ($matakuliah as $mt) {
+            $idDosen = $mt->dosen->id;
+            $absen = $mt->load('absen');
+            $absen = $mt->absen()->where('tanggal', date('Y-m-d', strtotime($request->tanggal)))->first();
+            // dd($cek->count(), $cek);
+            $dt[] = [
+                'no' => ++$no,
+                'matakuliah' => $mt->nama,
+                'nama' => $mt->dosen->nama,
+                'jam' => $mt->jam,
+                'id' => "$mt->id|$idDosen",
+                'f' => ($absen) ? 1 : 0,
+                'absen' => ($absen) ? $absen->hadir : 0
+            ];
         }
         return response()->json([
             'data' => $dt,
-            'total' => $no
+            'total' => $no,
+            // 'cek' => $c
         ]);
     }
 
@@ -72,25 +60,16 @@ class AbsenController extends Controller
             array_push($matkul, $tmp[0]);
             array_push($dosen, $tmp[1]);
         }
-        $absen =  AbsenDosen::where('tanggal', date('Y-m-d', strtotime($request->tanggal)))->get();
+        // $absen =  AbsenDosen::where('tanggal', date('Y-m-d', strtotime($request->tanggal)))->get();
         foreach (array_map(NULL, $hadir, $matkul, $dosen) as $x) {
             list($h, $m, $d) = $x;
-            if ($absen->count()) {
-                $cek = AbsenDosen::where([
-                    ['pegawai_id', $d],
-                    ['matakuliah_id', $m],
-                    ['tanggal', date('Y-m-d', strtotime($request->tanggal))]
-                ])->first();
-                $cek->hadir = $h;
-                $cek->save();
-            } else {
-                AbsenDosen::create([
-                    'pegawai_id' => $d,
-                    'matakuliah_id' => $m,
-                    'hadir' => $h,
-                    'tanggal' => date('Y-m-d', strtotime($request->tanggal))
-                ]);
-            }
+            $cek = AbsenDosen::firstOrCreate([
+                'pegawai_id' => $d,
+                'matakuliah_id' => $m,
+                'tanggal' => date('Y-m-d', strtotime($request->tanggal))
+            ]);
+            $cek->hadir = $h;
+            $cek->save();
         }
         return response()->json([
             'status' => 200

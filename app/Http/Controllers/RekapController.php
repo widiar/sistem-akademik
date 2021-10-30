@@ -74,13 +74,15 @@ class RekapController extends Controller
     public function absenDosen()
     {
         $m = date('n');
-        // $month = $m;
         $bulan = array_slice(getBulan(), 0, $m);
         $rekapan = RekapAbsen::where('is_staff', false)->get();
-        // $absen = Pegawai::with(['absenDosen' => function ($q) use ($m) {
-        //     $q->whereMonth('tanggal', $m)->whereYear('tanggal', date('Y'))->where('hadir', 1);
-        // }])->where('is_dosen', 1)->get();
-        // return view('admin.keuangan.pdfRekapAbsenDosen', compact('absen', 'month'));
+        $month = $m;
+        $absen = Pegawai::with(['absenDosen' => function ($q) use ($m) {
+            $q->whereMonth('tanggal', $m)->whereYear('tanggal', date('Y'))->where('hadir', 1);
+        }])->where('is_dosen', 1)->get();
+        $ck = $absen[0]->absenDosen;
+        dd($ck);
+        return view('admin.keuangan.pdfRekapAbsenDosen', compact('absen', 'month'));
 
         return view('admin.keuangan.rekapAbsenDosen', compact('bulan', 'rekapan'));
     }

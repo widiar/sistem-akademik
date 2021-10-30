@@ -17,9 +17,9 @@ class CreateDosenKategoridosenTable extends Migration
             $table->id();
             $table->unsignedBigInteger('pegawai_id');
             $table->unsignedBigInteger('kategori_id');
-            $table->text('semester_ganjil')->nullable();
-            $table->text('semester_genap')->nullable();
-            $table->string('tahun_ajaran');
+            $table->string('bulan')->nullable();
+            $table->string('tahun')->nullable();
+            $table->text('data')->nullable();
             $table->timestamps();
         });
     }

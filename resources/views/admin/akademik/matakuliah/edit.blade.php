@@ -48,24 +48,30 @@
                 @enderror
             </div>
 
+            <div class="form-group">
+                <label for="">Kategori</label>
+                <select name="kategori" id="kategori" required class="custom-select form-control">
+                    <option></option>
+                    <option {{ ($matakuliah->kategori == "Regular") ? 'selected' : '' }} value="Regular">Regular
+                    </option>
+                    <option {{ ($matakuliah->kategori == "Karyawan") ? 'selected' : '' }} value="Karyawan">Karyawan
+                    </option>
+                    <option {{ ($matakuliah->kategori == "Eksekutif / Semester Pendek") ? 'selected' : '' }}
+                        value="Eksekutif / Semester Pendek">Eksekutif / Semester Pendek</option>
+                    <option {{ ($matakuliah->kategori == "International Teori") ? 'selected' : '' }}
+                        value="International Teori">International Teori</option>
+                </select>
+            </div>
+
             <div class="listDosen">
-                @foreach ($matakuliah->dosen as $dsn)
                 <div class="dosen">
                     <div class="form-group mb-3">
                         <label for="text">Dosen</label>
-                        <select name="dosen[{{$dsn->id}}]" required
-                            class="custom-select dosenselected form-control dosen-select">
-                            @foreach ($dosen as $d)
-                            <option {{($dsn->id == $d->id) ? 'selected' : ''}} value="{{ $d->id }}">{{ $d->nama }}
-                            </option>
-                            @endforeach
+                        <select name="dosen" required class="custom-select dosenselect form-control dosen-select">
+                            <option value="{{ $matakuliah->pegawai_id }}"> {{ $matakuliah->dosen->nama }} </option>
                         </select>
                     </div>
-                    @if (!$loop->first)
-                    <button type="button" class="btn btn-danger btn-sm mb-3 btn-hapus">Hapus</button><br>
-                    @endif
                 </div>
-                @endforeach
             </div>
 
             {{-- <button type="button" class="btn btn-primary addButton mb-4">Tambah Dosen</button> --}}
@@ -104,7 +110,7 @@
             }
         });
     }
-    // initDosen()
+    initDosen()
     const addDosen = () => {
         let komponenDosen = `<div class="dosen">
                                 <div class="form-group mb-3">
@@ -118,7 +124,12 @@
         initDosen()
     }
     
-    $(".addButton").click(addDosen)
+    // $(".addButton").click(addDosen)
+
+    $('#kategori').select2({
+        theme: "bootstrap",
+        placeholder: 'Select kategori'
+    })
 
     $("body").on("click", ".btn-hapus", function(){
          $(this).parent().remove();
