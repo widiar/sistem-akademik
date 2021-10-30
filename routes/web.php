@@ -57,9 +57,10 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('dosen', [DosenController::class, 'index'])->name('dosen');
                 // Route::get('dosen/create', [DosenController::class, 'create'])->name('dosen.create');
                 // Route::post('dosen/create', [DosenController::class, 'store'])->name('dosen.store');
-                Route::get('dosen/{pegawai}/edit', [DosenController::class, 'edit'])->name('dosen.edit');
+                Route::get('laporan-bulanan/dosen/{pegawai}/edit/{bulan}', [DosenController::class, 'edit'])->name('dosen.edit');
                 Route::patch('dosen/{dosen}', [DosenController::class, 'update'])->name('dosen.update');
                 Route::delete('dosen/{dosen}', [DosenController::class, 'destroy'])->name('dosen.destroy');
+                Route::get('laporan-bulanan/dosen', [DosenController::class, 'laporanBulanan'])->name('dosen.laporan.bulanan');
                 // Route::get('dosen/{tipe}', [DosenController::class, 'list'])->name('dosen.list');
                 Route::post('dosen-rekap', [RekapController::class, 'dosenRekap'])->name('add.rekap.dosen');
                 Route::delete('rekap-dosen/{id}', [RekapController::class, 'deleteRekapDosen'])->name('delete.rekap.dosen');

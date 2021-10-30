@@ -27,8 +27,6 @@
                     <th>NO</th>
                     <th>NIP</th>
                     <th>Nama</th>
-                    <th>Kategori</th>
-                    <th class="text-center">Aksi</th>
                 </tr>
             </thead>
             <tbody class="actionz">
@@ -41,24 +39,6 @@
                     <td>{{ ++$no }}</td>
                     <td>{{ $ban->nip }}</td>
                     <td>{{ $ban->nama }}</td>
-                    <td>
-                        @foreach ($ban->dosen as $kat)
-                        {{ $kat->kategori . ", " }}
-                        @endforeach
-                    </td>
-                    <td class="text-center">
-                        <a href="{{ route('admin.dosen.edit', [$ban->id]) }}" class="mx-3">
-                            <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
-                        </a>
-                        {{-- <div class="row" style="min-width: 100px">
-                            <form action="{{ route('admin.dosen.destroy', $ban->id) }}" method="POST" class="deleted">
-                                @method("DELETE")
-                                @csrf
-                                <button class="btn btn-sm btn-danger" type="submit"><i
-                                        class="fas fa-trash"></i></button>
-                            </form>
-                        </div> --}}
-                    </td>
                 </tr>
                 @endforeach
                 @endif

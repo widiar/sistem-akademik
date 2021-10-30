@@ -41,7 +41,7 @@
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
-            <div class="form-group">
+            {{-- <div class="form-group">
                 @php
                 $kategoriDosen = [];
                 if($pegawai->dosen)
@@ -62,244 +62,263 @@
                 @error('kategori')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
-            </div>
-            <div class="pembimbingTA" style="display: none">
+            </div> --}}
+            <div class="pembimbingTA">
                 <hr>
                 <h4>Pembimbing TA</h4>
                 <div class="row">
-                    <div class="col-lg-6 col-md-6">
+                    <div class="form-group col-md-6 col-xs-12">
+                        <label for="ta1">Jumlah Tugas Akhir 1</label>
+                        <input required type="number" min="0" name="ta1"
+                            class="form-control  @error('ta1') is-invalid @enderror"
+                            value="{{ old('ta1', @$pegawai->dosen[0]->tugas_akhir_1) }}">
+                        @error('ta1')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="nama-ta1 col-md-6 col-xs-12">
                         <div class="form-group">
-                            <label for="taGanjil">Semester Ganjil</label>
-                            <input type="text" name="taGanjil"
-                                class="form-control  @error('taGanjil') is-invalid @enderror"
-                                value="{{ old('taGanjil', @json_decode($ta->pivot->semester_ganjil)->ganjil) }}">
-                            @error('taGanjil')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                            <label for="ta1Nama">Input Nama TA 1</label>
+                            <select name="ta1Nama[]" id="ta1Nama" multiple="multiple"
+                                class="form-control custom-select">
+                                @if($pegawai->dosen->count() > 0)
+                                @foreach (@json_decode($pegawai->dosen[0]->tugas_akhir_1_nama) as $nama)
+                                <option selected value="{{ $nama }}">{{ $nama }}</option>
+                                @endforeach
+                                @endif
+                            </select>
+                            @error('ta1Nama')
+                            <p class="text-danger">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
-                    <div class="col-lg-6 col-md-6">
+                </div>
+                <h5>Jumlah TA 2</h5>
+                <div class="row">
+                    <div class="form-group col-md-6 col-xs-12">
+                        <label for="ta2pembimbing1">Pembimbing 1</label>
+                        <input required type="number" min="0" name="ta2pembimbing1"
+                            class="form-control  @error('ta2pembimbing1') is-invalid @enderror"
+                            value="{{ old('ta2pembimbing1', @$pegawai->dosen[0]->tugas_akhir_2_pembimbing_1) }}">
+                        @error('ta2pembimbing1')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="nama-ta2-pembimbing1 col-md-6 col-xs-12">
                         <div class="form-group">
-                            <label for="taGenap">Semester Genap</label>
-                            <input type="text" name="taGenap"
-                                class="form-control  @error('taGenap') is-invalid @enderror"
-                                value="{{ old('taGenap', @json_decode($ta->pivot->semester_genap)->genap) }}">
-                            @error('taGenap')
+                            <label for="ta2pembimbing1nama">Nama TA 2 (Pembimbing 1)</label>
+                            <select name="ta2pembimbing1nama[]" id="ta2pembimbing1nama" multiple="multiple"
+                                class="form-control custom-select">
+                                @if($pegawai->dosen->count() > 0)
+                                @foreach (json_decode($pegawai->dosen[0]->tugas_akhir_2_pembimbing_1_nama) as $nama)
+                                <option selected value="{{ $nama }}">{{ $nama }}</option>
+                                @endforeach
+                                @endif
+                            </select>
+                            @error('ta2pembimbing1nama')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-6 col-md-6">
-                        <div class="form-group">
-                            <label for="ta1Ganjil">Tugas Akhir I (Ganjil)</label>
-                            <input type="text" name="ta1Ganjil"
-                                class="form-control  @error('ta1Ganjil') is-invalid @enderror"
-                                value="{{ old('ta1Ganjil', @json_decode($ta->pivot->semester_ganjil)->ta1) }}">
-                            @error('ta1Ganjil')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
+                    <div class="form-group col-md-6 col-xs-12">
+                        <label for="ta2pembimbing2">Pembimbing 2</label>
+                        <input required type="number" min="0" name="ta2pembimbing2"
+                            class="form-control  @error('ta2pembimbing2') is-invalid @enderror"
+                            value="{{ old('ta2pembimbing2', @$pegawai->dosen[0]->tugas_akhir_2_pembimbing_2) }}">
+                        @error('ta2pembimbing2')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
-                    <div class="col-lg-6 col-md-6">
+                    <div class="nama-ta2-pembimbing1 col-md-6 col-xs-12">
                         <div class="form-group">
-                            <label for="ta1Genap">Tugas Akhir I (Genap)</label>
-                            <input type="text" name="ta1Genap"
-                                class="form-control  @error('ta1Genap') is-invalid @enderror"
-                                value="{{ old('ta1Genap', @json_decode($ta->pivot->semester_genap)->ta1) }}">
-                            @error('ta1Genap')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-6 col-md-6">
-                        <div class="form-group">
-                            <label for="ta2Ganjil">Tugas Akhir II (Ganjil)</label>
-                            <input type="text" name="ta2Ganjil"
-                                class="form-control  @error('ta2Ganjil') is-invalid @enderror"
-                                value="{{ old('ta2Ganjil', @json_decode($ta->pivot->semester_ganjil)->ta2) }}">
-                            @error('ta2Ganjil')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6">
-                        <div class="form-group">
-                            <label for="ta2Genap">Tugas Akhir II (Genap)</label>
-                            <input type="text" name="ta2Genap"
-                                class="form-control  @error('ta2Genap') is-invalid @enderror"
-                                value="{{ old('ta2Genap', @json_decode($ta->pivot->semester_genap)->ta2) }}">
-                            @error('ta2Genap')
+                            <label for="ta2pembimbing2nama">Nama TA 2 (Pembimbing 2)</label>
+                            <select name="ta2pembimbing2nama[]" id="ta2pembimbing2nama" multiple="multiple"
+                                class="form-control custom-select">
+                                @if($pegawai->dosen->count() > 0)
+                                @foreach (json_decode($pegawai->dosen[0]->tugas_akhir_2_pembimbing_2_nama) as $nama)
+                                <option selected value="{{ $nama }}">{{ $nama }}</option>
+                                @endforeach
+                                @endif
+                            </select>
+                            @error('ta2pembimbing2nama')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="pembimbingSkripsi" style="display: none">
+            <div class="pembimbingSkripsi">
                 <hr>
                 <h4>Pembimbing Skripsi</h4>
                 <div class="row">
-                    <div class="col-lg-6 col-md-6">
+                    <div class="form-group col-md-6 col-xs-12">
+                        <label for="skripsi1">Jumlah Skripsi 1</label>
+                        <input required type="number" min="0" name="skripsi1"
+                            class="form-control  @error('skripsi1') is-invalid @enderror"
+                            value="{{ old('skripsi1', @$pegawai->dosen[0]->skripsi_1) }}">
+                        @error('skripsi1')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="nama-ta1 col-md-6 col-xs-12">
                         <div class="form-group">
-                            <label for="skripsiGanjil">Semester Ganjil</label>
-                            <input type="text" name="skripsiGanjil"
-                                class="form-control  @error('skripsiGanjil') is-invalid @enderror"
-                                value="{{ old('skripsiGanjil', @json_decode($skripsi->pivot->semester_ganjil)->ganjil) }}">
-                            @error('skripsiGanjil')
+                            <label for="skripsi1Nama">Input Nama Skripsi 1</label>
+                            <select name="skripsi1Nama[]" id="skripsi1Nama" multiple="multiple"
+                                class="form-control custom-select">
+                                @if($pegawai->dosen->count() > 0)
+                                @foreach (json_decode($pegawai->dosen[0]->skripsi_1_nama) as $nama)
+                                <option selected value="{{ $nama }}">{{ $nama }}</option>
+                                @endforeach
+                                @endif
+                            </select>
+                            @error('skripsi1Nama')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
-                    <div class="col-lg-6 col-md-6">
+                </div>
+                <h5>Jumlah Skripsi 2</h5>
+                <div class="row">
+                    <div class="form-group col-md-6 col-xs-12">
+                        <label for="skripsi2pembimbing1">Pembimbing 1</label>
+                        <input required type="number" min="0" name="skripsi2pembimbing1"
+                            class="form-control  @error('skripsi2pembimbing1') is-invalid @enderror"
+                            value="{{ old('skripsi2pembimbing1', @$pegawai->dosen[0]->skripsi_2_pembimbing_1) }}">
+                        @error('skripsi2pembimbing1')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="nama-ta2-pembimbing1 col-md-6 col-xs-12">
                         <div class="form-group">
-                            <label for="skripsiGenap">Semester Genap</label>
-                            <input type="text" name="skripsiGenap"
-                                class="form-control  @error('skripsiGenap') is-invalid @enderror"
-                                value="{{ old('skripsiGenap', @json_decode($skripsi->pivot->semester_genap)->genap) }}">
-                            @error('skripsiGenap')
+                            <label for="skripsi2pembimbing1nama">Nama Skripsi 2 (Pembimbing 1)</label>
+                            <select name="skripsi2pembimbing1nama[]" id="skripsi2pembimbing1nama" multiple="multiple"
+                                class="form-control custom-select">
+                                @if($pegawai->dosen->count() > 0)
+                                @foreach (json_decode($pegawai->dosen[0]->skripsi_2_pembimbing_1_nama) as $nama)
+                                <option selected value="{{ $nama }}">{{ $nama }}</option>
+                                @endforeach
+                                @endif
+                            </select>
+                            @error('skripsi2pembimbing1nama')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-6 col-md-6">
-                        <div class="form-group">
-                            <label for="skripsi1Ganjil">Tugas Akhir I (Ganjil)</label>
-                            <input type="text" name="skripsi1Ganjil"
-                                class="form-control  @error('skripsi1Ganjil') is-invalid @enderror"
-                                value="{{ old('skripsi1Ganjil', @json_decode($skripsi->pivot->semester_ganjil)->skripsi1) }}">
-                            @error('skripsi1Ganjil')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
+                    <div class="form-group col-md-6 col-xs-12">
+                        <label for="skripsi2pembimbing2">Pembimbing 2</label>
+                        <input required type="number" min="0" name="skripsi2pembimbing2"
+                            class="form-control  @error('skripsi2pembimbing2') is-invalid @enderror"
+                            value="{{ old('skripsi2pembimbing2', @$pegawai->dosen[0]->skripsi_2_pembimbing_2) }}">
+                        @error('skripsi2pembimbing2')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
-                    <div class="col-lg-6 col-md-6">
+                    <div class="nama-ta2-pembimbing1 col-md-6 col-xs-12">
                         <div class="form-group">
-                            <label for="skripsi1Genap">Tugas Akhir I (Genap)</label>
-                            <input type="text" name="skripsi1Genap"
-                                class="form-control  @error('skripsi1Genap') is-invalid @enderror"
-                                value="{{ old('skripsi1Genap', @json_decode($skripsi->pivot->semester_genap)->skripsi1) }}">
-                            @error('skripsi1Genap')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-6 col-md-6">
-                        <div class="form-group">
-                            <label for="skripsi2Ganjil">Tugas Akhir II (Ganjil)</label>
-                            <input type="text" name="skripsi2Ganjil"
-                                class="form-control  @error('skripsi2Ganjil') is-invalid @enderror"
-                                value="{{ old('skripsi2Ganjil', @json_decode($skripsi->pivot->semester_ganjil)->skripsi2) }}">
-                            @error('skripsi2Ganjil')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6">
-                        <div class="form-group">
-                            <label for="skripsi2Genap">Tugas Akhir II (Genap)</label>
-                            <input type="text" name="skripsi2Genap"
-                                class="form-control  @error('skripsi2Genap') is-invalid @enderror"
-                                value="{{ old('skripsi2Genap', @json_decode($skripsi->pivot->semester_genap)->skripsi2) }}">
-                            @error('skripsi2Genap')
+                            <label for="skripsi2pembimbing2nama">Nama Skripsi 2 (Pembimbing 2)</label>
+                            <select name="skripsi2pembimbing2nama[]" id="skripsi2pembimbing2nama" multiple="multiple"
+                                class="form-control custom-select">
+                                @if($pegawai->dosen->count() > 0)
+                                @foreach (json_decode($pegawai->dosen[0]->skripsi_2_pembimbing_2_nama) as $nama)
+                                <option selected value="{{ $nama }}">{{ $nama }}</option>
+                                @endforeach
+                                @endif
+                            </select>
+                            @error('skripsi2pembimbing2nama')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="penguji" style="display: none">
+
+            <div class="penguji">
                 <hr>
-                <h4>Kerja Praktek</h4>
+                <h4>Dosen Penguji</h4>
                 <div class="row">
-                    <div class="col-lg-6 col-md-6">
-                        <div class="form-group">
-                            <label for="kpGanjil">Semester Ganjil</label>
-                            <input type="text" name="kpGanjil"
-                                class="form-control  @error('kpGanjil') is-invalid @enderror"
-                                value="{{ old('kpGanjil', @json_decode($kp->pivot->semester_ganjil)->ganjil) }}">
-                            @error('kpGanjil')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
+                    <div class="form-group col-md-6 col-xs-12">
+                        <label for="seminarSkripsi">Seminar Skripsi</label>
+                        <input required type="number" min="0" name="seminarSkripsi"
+                            class="form-control  @error('seminarSkripsi') is-invalid @enderror"
+                            value="{{ old('seminarSkripsi', @$pegawai->dosen[0]->penguji_seminar_skripsi) }}">
+                        @error('seminarSkripsi')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
-                    <div class="col-lg-6 col-md-6">
-                        <div class="form-group">
-                            <label for="kpGenap">Semester Genap</label>
-                            <input type="text" name="kpGenap"
-                                class="form-control  @error('kpGenap') is-invalid @enderror"
-                                value="{{ old('kpGenap', @json_decode($kp->pivot->semester_genap)->genap) }}">
-                            @error('kpGenap')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
+                    <div class="form-group col-md-6 col-xs-12">
+                        <label for="seminarTerbuka">Seminar Terbuka</label>
+                        <input required type="number" min="0" name="seminarTerbuka"
+                            class="form-control  @error('seminarTerbuka') is-invalid @enderror"
+                            value="{{ old('seminarTerbuka', @$pegawai->dosen[0]->penguji_seminar_terbuka) }}">
+                        @error('seminarTerbuka')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group col-md-6 col-xs-12">
+                        <label for="proposal">Proposal Tugas Akhir</label>
+                        <input required type="number" min="0" name="proposal"
+                            class="form-control  @error('proposal') is-invalid @enderror"
+                            value="{{ old('proposal', @$pegawai->dosen[0]->penguji_proposal_TA) }}">
+                        @error('proposal')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group col-md-6 col-xs-12">
+                        <label for="pengujiTugasAkhir">Tugas Akhir</label>
+                        <input required type="number" min="0" name="pengujiTugasAkhir"
+                            class="form-control  @error('pengujiTugasAkhir') is-invalid @enderror"
+                            value="{{ old('pengujiTugasAkhir', @$pegawai->dosen[0]->penguji_tugas_akhir) }}">
+                        @error('pengujiTugasAkhir')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
             </div>
-            <div class="koordinator" style="display: none">
+
+            <div class="koordinator">
                 <hr>
                 <h4>Koordinator</h4>
-                <div class="row">
-                    <div class="col-lg-6 col-md-6">
-                        <div class="form-group">
-                            <label for="koorGanjil">Semester Ganjil</label>
-                            <input type="text" name="koorGanjil"
-                                class="form-control  @error('koorGanjil') is-invalid @enderror"
-                                value="{{ old('koorGanjil', @json_decode($koor->pivot->semester_ganjil)->ganjil) }}">
-                            @error('koorGanjil')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6">
-                        <div class="form-group">
-                            <label for="koorGenap">Semester Genap</label>
-                            <input type="text" name="koorGenap"
-                                class="form-control  @error('koorGenap') is-invalid @enderror"
-                                value="{{ old('koorGenap', @json_decode($koor->pivot->semester_genap)->genap) }}">
-                            @error('koorGenap')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <label for="koordinator">Jumlah</label>
+                    <input required type="number" name="koordinator"
+                        class="form-control  @error('koordinator') is-invalid @enderror"
+                        value="{{ old('koordinator', @$pegawai->dosen[0]->koordinator) }}">
+                    @error('koordinator')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
-            <div class="wali" style="display: none">
+            <div class="wali">
                 <hr>
                 <h4>Dosen Wali</h4>
-                <div class="row">
-                    <div class="col-lg-6 col-md-6">
-                        <div class="form-group">
-                            <label for="waliGanjil">Semester Ganjil</label>
-                            <input type="text" name="waliGanjil"
-                                class="form-control  @error('waliGanjil') is-invalid @enderror"
-                                value="{{ old('waliGanjil', @json_decode($wali->pivot->semester_ganjil)->ganjil) }}">
-                            @error('waliGanjil')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6">
-                        <div class="form-group">
-                            <label for="waliGenap">Semester Genap</label>
-                            <input type="text" name="waliGenap"
-                                class="form-control  @error('waliGenap') is-invalid @enderror"
-                                value="{{ old('waliGenap', @json_decode($wali->pivot->semester_genap)->genap) }}">
-                            @error('waliGenap')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <label for="wali">Jumlah</label>
+                    <input required type="number" name="wali" class="form-control  @error('wali') is-invalid @enderror"
+                        value="{{ old('wali', @$pegawai->dosen[0]->wali) }}">
+                    @error('wali')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
-            <button type="submit" class="btn btn-block btn-primary">Update</button>
+            <div class="kerja-praktek">
+                <hr>
+                <h4>Kerja Praktek</h4>
+                <div class="form-group">
+                    <label for="kerjaPraktek">Jumlah</label>
+                    <input required type="text" name="kerjaPraktek"
+                        class="form-control  @error('kerjaPraktek') is-invalid @enderror"
+                        value="{{ old('kerjaPraktek', @$pegawai->dosen[0]->kerja_praktek) }}">
+                    @error('kerjaPraktek')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+            <input type="hidden" name="bulanTahun" value="{{ $bulanTahun }}">
+            <button required type="submit" class="btn btn-block btn-primary">Update</button>
         </form>
     </div>
 </div>
@@ -312,31 +331,37 @@
             theme: "bootstrap"
         });
 
-        handleSelect2()
-        $(".kategori").change(function(){
-            handleSelect2()
+        $('.custom-select').select2({
+            tags: true,
+            theme: 'bootstrap',
+            width: '100%'
         })
+
+        // handleSelect2()
+        // $(".kategori").change(function(){
+        //     handleSelect2()
+        // })
     });
 
-    function handleSelect2()
-    {
-        var cek = $(".kategori").val()
-        //pengajar
-        if(cek.includes("1")){
-            $(".pembimbingTA").fadeIn(300);
-        }else $(".pembimbingTA").fadeOut(300);
-        if(cek.includes("2")){
-            $(".pembimbingSkripsi").fadeIn(300);
-        }else $(".pembimbingSkripsi").fadeOut(300);
-        if(cek.includes("6")){
-            $(".penguji").fadeIn(300);
-        }else $(".penguji").fadeOut(300);
-        if(cek.includes("4")){
-            $(".koordinator").fadeIn(300);
-        }else $(".koordinator").fadeOut(300);
-        if(cek.includes("5")){
-            $(".wali").fadeIn(300);
-        }else $(".wali").fadeOut(300);
-    }
+    // function handleSelect2()
+    // {
+    //     var cek = $(".kategori").val()
+    //     //pengajar
+    //     if(cek.includes("1")){
+    //         $(".pembimbingTA").fadeIn(300);
+    //     }else $(".pembimbingTA").fadeOut(300);
+    //     if(cek.includes("2")){
+    //         $(".pembimbingSkripsi").fadeIn(300);
+    //     }else $(".pembimbingSkripsi").fadeOut(300);
+    //     if(cek.includes("6")){
+    //         $(".penguji").fadeIn(300);
+    //     }else $(".penguji").fadeOut(300);
+    //     if(cek.includes("4")){
+    //         $(".koordinator").fadeIn(300);
+    //     }else $(".koordinator").fadeOut(300);
+    //     if(cek.includes("5")){
+    //         $(".wali").fadeIn(300);
+    //     }else $(".wali").fadeOut(300);
+    // }
 </script>
 @endsection

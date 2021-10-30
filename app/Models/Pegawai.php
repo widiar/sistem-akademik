@@ -14,7 +14,7 @@ class Pegawai extends Model
 
     public function dosen()
     {
-        return $this->belongsToMany(KategoriDosen::class, 'dosen', 'pegawai_id', 'kategori_id')->withPivot('bulan', 'tahun', 'data');
+        return $this->hasMany(Dosen::class, 'pegawai_id');
     }
 
     public function staff()
