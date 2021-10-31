@@ -35,18 +35,10 @@
             </div>
             <div class="form-row">
                 <div class="form-group col">
-                    @php
-                    $waliTotal = 0;
-                    if($wali){
-                    if($ganjil == TRUE)
-                    $waliTotal = @json_decode($wali->pivot->semester_ganjil)->ganjil;
-                    else $waliTotal = @json_decode($wali->pivot->semester_genap)->genap;
-                    }else $waliTotal = $gaji->waliTotal;
-                    @endphp
                     <label for="waliTotal">Total</label>
                     <input type="number" required name="waliTotal"
                         class="form-control  @error('waliTotal') is-invalid @enderror"
-                        value="{{ old('waliTotal', $waliTotal) }}">
+                        value="{{ old('waliTotal', @$gaji->waliTotal) }}">
                     @error('waliTotal')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -164,17 +156,10 @@
             </div>
             <div class="form-row">
                 <div class="form-group col">
-                    @php
-                    $kerjaPraktek = 0;
-                    if($kp){
-                    if($ganjil == TRUE) $kerjaPraktek = @json_decode($kp->pivot->semester_ganjil)->ganjil;
-                    else $kerjaPraktek = @json_decode($kp->pivot->semester_genap)->genap;
-                    }else $kerjaPraktek = $gaji->kerjaPraktekTotal;
-                    @endphp
                     <label for="kerjaPraktekTotal">Total</label>
                     <input type="number" required name="kerjaPraktekTotal"
                         class="form-control  @error('kerjaPraktekTotal') is-invalid @enderror"
-                        value="{{ old('kerjaPraktekTotal', $kerjaPraktek) }}">
+                        value="{{ old('kerjaPraktekTotal', @$gaji->kerjaPraktekTotal) }}">
                     @error('kerjaPraktekTotal')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -193,17 +178,10 @@
             <h5>Skripsi</h5>
             <div class="form-row">
                 <div class="form-group col">
-                    @php
-                    $skripsi1 = 0;
-                    if($skripsi){
-                    if($ganjil == TRUE) $skripsi1 = @json_decode($skripsi->pivot->semester_ganjil)->skripsi1;
-                    else $skripsi1 = @json_decode($skripsi->pivot->semester_genap)->skripsi1;
-                    }else $skripsi1 = $gaji->skripsi1Total;
-                    @endphp
                     <label for="skripsi1Total">Total</label>
                     <input type="number" required name="skripsi1Total"
                         class="form-control  @error('skripsi1Total') is-invalid @enderror"
-                        value="{{ old('skripsi1Total', $skripsi1) }}">
+                        value="{{ old('skripsi1Total', @$gaji->skripsi1Total) }}">
                     @error('skripsi1Total')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -218,29 +196,41 @@
                     @enderror
                 </div>
             </div>
+            <p>Skripsi II</p>
             <div class="form-row">
-                <div class="form-group col">
-                    @php
-                    $skripsi2 = 0;
-                    if($skripsi)
-                    {if($ganjil == TRUE) $skripsi2 = @json_decode($skripsi->pivot->semester_ganjil)->skripsi2;
-                    else $skripsi2 = @json_decode($skripsi->pivot->semester_genap)->skripsi2;
-                    }else $skripsi2 = $gaji->skripsi2Total;
-                    @endphp
-                    <label for="skripsi2Total">Total</label>
-                    <input type="number" required name="skripsi2Total"
-                        class="form-control  @error('skripsi2Total') is-invalid @enderror"
-                        value="{{ old('skripsi2Total', $skripsi2) }}">
-                    @error('skripsi2Total')
+                <div class="form-group col-6 col-md-3">
+                    <label for="skripsi2Pembimbing1Total">Total Pembimbing 1</label>
+                    <input type="number" required name="skripsi2Pembimbing1Total"
+                        class="form-control  @error('skripsi2Pembimbing1Total') is-invalid @enderror"
+                        value="{{ old('skripsi2Pembimbing1Total', @$gaji->skripsi2Pembimbing1Total) }}">
+                    @error('skripsi2Pembimbing1Total')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="form-group col">
-                    <label for="skripsi2">Skripsi II</label>
-                    <input type="number" required readonly name="skripsi2"
-                        class="form-control  @error('skripsi2') is-invalid @enderror"
-                        value="{{ old('skripsi2', @$gaji->skripsi2) }}">
-                    @error('skripsi2')
+                <div class="form-group col-6 col-md-3">
+                    <label for="skripsi2Pembimbing1">Pembimbing 1</label>
+                    <input type="number" required readonly name="skripsi2Pembimbing1"
+                        class="form-control  @error('skripsi2Pembimbing1') is-invalid @enderror"
+                        value="{{ old('skripsi2Pembimbing1', @$gaji->skripsi2Pembimbing1) }}">
+                    @error('skripsi2Pembimbing1')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group col-6 col-md-3">
+                    <label for="skripsi2Pembimbing2Total">Total Pembimbing 2</label>
+                    <input type="number" required name="skripsi2Pembimbing2Total"
+                        class="form-control  @error('skripsi2Pembimbing2Total') is-invalid @enderror"
+                        value="{{ old('skripsi2Pembimbing2Total', @$gaji->skripsi2Pembimbing2Total) }}">
+                    @error('skripsi2Pembimbing2Total')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group col-6 col-md-3">
+                    <label for="skripsi2Pembimbing2">Pembimbing 2</label>
+                    <input type="number" required readonly name="skripsi2Pembimbing2"
+                        class="form-control  @error('skripsi2Pembimbing2') is-invalid @enderror"
+                        value="{{ old('skripsi2Pembimbing2', @$gaji->skripsi2Pembimbing2) }}">
+                    @error('skripsi2Pembimbing2')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
@@ -250,17 +240,10 @@
                 <h5>Tugas Akhir</h5>
                 <div class="form-row">
                     <div class="form-group col">
-                        @php
-                        $ta1 = 0;
-                        if($ta){
-                        if($ganjil == TRUE) $ta1 = @json_decode($ta->pivot->semester_ganjil)->ta1;
-                        else $ta1 = @json_decode($ta->pivot->semester_genap)->ta1;
-                        }else $ta1 = $gaji->ta1Total;
-                        @endphp
                         <label for="ta1Total">Total</label>
                         <input type="number" required name="ta1Total"
                             class="form-control  @error('ta1Total') is-invalid @enderror"
-                            value="{{ old('ta1Total', $ta1) }}">
+                            value="{{ old('ta1Total', @$gaji->ta1Total) }}">
                         @error('ta1Total')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -275,29 +258,41 @@
                         @enderror
                     </div>
                 </div>
+                <p>Tugas Akhir II</p>
                 <div class="form-row">
-                    <div class="form-group col">
-                        @php
-                        $ta2 = 0;
-                        if($ta){
-                        if($ganjil == TRUE) $ta2 = @json_decode($ta->pivot->semester_ganjil)->ta2;
-                        else $ta2 = @json_decode($ta->pivot->semester_genap)->ta2;
-                        }else $ta2 = $gaji->ta2Total;
-                        @endphp
-                        <label for="ta2Total">Total</label>
-                        <input type="number" required name="ta2Total"
-                            class="form-control  @error('ta2Total') is-invalid @enderror"
-                            value="{{ old('ta2Total', $ta2) }}">
-                        @error('ta2Total')
+                    <div class="form-group col-6 col-md-3">
+                        <label for="ta2Pembimbing1Total">Total Pembimbing 1</label>
+                        <input type="number" required name="ta2Pembimbing1Total"
+                            class="form-control  @error('ta2Pembimbing1Total') is-invalid @enderror"
+                            value="{{ old('ta2Pembimbing1Total', @$gaji->ta2Pembimbing1Total) }}">
+                        @error('ta2Pembimbing1Total')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="form-group col">
-                        <label for="ta2">Tugas Akhir II</label>
-                        <input type="number" required readonly name="ta2"
-                            class="form-control  @error('ta2') is-invalid @enderror"
-                            value="{{ old('ta2', @$gaji->ta2) }}">
-                        @error('ta2')
+                    <div class="form-group col-6 col-md-3">
+                        <label for="ta2Pembimbing1">Pembimbing 1</label>
+                        <input type="number" required readonly name="ta2Pembimbing1"
+                            class="form-control  @error('ta2Pembimbing1') is-invalid @enderror"
+                            value="{{ old('ta2Pembimbing1', @$gaji->ta2Pembimbing1) }}">
+                        @error('ta2Pembimbing1')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group col-6 col-md-3">
+                        <label for="ta2Pembimbing2Total">Total Pembimbing 2</label>
+                        <input type="number" required name="ta2Pembimbing2Total"
+                            class="form-control  @error('ta2Pembimbing2Total') is-invalid @enderror"
+                            value="{{ old('ta2Pembimbing2Total', @$gaji->ta2Pembimbing2Total) }}">
+                        @error('ta2Pembimbing2Total')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group col-6 col-md-3">
+                        <label for="ta2Pembimbing2">Pembimbing 2</label>
+                        <input type="number" required readonly name="ta2Pembimbing2"
+                            class="form-control  @error('ta2Pembimbing2') is-invalid @enderror"
+                            value="{{ old('ta2Pembimbing2', @$gaji->ta2Pembimbing2) }}">
+                        @error('ta2Pembimbing2')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
@@ -558,17 +553,10 @@
             </div>
             <div class="form-row">
                 <div class="form-group col">
-                    @php
-                    $koordinator = 0;
-                    if($koor){
-                    if($ganjil == TRUE) $koordinator = @json_decode($koor->pivot->semester_ganjil)->ganjil;
-                    else $koordinator = @json_decode($koor->pivot->semester_genap)->genap;
-                    }else $koordinator = $gaji->koorTotal;
-                    @endphp
                     <label for="koorTotal">Total</label>
                     <input type="number" required name="koorTotal"
                         class="form-control  @error('koorTotal') is-invalid @enderror"
-                        value="{{ old('koorTotal', $koordinator) }}">
+                        value="{{ old('koorTotal', @$gaji->koorTotal) }}">
                     @error('koorTotal')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -654,20 +642,30 @@
             let gajiSkripsi1 = skripsi1Total * skripsi1
             total.push(gajiSkripsi1)
 
-            let skripsi2Total = parseInt($("input[name='skripsi2Total']").val()) || 0
-            let skripsi2 = parseInt($("input[name='skripsi2']").val())
-            let gajiSkripsi2 = skripsi2Total * skripsi2
+            let skripsi2Pembimbing1Total = parseInt($("input[name='skripsi2Pembimbing1Total']").val()) || 0
+            let skripsi2Pembimbing1 = parseInt($("input[name='skripsi2Pembimbing1']").val())
+            let gajiSkripsi2 = skripsi2Pembimbing1Total * skripsi2Pembimbing1
             total.push(gajiSkripsi2)
+
+            let skripsi2Pembimbing2Total = parseInt($("input[name='skripsi2Pembimbing2Total']").val()) || 0
+            let skripsi2Pembimbing2 = parseInt($("input[name='skripsi2Pembimbing2']").val())
+            let gajiSkripsi2p2 = skripsi2Pembimbing2Total * skripsi2Pembimbing1
+            total.push(gajiSkripsi2p2)
 
             let ta1Total = parseInt($("input[name='ta1Total']").val()) || 0
             let ta1 = parseInt($("input[name='ta1']").val())
             let gajita1 = ta1Total * ta1
             total.push(gajita1)
 
-            let ta2Total = parseInt($("input[name='ta2Total']").val()) || 0
-            let ta2 = parseInt($("input[name='ta2']").val())
-            let gajita2 = ta2Total * ta2
+            let ta2Pembimbing1Total = parseInt($("input[name='ta2Pembimbing1Total']").val()) || 0
+            let ta2Pembimbing1 = parseInt($("input[name='ta2Pembimbing1']").val())
+            let gajita2 = ta2Pembimbing1Total * ta2Pembimbing1
             total.push(gajita2)
+
+            let ta2Pembimbing2Total = parseInt($("input[name='ta2Pembimbing2Total']").val()) || 0
+            let ta2Pembimbing2 = parseInt($("input[name='ta2Pembimbing2']").val())
+            let gajita2p2 = ta2Pembimbing2Total * ta2Pembimbing2
+            total.push(gajita2p2)
 
             let seminarSkripsiTotal = parseInt($("input[name='seminarSkripsiTotal']").val()) || 0
             let seminarSkripsi = parseInt($("input[name='seminarSkripsi']").val())

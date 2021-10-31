@@ -130,7 +130,8 @@
             </tr>
             <tr>
                 <th>Skripsi II</th>
-                <td>Rp {{ number_format($gaji->skripsi2Total * $gaji->skripsi2 ,2,",",".") }}</td>
+                <td>Rp {{ number_format(($gaji->skripsi2Pembimbing1Total * $gaji->skripsi2Pembimbing1) +
+                    ($gaji->skripsi2Pembimbing2Total * $gaji->skripsi2Pembimbing2) ,2,",",".") }}</td>
             </tr>
             <tr>
                 <th>Tugas Akhir I</th>
@@ -138,7 +139,8 @@
             </tr>
             <tr>
                 <th>Tugas Akhir II</th>
-                <td>Rp {{ number_format($gaji->ta2Total * $gaji->ta2 ,2,",",".") }}</td>
+                <td>Rp {{ number_format(($gaji->ta2Pembimbing1Total * $gaji->ta2Pembimbing1) +
+                    ($gaji->ta2Pembimbing2Total * $gaji->ta2Pembimbing2) ,2,",",".") }}</td>
             </tr>
             <tr>
                 <th>Penguji Seminar Skripsi</th>

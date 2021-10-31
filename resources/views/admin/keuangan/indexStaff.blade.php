@@ -3,16 +3,15 @@
 @section('title', 'Penggajian Staff')
 
 @section('main-content')
-<div class="mx-3 row">
-    <div class="col-sm-12 col-md-6 form-group">
-        <label for="bulan">Bulan</label>
-        <select name="bulan" class="bulan w-100 form-control" style="width: 100%;">
-            @foreach ($bulan as $k)
-            <option value="{{ $k->id }}" {{ (date('n')==$k->id) ? 'selected' : '' }}>
-                {{ $k->name }}
-            </option>
-            @endforeach
-        </select>
+<div class="tanggal m-3 row">
+    <div class="col-md-6 col-xs-12">
+        <label for="">Pilih Tanggal</label>
+        <div class="input-group">
+            <input type="text" id="tgl" class="form-control datepicker" value="{{ date('m-Y') }}">
+            <div class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+            </div>
+        </div>
     </div>
 </div>
 <div class="card shadow mx-3">
@@ -41,14 +40,14 @@
 
 @section('script')
 <script>
-    let bulan = `{{ date('n') }}`;
+    let bulan = `{{ date('m-Y') }}`;
     let url = `{{ route('admin.penggajian.staff.detail', ['bulan' => '#bulan', 'staff' => '#id']) }}`
     let urlp = `{{ route('admin.pdf.gaji.staff', ['bulan' => '#bulan', 'pegawai' => '#id']) }}`
     $('.bulan').select2({
         theme: "bootstrap"
     });
-    $(".bulan").change(() => {
-        bulan = $(".bulan").val()
+    $("#tgl").change(() => {
+        bulan = $("#tgl").val()
         initTable()
     })
     $("body").on("click", ".btn-edit", function(){
@@ -65,6 +64,17 @@
         window.location.href = urlPrint
     })
 
+    $(".datepicker").datepicker({
+        format: 'mm-yyyy',
+        todayBtn: "linked",
+        startView: "months", 
+        minViewMode: "months",
+        // daysOfWeekDisabled: "0,6",
+        autoclose: true,
+        endDate: "+0d",
+        todayHighlight: true
+    });
+
     initTable()
 
     function initTable(){
@@ -78,8 +88,7 @@
                 url: urlTable,
                 type: 'GET',
                 data: {
-                    bulan: bulan,
-                    tahun: tahun
+                    tanggal: bulan,
                 },
                 dataSrc: function(res){
                     return res
