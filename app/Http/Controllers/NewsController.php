@@ -6,9 +6,20 @@ use App\Models\News;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use ImageKit\ImageKit;
 
 class NewsController extends Controller
 {
+
+    protected function imageKit()
+    {
+        return new ImageKit(
+            env('IMAGE_KIT_PUBLIC_KEY'),
+            env('IMAGE_KIT_SECRET_KEY'),
+            env('IMAGE_KIT_ENDPOINT')
+        );
+    }
+
     public function index()
     {
         $news = News::orderBy('updated_at', 'desc')->get();
@@ -34,9 +45,22 @@ class NewsController extends Controller
         ]);
         $poster = $request->poster;
         if ($poster) {
-            $news->poster = $poster->hashName();
+            if (env('APP_ENV') == 'local') {
+                $news->poster = $poster->hashName();
+                $poster->storeAs('public/news', $poster->hashName());
+            } else {
+                $imageKit = $this->imageKit();
+                $uploadFile = $imageKit->upload([
+                    'file' => fopen($poster->getPathname(), "r"),
+                    'fileName' => $poster->hashName(),
+                    'folder' => "sistem-akademik//news//"
+                ]);
+                $news->poster = json_encode([
+                    "field" => $uploadFile->success->fileId,
+                    "url" => $uploadFile->success->url,
+                ]);
+            }
             $news->save();
-            $poster->storeAs('public/news', $poster->hashName());
         }
         return redirect()->route('admin.news.index')->with(['success' => 'Berhasil menambah berita']);
     }
@@ -58,9 +82,28 @@ class NewsController extends Controller
         $news->save();
         $img = $request->file('poster');
         if ($img) {
-            if ($news->poster) Storage::disk('public')->delete('news/' . $news->poster);
-            $img->storeAs('public/news', $img->hashName());
-            $news->poster = $img->hashName();
+            if ($news->poster) {
+                if (env('APP_ENV') == 'local') Storage::disk('public')->delete('news/' . $news->poster);
+                else {
+                    $imageKit = $this->imageKit();
+                    $imageKit->deleteFile(json_decode($news->poster)->field);
+                }
+            }
+            if (env('APP_ENV') == 'local') {
+                $img->storeAs('public/news', $img->hashName());
+                $news->poster = $img->hashName();
+            } else {
+                $imageKit = $this->imageKit();
+                $uploadFile = $imageKit->upload([
+                    'file' => fopen($img->getPathname(), "r"),
+                    'fileName' => $img->hashName(),
+                    'folder' => "sistem-akademik//news//"
+                ]);
+                $news->poster = json_encode([
+                    "field" => $uploadFile->success->fileId,
+                    "url" => $uploadFile->success->url,
+                ]);
+            }
             $news->save();
         }
         return redirect()->route('admin.news.index')->with(['success' => 'Berhasil update berita']);
@@ -68,7 +111,13 @@ class NewsController extends Controller
 
     public function destroy(News $news)
     {
-        if ($news->poster) Storage::disk('public')->delete('news/' . $news->poster);
+        if ($news->poster) {
+            if (env('APP_ENV') == 'local') Storage::disk('public')->delete('news/' . $news->poster);
+            else {
+                $imageKit = $this->imageKit();
+                $imageKit->deleteFile(json_decode($news->poster)->field);
+            }
+        }
         $news->delete();
         return response()->json('Sukses');
     }

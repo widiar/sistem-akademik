@@ -18,11 +18,15 @@
                 @foreach ($news as $item)
                 <div class="col-lg-12">
                     <div class="icon-box">
-                        @php
-                        if($item->poster) $src = Storage::url('news/' . $item->poster);
-                        else $src = '/assets/img/poster-default.jpg';
-                        @endphp
-                        <img src="{{ $src }}" alt="" class="img-box img-thumbnail">
+                        @env('local')
+                        <img src="{{ ($item->poster) ? Storage::url('news/' . $item->poster) : '/assets/img/poster-default.jpg' }}"
+                            alt="" class="img-box img-thumbnail">
+                        @endenv
+                        @env('heroku')
+                        <img src="{{ ($item->poster) ? json_decode($item->poster)->url : '/assets/img/poster-default.jpg' }}"
+                            alt="" class="img-box img-thumbnail">
+
+                        @endenv
                         <h4><a href="{{ route('news', $item->slug) }}">{{ $item->title }}</a></h4>
                         <small class="text-muted">{{ date('d/m/y h:i A', strtotime($item->updated_at)) }}</small>
                         <p>{{ strip_tags($item->content) }}</p>

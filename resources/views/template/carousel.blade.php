@@ -8,7 +8,8 @@
 
             @foreach ($banner as $ban)
             <div class="carousel-item @if ($loop->first)active @endif"
-                style="background-image: url(storage/banner/{{ $ban->image }})">
+                style="background-image: {{ env('APP_ENV') == 'local' ? " url(storage/banner/$ban->image)" :
+                "url(". json_decode($ban->image)->url . ")" }}">
                 <div class="carousel-container">
                     <div class="container">
                         <h2 class="animate__animated animate__fadeInDown">{{ $ban->title }}</h2>

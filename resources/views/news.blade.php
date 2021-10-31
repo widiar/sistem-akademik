@@ -17,8 +17,15 @@
 
                         @if($news->poster)
                         <div class="entry-img">
+                            @env('local')
                             <img src="{{ Storage::url('news/' . $news->poster) }}" alt="" class="img-fluid img-poster"
                                 style="height: 300px">
+                            @endenv
+                            @env('heroku')
+                            <img src="{{ json_decode($news->poster)->url }}" alt="" class="img-fluid img-poster"
+                                style="height: 300px">
+
+                            @endenv
                         </div>
                         @endif
 
@@ -29,7 +36,8 @@
                         <div class="entry-meta">
                             <ul>
                                 <li class="d-flex align-items-center"><i class="icofont-wall-clock"></i><time
-                                        datetime="2020-01-01">{{ date('d/m/y h:i A', strtotime($news->updated_at)) }}</time>
+                                        datetime="2020-01-01">{{ date('d/m/y h:i A', strtotime($news->updated_at))
+                                        }}</time>
                                 </li>
                             </ul>
                         </div>

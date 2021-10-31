@@ -15,9 +15,20 @@ use App\Models\SlipGajiStaff;
 use Illuminate\Http\Request;
 use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
 use Illuminate\Support\Facades\Storage;
+use ImageKit\ImageKit;
+use Illuminate\Support\Facades\File;
 
 class GajiController extends Controller
 {
+
+    protected function imageKit()
+    {
+        return new ImageKit(
+            env('IMAGE_KIT_PUBLIC_KEY'),
+            env('IMAGE_KIT_SECRET_KEY'),
+            env('IMAGE_KIT_ENDPOINT')
+        );
+    }
     /*
     public function staff()
     {
@@ -366,29 +377,69 @@ class GajiController extends Controller
 
         $filename = uniqid() . ".pdf";
 
-        LaporanGaji::create([
-            'dosen' => "dosen" . $filename,
-            'staff' => "staff" . $filename,
-            'bulan' => $bulan,
-            'tahun' => $tahun
-        ]);
-
         //pdf
         $gajiStaff = SlipGajiStaff::with('pegawai')->where('bulan', $bulan)->where('tahun', $tahun)->get();
         $pdfStaff = PDF::loadView('admin.keuangan.pdf.laporanStaff', compact('gajiStaff'));
-        $pdfStaff->setOption('header-html', view('header'))->save('storage/laporan-gaji/staff/staff' . $filename);
 
         $gajiDosen = SlipGajiDosen::with('pegawai')->where('bulan', $bulan)->where('tahun', $tahun)->get();
         $pdfDosen = PDF::loadView('admin.keuangan.pdf.laporanDosen', compact('gajiDosen'));
-        $pdfDosen->setOption('header-html', view('header'))->save('storage/laporan-gaji/dosen/dosen' . $filename);
+
+        if (env('APP_ENV') == 'local') {
+            $pdfStaff->setOption('header-html', view('header'))->save('storage/laporan-gaji/staff/staff' . $filename);
+
+            $pdfDosen->setOption('header-html', view('header'))->save('storage/laporan-gaji/dosen/dosen' . $filename);
+            LaporanGaji::create([
+                'dosen' => "dosen" . $filename,
+                'staff' => "staff" . $filename,
+                'bulan' => $bulan,
+                'tahun' => $tahun
+            ]);
+        } else {
+            $imageKit = $this->imageKit();
+            $path = base_path('public/uploads/files/');
+
+            $pdfStaff->setOption('header-html', view('header'))->save($path . "staff-$filename");
+            $pdfDosen->setOption('header-html', view('header'))->save($path . "dosen-$filename");
+
+            $uploadStaff = $imageKit->upload([
+                'file' => fopen($path . "staff-$filename", "r"),
+                'fileName' => "staff-$filename",
+                'folder' => "sistem-akademik//laporan-gaji//staff//"
+            ]);
+            $uploadDosen = $imageKit->upload([
+                'file' => fopen($path . "dosen-$filename", "r"),
+                'fileName' => "dosen-$filename",
+                'folder' => "sistem-akademik//laporan-gaji//dosen//"
+            ]);
+            LaporanGaji::create([
+                'dosen' => json_encode([
+                    "field" => $uploadDosen->success->fileId,
+                    "url" => $uploadDosen->success->url,
+                ]),
+                'staff' => json_encode([
+                    "field" => $uploadStaff->success->fileId,
+                    "url" => $uploadStaff->success->url,
+                ]),
+                'bulan' => $bulan,
+                'tahun' => $tahun
+            ]);
+            File::delete($path . "staff-$filename");
+            File::delete($path . "dosen-$filename");
+        }
 
         return response()->json('Sukses');
     }
     public function deleteLaporan($id)
     {
         $laporan = LaporanGaji::find($id);
-        Storage::disk('public')->delete('laporan-gaji/dosen/' . $laporan->dosen);
-        Storage::disk('public')->delete('laporan-gaji/staff/' . $laporan->staff);
+        if (env('APP_ENV') == 'heroku') {
+            $imageKit = $this->imageKit();
+            $imageKit->deleteFile(json_decode($laporan->dosen)->field);
+            $imageKit->deleteFile(json_decode($laporan->staff)->field);
+        } else {
+            Storage::disk('public')->delete('laporan-gaji/dosen/' . $laporan->dosen);
+            Storage::disk('public')->delete('laporan-gaji/staff/' . $laporan->staff);
+        }
         $laporan->delete();
         return response()->json('Sukses');
     }

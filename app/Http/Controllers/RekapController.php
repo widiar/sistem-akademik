@@ -264,23 +264,43 @@ class RekapController extends Controller
         $month = $bulan;
         $year = $tahun;
 
-        RekapAbsen::create([
-            'excel' => $excel,
-            'pdf' => $fpdf,
-            'tahun' => $year,
-            'bulan' => $month,
-            'is_staff' => true
-        ]);
-
-        //add excel
-        Excel::store(new AbsenStaffExport($month, $year), 'rekap-absen-staff/excel/' . $excel, 'public');
-
         //pdf
         $absen = Pegawai::with(['absenStaff' => function ($q) use ($month, $year) {
             $q->whereMonth('tanggal', $month)->whereYear('tanggal', $year)->where('hadir', 1);
         }])->where('is_staff', 1)->get();
         $pdf = PDF::loadView('admin.hrd.pdfRekapAbsen', compact('absen', 'month', 'tahun'));
-        $pdf->setPaper('a4')->setOption('header-html', view('header'))->save('storage/rekap-absen-staff/pdf/' . $fpdf);
+        if (env('APP_ENV') == 'local') {
+            //add excel
+            Excel::store(new AbsenStaffExport($month, $year), 'rekap-absen-staff/excel/' . $excel, 'public');
+            $pdf->setPaper('a4')->setOption('header-html', view('header'))->save('storage/rekap-absen-staff/pdf/' . $fpdf);
+            RekapAbsen::create([
+                'excel' => $excel,
+                'pdf' => $fpdf,
+                'tahun' => $year,
+                'bulan' => $month,
+                'is_staff' => true
+            ]);
+        } else {
+            $imageKit = $this->imageKit();
+            $path = base_path('public/uploads/files/');
+            $pdf->setPaper('a4')->setOption('header-html', view('header'))->save($path . $fpdf);
+            $uploadFile = $imageKit->upload([
+                'file' => fopen($path . $fpdf, "r"),
+                'fileName' => $fpdf,
+                'folder' => "sistem-akademik//rekap-absen-staff//pdf//"
+            ]);
+            RekapAbsen::create([
+                'excel' => '-',
+                'pdf' => json_encode([
+                    "field" => $uploadFile->success->fileId,
+                    "url" => $uploadFile->success->url,
+                ]),
+                'tahun' => $year,
+                'bulan' => $month,
+                'is_staff' => true
+            ]);
+            File::delete($path . $fpdf);
+        }
 
         return response()->json('Sukses');
     }
@@ -288,8 +308,13 @@ class RekapController extends Controller
     public function deleteAbsenStaff($id)
     {
         $rekap = RekapAbsen::find($id);
-        Storage::disk('public')->delete('rekap-absen-staff/pdf/' . $rekap->pdf);
-        Storage::disk('public')->delete('rekap-absen-staff/excel/' . $rekap->excel);
+        if (env('APP_ENV') == 'heroku') {
+            $imageKit = $this->imageKit();
+            $imageKit->deleteFile(json_decode($rekap->pdf)->field);
+        } else {
+            Storage::disk('public')->delete('rekap-absen-staff/pdf/' . $rekap->pdf);
+            Storage::disk('public')->delete('rekap-absen-staff/excel/' . $rekap->excel);
+        }
         $rekap->delete();
         return response()->json('Sukses');
     }

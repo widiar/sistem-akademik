@@ -5,9 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Banner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use ImageKit\ImageKit;
+use Illuminate\Support\Facades\File;
 
 class BannerController extends Controller
 {
+    protected function imageKit()
+    {
+        return new ImageKit(
+            env('IMAGE_KIT_PUBLIC_KEY'),
+            env('IMAGE_KIT_SECRET_KEY'),
+            env('IMAGE_KIT_ENDPOINT')
+        );
+    }
     public function index()
     {
         $banner = Banner::all();
@@ -27,12 +37,29 @@ class BannerController extends Controller
             'banner' => 'required|image|mimes:png,jpeg|max:5120'
         ]);
         $banner = $request->banner;
-        Banner::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'image' => $banner->hashName()
-        ]);
-        $banner->storeAs('public/banner', $banner->hashName());
+        if (env('APP_ENV') == 'local') {
+            Banner::create([
+                'title' => $request->title,
+                'description' => $request->description,
+                'image' => $banner->hashName()
+            ]);
+            $banner->storeAs('public/banner', $banner->hashName());
+        } else {
+            $imageKit = $this->imageKit();
+            $uploadFile = $imageKit->upload([
+                'file' => fopen($banner->getPathname(), "r"),
+                'fileName' => $banner->hashName(),
+                'folder' => "sistem-akademik//banner//"
+            ]);
+            Banner::create([
+                'title' => $request->title,
+                'description' => $request->description,
+                'image' => json_encode([
+                    "field" => $uploadFile->success->fileId,
+                    "url" => $uploadFile->success->url,
+                ])
+            ]);
+        }
         return redirect()->route('admin.banner.index')->with(['success' => 'Berhasil menambah Banner']);
     }
 
@@ -57,9 +84,28 @@ class BannerController extends Controller
         $banner->save();
         $img = $request->file('banner');
         if ($img) {
-            Storage::disk('public')->delete('banner/' . $banner->image);
-            $img->storeAs('public/banner', $img->hashName());
-            $banner->image = $img->hashName();
+            if (env('APP_ENV') == 'heroku') {
+                $imageKit = $this->imageKit();
+                $uploadFile = $imageKit->upload([
+                    'file' => fopen($img->getPathname(), "r"),
+                    'fileName' => $img->hashName(),
+                    'folder' => "sistem-akademik//banner//"
+                ]);
+                if ($banner->image) {
+                    if (json_decode($banner->image)->field) {
+                        $imageKit = $this->imageKit();
+                        $imageKit->deleteFile(json_decode($banner->image)->field);
+                    }
+                }
+                $banner->image = json_encode([
+                    "field" => $uploadFile->success->fileId,
+                    "url" => $uploadFile->success->url,
+                ]);
+            } else {
+                Storage::disk('public')->delete('banner/' . $banner->image);
+                $img->storeAs('public/banner', $img->hashName());
+                $banner->image = $img->hashName();
+            }
             $banner->save();
         }
         return redirect()->route('admin.banner.index')->with(['success' => 'Berhasil update Banner']);
@@ -67,7 +113,12 @@ class BannerController extends Controller
 
     public function destroy(Banner $banner)
     {
-        Storage::disk('public')->delete('banner/' . $banner->image);
+        if (env('APP_ENV') == 'local') {
+            Storage::disk('public')->delete('banner/' . $banner->image);
+        } else {
+            $imageKit = $this->imageKit();
+            $imageKit->deleteFile(json_decode($banner->image)->field);
+        }
         $banner->delete();
         return response()->json("Sukses");
     }
