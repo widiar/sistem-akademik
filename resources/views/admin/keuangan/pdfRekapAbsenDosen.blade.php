@@ -34,7 +34,8 @@
 </head>
 
 <body>
-    <h3 class="text-center">Hasil Rekap Absensi Dosen Bulan {{ date('F', mktime(0, 0, 0, $month, 10)) }}</h3>
+    <h3 class="text-center">Hasil Rekap Absensi Dosen Bulan {{ date('F', mktime(0, 0, 0, $month, 10)) }} {{ $tahun }}
+    </h3>
     <table class="table">
         <thead class="text-center">
             <tr>

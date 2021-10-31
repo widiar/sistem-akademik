@@ -15,25 +15,27 @@ class AbsenDosenExport implements FromView
      * @return \Illuminate\Support\Collection
      */
     protected $bulan;
-    public function __construct($bulan)
+    public function __construct($bulan, $tahun)
     {
         $this->bulan = $bulan;
+        $this->tahun = $tahun;
     }
 
     public function view(): View
     {
         $month = $this->bulan;
-        $regular = Pegawai::with(['absenDosen' => function ($q) use ($month) {
-            $q->whereMonth('tanggal', $month)->whereYear('tanggal', date('Y'))->where('hadir', 1)->where('kategori', 'Regular');
+        $year = $this->tahun;
+        $regular = Pegawai::with(['absenDosen' => function ($q) use ($month, $year) {
+            $q->whereMonth('tanggal', $month)->whereYear('tanggal', $year)->where('hadir', 1)->where('kategori', 'Regular');
         }])->where('is_dosen', 1)->get();
-        $karyawan = Pegawai::with(['absenDosen' => function ($q) use ($month) {
-            $q->whereMonth('tanggal', $month)->whereYear('tanggal', date('Y'))->where('hadir', 1)->where('kategori', 'Karyawan');
+        $karyawan = Pegawai::with(['absenDosen' => function ($q) use ($month, $year) {
+            $q->whereMonth('tanggal', $month)->whereYear('tanggal', $year)->where('hadir', 1)->where('kategori', 'Karyawan');
         }])->where('is_dosen', 1)->get();
-        $eksekutif = Pegawai::with(['absenDosen' => function ($q) use ($month) {
-            $q->whereMonth('tanggal', $month)->whereYear('tanggal', date('Y'))->where('hadir', 1)->where('kategori', 'Eksekutif / Semester Pendek');
+        $eksekutif = Pegawai::with(['absenDosen' => function ($q) use ($month, $year) {
+            $q->whereMonth('tanggal', $month)->whereYear('tanggal', $year)->where('hadir', 1)->where('kategori', 'Eksekutif / Semester Pendek');
         }])->where('is_dosen', 1)->get();
-        $inter = Pegawai::with(['absenDosen' => function ($q) use ($month) {
-            $q->whereMonth('tanggal', $month)->whereYear('tanggal', date('Y'))->where('hadir', 1)->where('kategori', 'International Teori');
+        $inter = Pegawai::with(['absenDosen' => function ($q) use ($month, $year) {
+            $q->whereMonth('tanggal', $month)->whereYear('tanggal', $year)->where('hadir', 1)->where('kategori', 'International Teori');
         }])->where('is_dosen', 1)->get();
         return view('admin.keuangan.excel.absenDosen', compact(
             'regular',
