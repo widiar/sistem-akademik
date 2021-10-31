@@ -30,80 +30,81 @@
         .text-center {
             text-align: center
         }
+
+        tbody td {
+            text-align: center
+        }
     </style>
 </head>
 
 <body>
-    <h3 class="text-center">Hasil Rekap Dosen</h3>
+    <h3 class="text-center">Rekap Dosen {{ date('F', mktime(0, 0, 0, $bulan, 10)) }} {{ $tahun }}</h3>
     <table class="table">
         <thead class="text-center">
             <tr>
                 <th rowspan="3" style="vertical-align: middle">NIP</th>
                 <th rowspan="3" style="vertical-align: middle">Nama</th>
-                <th rowspan="3" style="vertical-align: middle">Kategori</th>
                 <th colspan="4">Pembimbing TA</th>
                 <th colspan="4">Pembimbing Skripsi</th>
-                <th colspan="2">Koordinator</th>
-                <th colspan="2">Wali</th>
-                <th colspan="2">Kerja Praktek</th>
-                <th rowspan="3" style="vertical-align: middle">Tahun Ajaran</th>
+                <th colspan="4">Penguji</th>
+                <th rowspan="3">Koordinator</th>
+                <th rowspan="3">Dosen Wali</th>
+                <th rowspan="3">Kerja Praktek</th>
             </tr>
             <tr>
-                <th colspan="2">Ganjil</th>
-                <th colspan="2">Genap</th>
-                <th colspan="2">Ganjil</th>
-                <th colspan="2">Genap</th>
-                <th rowspan="2">Ganjil</th>
-                <th rowspan="2">Genap</th>
-                <th rowspan="2">Ganjil</th>
-                <th rowspan="2">Genap</th>
-                <th rowspan="2">Ganjil</th>
-                <th rowspan="2">Genap</th>
+                <th colspan="2">TA 1</th>
+                <th colspan="2">TA 2</th>
+                <th colspan="2">Skripsi 1</th>
+                <th colspan="2">Skripsi 2</th>
+                <th rowspan="2" style="max-width: 75px">Seminar Skripsi</th>
+                <th rowspan="2" style="max-width: 75px">Seminar Terbuka</th>
+                <th rowspan="2" style="max-width: 75px">Proposal TA</th>
+                <th rowspan="2" style="max-width: 75px">Tugas Akhir</th>
             </tr>
             <tr>
-                <th>TA 1</th>
-                <th>TA 2</th>
-                <th>TA 1</th>
-                <th>TA 2</th>
-                <th>Skripsi 1</th>
-                <th>Skripsi 2</th>
-                <th>Skripsi 1</th>
-                <th>Skripsi 2</th>
+                <th colspan="2">P 1</th>
+                <th>P 1</th>
+                <th>P 2</th>
+                <th colspan="2">P 1</th>
+                <th>P 1</th>
+                <th>P 2</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($dosen as $pegawai)
-            @php
-            $ta = $pegawai->dosen()->where('kategori_id', 1)->wherePivot('tahun_ajaran', tahunAjaran())->first();
-            $skripsi = $pegawai->dosen()->where('kategori_id', 2)->wherePivot('tahun_ajaran', tahunAjaran())->first();
-            $penguji = $pegawai->dosen()->where('kategori_id', 3)->wherePivot('tahun_ajaran', tahunAjaran())->first();
-            $koor = $pegawai->dosen()->where('kategori_id', 4)->wherePivot('tahun_ajaran', tahunAjaran())->first();
-            $wali = $pegawai->dosen()->where('kategori_id', 5)->wherePivot('tahun_ajaran', tahunAjaran())->first();
-            $kp = $pegawai->dosen()->where('kategori_id', 6)->wherePivot('tahun_ajaran', tahunAjaran())->first();
-            @endphp
             <tr>
                 <td>{{ $pegawai->nip }}</td>
                 <td>{{ $pegawai->nama }}</td>
-                <td>
-                    @foreach ($pegawai->dosen as $k)
-                    {{ $k->kategori }} ,
-                    @endforeach
+                <td colspan="2">
+                    {{ (@$pegawai->dosen[0]->tugas_akhir_1) ? $pegawai->dosen[0]->tugas_akhir_1 : '-' }}
                 </td>
-                <td>{{ (@$ta) ? json_decode($ta->pivot->semester_ganjil)->ta1 : '-' }}</td>
-                <td>{{ (@$ta) ? json_decode($ta->pivot->semester_ganjil)->ta2 : '-' }}</td>
-                <td>{{ (@$ta) ? json_decode($ta->pivot->semester_genap)->ta1 : '-' }}</td>
-                <td>{{ (@$ta) ? json_decode($ta->pivot->semester_genap)->ta2 : '-' }}</td>
-                <td>{{ (@$skripsi) ? json_decode($skripsi->pivot->semester_ganjil)->skripsi1 : '-' }}</td>
-                <td>{{ (@$skripsi) ? json_decode($skripsi->pivot->semester_ganjil)->skripsi2 : '-' }}</td>
-                <td>{{ (@$skripsi) ? json_decode($skripsi->pivot->semester_genap)->skripsi1 : '-' }}</td>
-                <td>{{ (@$skripsi) ? json_decode($skripsi->pivot->semester_genap)->skripsi2 : '-' }}</td>
-                <td>{{ (@$koor) ? json_decode($koor->pivot->semester_ganjil)->ganjil : '-' }}</td>
-                <td>{{ (@$koor) ? json_decode($koor->pivot->semester_genap)->genap : '-' }}</td>
-                <td>{{ (@$wali) ? json_decode($wali->pivot->semester_ganjil)->ganjil : '-' }}</td>
-                <td>{{ (@$wali) ? json_decode($wali->pivot->semester_genap)->genap : '-' }}</td>
-                <td>{{ (@$kp) ? json_decode($kp->pivot->semester_ganjil)->ganjil : '-' }}</td>
-                <td>{{ (@$kp) ? json_decode($kp->pivot->semester_genap)->genap : '-' }}</td>
-                <td>{{ $tahunAjaran }}</td>
+                <td>
+                    {{ (@$pegawai->dosen[0]->tugas_akhir_2_pembimbing_1) ?
+                    $pegawai->dosen[0]->tugas_akhir_2_pembimbing_1 : '-' }}
+                </td>
+                <td>{{ (@$pegawai->dosen[0]->tugas_akhir_2_pembimbing_2) ?
+                    $pegawai->dosen[0]->tugas_akhir_2_pembimbing_2 :
+                    '-' }}</td>
+                <td colspan="2">{{ (@$pegawai->dosen[0]->skripsi_1) ? $pegawai->dosen[0]->skripsi_1 : '-' }}</td>
+                <td>{{ (@$pegawai->dosen[0]->skripsi_2_pembimbing_1) ? $pegawai->dosen[0]->skripsi_2_pembimbing_1 : '-'
+                    }}
+                </td>
+                <td>{{ (@$pegawai->dosen[0]->skripsi_2_pembimbing_2) ? $pegawai->dosen[0]->skripsi_2_pembimbing_2 : '-'
+                    }}
+                </td>
+                <td>{{ (@$pegawai->dosen[0]->penguji_seminar_skripsi) ? $pegawai->dosen[0]->penguji_seminar_skripsi :
+                    '-' }}
+                </td>
+                <td>{{ (@$pegawai->dosen[0]->penguji_seminar_terbuka) ? $pegawai->dosen[0]->penguji_seminar_terbuka :
+                    '-' }}
+                </td>
+                <td>{{ (@$pegawai->dosen[0]->penguji_proposal_TA) ? $pegawai->dosen[0]->penguji_proposal_TA : '-' }}
+                </td>
+                <td>{{ (@$pegawai->dosen[0]->penguji_tugas_akhir) ? $pegawai->dosen[0]->penguji_tugas_akhir : '-' }}
+                </td>
+                <td>{{ (@$pegawai->dosen[0]->koordinator) ? $pegawai->dosen[0]->koordinator : '-' }}</td>
+                <td>{{ (@$pegawai->dosen[0]->wali) ? $pegawai->dosen[0]->wali : '-' }}</td>
+                <td>{{ (@$pegawai->dosen[0]->kerja_praktek) ? $pegawai->dosen[0]->kerja_praktek : '-' }}</td>
             </tr>
             @endforeach
         </tbody>

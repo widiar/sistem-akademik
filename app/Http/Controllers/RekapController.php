@@ -21,9 +21,14 @@ class RekapController extends Controller
 {
     public function dosen()
     {
-        // $dosen =  Pegawai::where('is_dosen', true)->get();
-        // $tahunAjaran = tahunAjaran();
-        // return view('admin.akademik.pdfRekapDosen', compact('dosen', 'tahunAjaran'));
+        // $tmp = explode("-", '09-2021');
+        // $bulan = $tmp[0];
+        // $tahun = $tmp[1];
+        // $dosen =  Pegawai::with(['dosen' => function ($q) use ($bulan, $tahun) {
+        //     $q->where('bulan', $bulan)->where('tahun', $tahun);
+        // }])->where('is_dosen', true)->get();
+        // $pdf = PDF::loadView('admin.akademik.pdfRekapDosen', compact('dosen', 'bulan', 'tahun'));
+        // return $pdf->setPaper('a4')->setOrientation('landscape')->setOption('header-html', view('header'))->stream();
 
         $m = date('n');
         $bulan = array_slice(getBulan(), 0, $m);
@@ -33,31 +38,32 @@ class RekapController extends Controller
 
     public function dosenRekap(Request $request)
     {
-        $cek = RekapDosen::where('tahun', date('Y'))->where('bulan', $request->bulan)->first();
+        $tmp = explode("-", $request->tanggal);
+        $bulan = $tmp[0];
+        $tahun = $tmp[1];
+        $cek = RekapDosen::where('tahun', $tahun)->where('bulan', $bulan)->first();
         if ($cek) return response()->json('Ada');
 
         $filename = uniqid();
         $excel = $filename . ".xlsx";
         $fpdf = $filename . ".pdf";
 
-        $month = $request->bulan;
-        $year = date('Y');
-
         RekapDosen::create([
             'excel' => '-',
             'pdf' => $fpdf,
-            'tahun' => $year,
-            'bulan' => $month
+            'tahun' => $tahun,
+            'bulan' => $bulan
         ]);
 
         //add excel
         // Excel::store(new DosenExport, 'rekap-dosen/excel/' . $excel, 'public');
 
         //pdf
-        $dosen = Pegawai::where('is_dosen', true)->get();
-        $tahunAjaran = tahunAjaran();
-        $pdf = PDF::loadView('admin.akademik.pdfRekapDosen', compact('dosen', 'tahunAjaran'));
-        $pdf->setPaper('a4')->setOrientation('landscape')->save('storage/rekap-dosen/pdf/' . $fpdf);
+        $dosen =  Pegawai::with(['dosen' => function ($q) use ($bulan, $tahun) {
+            $q->where('bulan', $bulan)->where('tahun', $tahun);
+        }])->where('is_dosen', true)->get();
+        $pdf = PDF::loadView('admin.akademik.pdfRekapDosen', compact('dosen', 'bulan', 'tahun'));
+        $pdf->setPaper('a4')->setOrientation('landscape')->setOption('header-html', view('header'))->save('storage/rekap-dosen/pdf/' . $fpdf);
 
         return response()->json('Sukses');
     }

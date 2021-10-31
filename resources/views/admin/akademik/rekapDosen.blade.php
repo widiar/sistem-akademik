@@ -91,13 +91,13 @@
                 @csrf
                 <div class="modal-body form-group">
                     <label for="bulan">Bulan</label>
-                    <select name="bulan" class="bulan w-100 form-control" style="width: 100%;">
-                        @foreach ($bulan as $k)
-                        <option value="{{ $k->id }}" {{ (date('n')==$k->id) ? 'selected' : '' }}>
-                            {{ $k->name }}
-                        </option>
-                        @endforeach
-                    </select>
+                    <div class="input-group">
+                        <input type="text" id="tgl" name="tanggal" class="form-control datepicker"
+                            value="{{ date('m-Y') }}">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -124,6 +124,16 @@
             setTimeout(handlePrint, 1000)
         })
     })
+    $(".datepicker").datepicker({
+        format: 'mm-yyyy',
+        todayBtn: "linked",
+        startView: "months", 
+        minViewMode: "months",
+        // daysOfWeekDisabled: "0,6",
+        autoclose: true,
+        endDate: "+0d",
+        todayHighlight: true
+    });
     function handlePrint()
     {
         var objFra = document.getElementById('myFrame');
