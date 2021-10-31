@@ -26,5 +26,7 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         Paginator::useBootstrap();
+        if (env('APP_ENV') == 'heroku')
+            \URL::forceScheme('https');
     }
 }

@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Str;
 
+if (env('DATABASE_URL'))
+    $DATABASE_URL = parse_url(env('DATABASE_URL'));
+else $DATABASE_URL = NULL;
+
 return [
 
     /*
@@ -76,6 +80,20 @@ return [
             'prefix_indexes' => true,
             'schema' => 'public',
             'sslmode' => 'prefer',
+        ],
+
+        'heroku' => [
+            'driver' => 'pgsql',
+            'host' => ($DATABASE_URL != NULL) ? $DATABASE_URL["host"] : NULL,
+            'port' => ($DATABASE_URL != NULL) ? $DATABASE_URL["port"] : NULL,
+            'database' => ($DATABASE_URL != NULL) ? ltrim($DATABASE_URL["path"], "/") : NULL,
+            'username' => ($DATABASE_URL != NULL) ? $DATABASE_URL["user"] : NULL,
+            'password' => ($DATABASE_URL != NULL) ? $DATABASE_URL["pass"] : NULL,
+            'charset' => 'utf8',
+            'prefix' => '',
+            'schema' => 'public',
+            'strict' => false,
+            'sslmode' => 'require',
         ],
 
         'sqlsrv' => [
