@@ -15,16 +15,18 @@ class AbsenStaffExport implements FromCollection, WithMapping, WithHeadings
      * @return \Illuminate\Support\Collection
      */
     protected $bulan;
-    public function __construct($bulan)
+    public function __construct($bulan, $tahun)
     {
         $this->bulan = $bulan;
+        $this->tahun = $tahun;
     }
 
     public function collection()
     {
         $bulan = $this->bulan;
-        return Pegawai::with(['absenStaff' => function ($q) use ($bulan) {
-            $q->whereMonth('tanggal', $bulan)->whereYear('tanggal', date('Y'))->where('hadir', 1);
+        $tahun = $this->tahun;
+        return Pegawai::with(['absenStaff' => function ($q) use ($bulan, $tahun) {
+            $q->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->where('hadir', 1);
         }])->where('is_staff', 1)->get();
     }
 
