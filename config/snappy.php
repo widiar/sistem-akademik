@@ -1,4 +1,7 @@
 <?php
+if (env("APP_ENV") != "local")
+    $bin = '"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"';
+else $bin = base_path('vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64');
 
 return [
 
@@ -35,14 +38,14 @@ return [
 
     'pdf' => [
         'enabled' => true,
-        'binary'  => '"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"',
+        'binary'  => $bin,
         'timeout' => false,
         'options' => [],
         'env'     => [],
     ],
 
     'image' => [
-        'enabled' => true,
+        'enabled' => false,
         'binary'  => '"C:\Program Files\wkhtmltopdf\bin\wkhtmltoimage.exe"',
         'timeout' => false,
         'options' => [],

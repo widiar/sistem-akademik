@@ -38,20 +38,29 @@
                 <tr>
                     <td>{{ ++$no }}</td>
                     <td class="text-center">
+                        @env('local')
                         <a href="{{ Storage::url('rekap-absen-dosen/excel/' . $ban->excel) }}" class="mx-2">
                             <button class="btn btn-sm btn-success"><i class="fas fa-file-excel"></i></button>
                         </a>
                         <a href="{{ Storage::url('rekap-absen-dosen/pdf/' . $ban->pdf) }}" class="mx-2">
                             <button class="btn btn-sm btn-danger"><i class="fas fa-file-pdf"></i></button>
                         </a>
+                        @endenv
+                        @env('heroku')
+                        <a href="{{ json_decode($ban->pdf)->url }}" class="mx-2">
+                            <button class="btn btn-sm btn-danger"><i class="fas fa-file-pdf"></i></button>
+                        </a>
+                        @endenv
                     </td>
                     <td>{{ date('F', mktime(0, 0, 0, $ban->bulan, 10)) }}</td>
                     <td>{{ date('d/m/y h:i A', strtotime($ban->updated_at)) }}</td>
                     <td class="text-center">
                         <div class="row" style="min-width: 100px">
+                            @env('local')
                             <a href="{{ Storage::url('rekap-absen-dosen/pdf/' . $ban->pdf) }}" class="mx-3 printt">
                                 <button class="btn btn-sm btn-warning"><i class="fas fa-print"></i></button>
                             </a>
+                            @endenv
                             <form action="{{ route('admin.delete.rekap.absen.dosen', $ban->id) }}" method="POST"
                                 class="deleted">
                                 @method("DELETE")

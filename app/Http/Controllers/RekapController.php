@@ -16,9 +16,19 @@ use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use ImageKit\ImageKit;
 
 class RekapController extends Controller
 {
+    protected function imageKit()
+    {
+        return new ImageKit(
+            env('IMAGE_KIT_PUBLIC_KEY'),
+            env('IMAGE_KIT_SECRET_KEY'),
+            env('IMAGE_KIT_ENDPOINT')
+        );
+    }
     public function dosen()
     {
         // $tmp = explode("-", '09-2021');
@@ -48,13 +58,6 @@ class RekapController extends Controller
         $excel = $filename . ".xlsx";
         $fpdf = $filename . ".pdf";
 
-        RekapDosen::create([
-            'excel' => '-',
-            'pdf' => $fpdf,
-            'tahun' => $tahun,
-            'bulan' => $bulan
-        ]);
-
         //add excel
         // Excel::store(new DosenExport, 'rekap-dosen/excel/' . $excel, 'public');
 
@@ -63,7 +66,37 @@ class RekapController extends Controller
             $q->where('bulan', $bulan)->where('tahun', $tahun);
         }])->where('is_dosen', true)->get();
         $pdf = PDF::loadView('admin.akademik.pdfRekapDosen', compact('dosen', 'bulan', 'tahun'));
-        $pdf->setPaper('a4')->setOrientation('landscape')->setOption('header-html', view('header'))->save('storage/rekap-dosen/pdf/' . $fpdf);
+        if (env('APP_ENV') == 'heroku') {
+            $imageKit = $this->imageKit();
+            $path = base_path('public/uploads/files/');
+            $pdf->setPaper('a4')->setOrientation('landscape')->setOption('header-html', view('header'))->save($path . $fpdf);
+            $uploadFile = $imageKit->upload([
+                'file' => fopen($path . $fpdf, "r"),
+                'fileName' => $fpdf,
+                'folder' => "sistem-akademik//rekap-dosen//pdf//"
+            ]);
+            //store db
+            RekapDosen::create([
+                'excel' => '-',
+                'pdf' => json_encode([
+                    "field" => $uploadFile->success->fileId,
+                    "url" => $uploadFile->success->url,
+                ]),
+                'tahun' => $tahun,
+                'bulan' => $bulan
+            ]);
+            File::delete($path . $fpdf);
+        } else {
+            $pdf->setPaper('a4')->setOrientation('landscape')->setOption('header-html', view('header'))->save('storage/rekap-dosen/pdf/' . $fpdf);
+            //store db
+            RekapDosen::create([
+                'excel' => '-',
+                'pdf' => $fpdf,
+                'tahun' => $tahun,
+                'bulan' => $bulan
+            ]);
+        }
+
 
         return response()->json('Sukses');
     }
@@ -71,8 +104,13 @@ class RekapController extends Controller
     public function deleteRekapDosen($id)
     {
         $rekap = RekapDosen::find($id);
-        Storage::disk('public')->delete('rekap-dosen/pdf/' . $rekap->pdf);
-        Storage::disk('public')->delete('rekap-dosen/excel/' . $rekap->excel);
+        if (env('APP_ENV') == 'heroku') {
+            $imageKit = $this->imageKit();
+            $imageKit->deleteFile(json_decode($rekap->pdf)->field);
+        } else {
+            Storage::disk('public')->delete('rekap-dosen/pdf/' . $rekap->pdf);
+            Storage::disk('public')->delete('rekap-dosen/excel/' . $rekap->excel);
+        }
         $rekap->delete();
         return response()->json('Sukses');
     }
@@ -123,17 +161,6 @@ class RekapController extends Controller
         $month = $bulan;
         $year = $tahun;
 
-        RekapAbsen::create([
-            'excel' => $excel,
-            'pdf' => $fpdf,
-            'tahun' => $year,
-            'bulan' => $month,
-            'is_staff' => false
-        ]);
-
-        //add excel
-        Excel::store(new AbsenDosenExport($month, $year), 'rekap-absen-dosen/excel/' . $excel, 'public');
-
         //pdf
         $regular = Pegawai::with(['absenDosen' => function ($q) use ($month, $year) {
             $q->whereMonth('tanggal', $month)->whereYear('tanggal', $year)->where('hadir', 1)->where('kategori', 'Regular');
@@ -155,7 +182,39 @@ class RekapController extends Controller
             'inter',
             'tahun'
         ));
-        $pdf->setPaper('a4')->setOption('header-html', view('header'))->save('storage/rekap-absen-dosen/pdf/' . $fpdf);
+        if (env('APP_ENV') == 'heroku') {
+            $imageKit = $this->imageKit();
+            $path = base_path('public/uploads/files/');
+            $pdf->setPaper('a4')->setOption('header-html', view('header'))->save($path . $fpdf);
+            $uploadFile = $imageKit->upload([
+                'file' => fopen($path . $fpdf, "r"),
+                'fileName' => $fpdf,
+                'folder' => "sistem-akademik//rekap-absen-dosen//pdf//"
+            ]);
+            RekapAbsen::create([
+                'excel' => '-',
+                'pdf' => json_encode([
+                    "field" => $uploadFile->success->fileId,
+                    "url" => $uploadFile->success->url,
+                ]),
+                'tahun' => $year,
+                'bulan' => $month,
+                'is_staff' => false
+            ]);
+            File::delete($path . $fpdf);
+        } else {
+            //add excel
+            Excel::store(new AbsenDosenExport($month, $year), 'rekap-absen-dosen/excel/' . $excel, 'public');
+            $pdf->setPaper('a4')->setOption('header-html', view('header'))->save('storage/rekap-absen-dosen/pdf/' . $fpdf);
+            RekapAbsen::create([
+                'excel' => $excel,
+                'pdf' => $fpdf,
+                'tahun' => $year,
+                'bulan' => $month,
+                'is_staff' => false
+            ]);
+        }
+
 
         return response()->json('Sukses');
     }
@@ -163,8 +222,13 @@ class RekapController extends Controller
     public function deleteAbsenDosen($id)
     {
         $rekap = RekapAbsen::find($id);
-        Storage::disk('public')->delete('rekap-absen-dosen/pdf/' . $rekap->pdf);
-        Storage::disk('public')->delete('rekap-absen-dosen/excel/' . $rekap->excel);
+        if (env('APP_ENV') == 'heroku') {
+            $imageKit = $this->imageKit();
+            $imageKit->deleteFile(json_decode($rekap->pdf)->field);
+        } else {
+            Storage::disk('public')->delete('rekap-absen-dosen/pdf/' . $rekap->pdf);
+            Storage::disk('public')->delete('rekap-absen-dosen/excel/' . $rekap->excel);
+        }
         $rekap->delete();
         return response()->json('Sukses');
     }
