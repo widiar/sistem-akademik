@@ -27,9 +27,11 @@ class CreateDetailDosensTable extends Migration
             $table->bigInteger('interPraktek')->nullable();
             $table->bigInteger('kerjaPraktek')->nullable();
             $table->bigInteger('skripsi1')->nullable();
-            $table->bigInteger('skripsi2')->nullable();
+            $table->bigInteger('skripsi2Pembimbing1')->nullable();
+            $table->bigInteger('skripsi2Pembimbing2')->nullable();
             $table->bigInteger('ta1')->nullable();
-            $table->bigInteger('ta2')->nullable();
+            $table->bigInteger('ta2Pembimbing1')->nullable();
+            $table->bigInteger('ta2Pembimbing2')->nullable();
             $table->bigInteger('seminarSkripsi')->nullable();
             $table->bigInteger('seminarTerbuka')->nullable();
             $table->bigInteger('proposal')->nullable();

@@ -20,6 +20,8 @@ class CreateMataKuliahsTable extends Migration
             $table->string("jam");
             $table->string("hari");
             $table->integer("sks");
+            $table->string('kategori');
+            $table->unsignedBigInteger('pegawai_id');
             $table->timestamps();
         });
     }

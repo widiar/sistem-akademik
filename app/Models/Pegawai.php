@@ -14,7 +14,7 @@ class Pegawai extends Model
 
     public function dosen()
     {
-        return $this->belongsToMany(KategoriDosen::class, 'dosen', 'pegawai_id', 'kategori_id')->withPivot('semester_ganjil', 'semester_genap');
+        return $this->hasMany(Dosen::class, 'pegawai_id');
     }
 
     public function staff()
@@ -24,7 +24,7 @@ class Pegawai extends Model
 
     public function matakuliah()
     {
-        return $this->belongsToMany(MataKuliah::class, 'dosen_matakuliah', 'pegawai_id', 'matakuliah_id');
+        return $this->hasMany(MataKuliah::class, 'pegawai_id', 'id');
     }
 
     public function absenDosen()

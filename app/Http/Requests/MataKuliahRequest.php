@@ -34,6 +34,7 @@ class MataKuliahRequest extends FormRequest
             'jam' => 'required',
             'hari' => 'required',
             'sks' => 'required|integer',
+            'kategori' => 'required'
         ];
     }
 }

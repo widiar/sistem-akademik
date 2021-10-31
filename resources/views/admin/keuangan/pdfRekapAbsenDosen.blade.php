@@ -34,21 +34,31 @@
 </head>
 
 <body>
-    <h3 class="text-center">Hasil Rekap Absensi Dosen Bulan {{ date('F', mktime(0, 0, 0, $month, 10)) }}</h3>
+    <h3 class="text-center">Hasil Rekap Absensi Dosen Bulan {{ date('F', mktime(0, 0, 0, $month, 10)) }} {{ $tahun }}
+    </h3>
     <table class="table">
         <thead class="text-center">
             <tr>
                 <th style="vertical-align: middle">NIP</th>
                 <th style="vertical-align: middle">Nama</th>
-                <th>Total Kehadiran</th>
+                <th>Regular</th>
+                <th>Karyawan</th>
+                <th>Eksekutif / Semester Pendek</th>
+                <th>International Teori</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($absen as $data)
+            @php
+            $no = 0;
+            @endphp
+            @foreach ($regular as $data)
             <tr>
                 <td>{{ $data->nip }}</td>
                 <td>{{ $data->nama }}</td>
                 <td class="text-center">{{ $data->absenDosen->count() }}</td>
+                <td class="text-center">{{ $karyawan[$no]->absenDosen->count() }}</td>
+                <td class="text-center">{{ $eksekutif[$no]->absenDosen->count() }}</td>
+                <td class="text-center">{{ $inter[$no++]->absenDosen->count() }}</td>
             </tr>
             @endforeach
         </tbody>

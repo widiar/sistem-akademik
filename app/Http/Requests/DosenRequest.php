@@ -25,46 +25,48 @@ class DosenRequest extends FormRequest
     public function rules()
     {
         $additional = [];
-        if (is_array($this->kategori) && in_array(1, $this->kategori)) {
-            $additional['taGanjil'] = 'required|numeric';
-            $additional['ta1Ganjil'] = 'required|numeric';
-            $additional['ta2Ganjil'] = 'required|numeric';
-            $additional['taGenap'] = 'required|numeric';
-            $additional['ta1Genap'] = 'required|numeric';
-            $additional['ta2Genap'] = 'required|numeric';
+        if ($this->ta1 > 0) {
+            $additional['ta1Nama'] = 'required';
         }
-        if (is_array($this->kategori) && in_array(2, $this->kategori)) {
-            $additional['skripsiGanjil'] = 'required|numeric';
-            $additional['skripsi1Ganjil'] = 'required|numeric';
-            $additional['skripsi2Ganjil'] = 'required|numeric';
-            $additional['skripsiGenap'] = 'required|numeric';
-            $additional['skripsi1Genap'] = 'required|numeric';
-            $additional['skripsi2Genap'] = 'required|numeric';
+        if ($this->ta2pembimbing1 > 0) {
+            $additional['ta2pembimbing1nama'] = 'required';
         }
-        if (is_array($this->kategori) && in_array(6, $this->kategori)) {
-            $additional['kpGanjil'] = 'required|numeric';
-            $additional['kpGenap'] = 'required|numeric';
+        if ($this->ta2pembimbing2 > 0) {
+            $additional['ta2pembimbing2nama'] = 'required';
         }
-        if (is_array($this->kategori) && in_array(4, $this->kategori)) {
-            $additional['koorGanjil'] = 'required|numeric';
-            $additional['koorGenap'] = 'required|numeric';
+        if ($this->skripsi1 > 0) {
+            $additional['skripsi1Nama'] = 'required';
         }
-        if (is_array($this->kategori) && in_array(5, $this->kategori)) {
-            $additional['waliGanjil'] = 'required|numeric';
-            $additional['waliGenap'] = 'required|numeric';
+        if ($this->skripsi2pembimbing1 > 0) {
+            $additional['skripsi2pembimbing1nama'] = 'required';
+        }
+        if ($this->skripsi2pembimbing2 > 0) {
+            $additional['skripsi2pembimbing2nama'] = 'required';
         }
 
         return [
             'nip' => 'required',
             'nama' => 'required',
-            'kategori' => 'required',
+            'ta1' => 'required',
+            'ta2pembimbing1' => 'required|numeric',
+            'ta2pembimbing2' => 'required|numeric',
+            'skripsi1' => 'required|numeric',
+            'skripsi2pembimbing1' => 'required|numeric',
+            'skripsi2pembimbing2' => 'required|numeric',
+            'seminarSkripsi' => 'required|numeric',
+            'seminarTerbuka' => 'required|numeric',
+            'proposal' => 'required|numeric',
+            'pengujiTugasAkhir' => 'required|numeric',
+            'koordinator' => 'required|numeric',
+            'wali' => 'required|numeric',
+            'kerjaPraktek' => 'required|numeric',
         ] + $additional;
     }
 
     public function messages()
     {
         return [
-            'required' => 'This field is required',
+            // 'required' => 'This field is required',
         ];
     }
 }

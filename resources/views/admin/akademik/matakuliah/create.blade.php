@@ -53,11 +53,22 @@
                 @enderror
             </div>
 
+            <div class="form-group">
+                <label for="">Kategori</label>
+                <select name="kategori" id="kategori" required class="custom-select form-control">
+                    <option></option>
+                    <option value="Regular">Regular</option>
+                    <option value="Karyawan">Karyawan</option>
+                    <option value="Eksekutif / Semester Pendek">Eksekutif / Semester Pendek</option>
+                    <option value="International Teori">International Teori</option>
+                </select>
+            </div>
+
             <div class="listDosen">
                 <div class="dosen">
                     <div class="form-group mb-3">
                         <label for="text">Dosen</label>
-                        <select name="dosen[]" required class="custom-select dosenselect form-control">
+                        <select name="dosen" required class="custom-select dosenselect form-control">
                         </select>
                     </div>
                 </div>
@@ -108,8 +119,13 @@
         $(".listDosen").append(komponenDosen);
         initDosen()
     }
+
+    $('#kategori').select2({
+        theme: "bootstrap",
+        placeholder: 'Select kategori'
+    })
     
-    $(".addButton").click(addDosen)
+    // $(".addButton").click(addDosen)
 
     $("body").on("click", ".btn-hapus", function(){
          $(this).parent().remove();

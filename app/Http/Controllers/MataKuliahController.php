@@ -26,22 +26,21 @@ class MataKuliahController extends Controller
 
     public function store(MataKuliahRequest $request)
     {
-        $matakuliah = MataKuliah::create([
+        MataKuliah::create([
             'kode' => $request->kode,
             'nama' => $request->nama,
             'jam' => $request->jam,
             'hari' => $request->hari,
             'sks' => $request->sks,
+            'kategori' => $request->kategori,
+            'pegawai_id' => $request->dosen
         ]);
-        $matakuliah->dosen()->attach($request->dosen);
         return redirect()->route('admin.matakuliah.index')->with(['success' => 'Berhasil menambah matakuliah']);
     }
 
     public function edit(MataKuliah $matakuliah)
     {
-        // dd($matakuliah->dosen);
-        $dosen = Pegawai::where('is_dosen', 1)->get();
-        return view('admin.akademik.matakuliah.edit', compact('matakuliah', 'dosen'));
+        return view('admin.akademik.matakuliah.edit', compact('matakuliah'));
     }
 
     public function update(MataKuliahRequest $request, MataKuliah $matakuliah)
@@ -51,8 +50,9 @@ class MataKuliahController extends Controller
         $matakuliah->jam = $request->jam;
         $matakuliah->hari = $request->hari;
         $matakuliah->sks = $request->sks;
+        $matakuliah->kategori = $request->kategori;
+        $matakuliah->pegawai_id = $request->dosen;
         $matakuliah->save();
-        $matakuliah->dosen()->sync($request->dosen);
         return redirect()->route('admin.matakuliah.index')->with(['success' => 'Berhasil update matakuliah']);
     }
 

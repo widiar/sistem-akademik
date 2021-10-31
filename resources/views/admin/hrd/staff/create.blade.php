@@ -378,49 +378,69 @@
                         </div>
                     </div>
                 </div>
-                <h5>Skripsi</h5>
+                <h5>Skripsi I</h5>
+                <div class="form-group">
+                    <label for="skripsi1">Skripsi I</label>
+                    <input type="text" name="skripsi1" class="form-control  @error('skripsi1') is-invalid @enderror"
+                        value="{{ old('skripsi1', @$gaji->skripsi1) }}">
+                    @error('skripsi1')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <h5>Skripsi II</h5>
                 <div class="row">
                     <div class="col-md-6 col-sm-12">
                         <div class="form-group">
-                            <label for="skripsi1">Skripsi I</label>
-                            <input type="text" name="skripsi1"
-                                class="form-control  @error('skripsi1') is-invalid @enderror"
-                                value="{{ old('skripsi1', @$gaji->skripsi1) }}">
-                            @error('skripsi1')
+                            <label for="skripsi2Pembimbing1">Pembimbing I</label>
+                            <input type="text" name="skripsi2Pembimbing1"
+                                class="form-control  @error('skripsi2Pembimbing1') is-invalid @enderror"
+                                value="{{ old('skripsi2Pembimbing1', @$gaji->skripsi2Pembimbing1) }}">
+                            @error('skripsi2Pembimbing1')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-12">
                         <div class="form-group">
-                            <label for="skripsi2">Skripsi II</label>
-                            <input type="text" name="skripsi2"
-                                class="form-control  @error('skripsi2') is-invalid @enderror"
-                                value="{{ old('skripsi2', @$gaji->skripsi2) }}">
-                            @error('skripsi2')
+                            <label for="skripsi2Pembimbing2">Pembimbing II</label>
+                            <input type="text" name="skripsi2Pembimbing2"
+                                class="form-control  @error('skripsi2Pembimbing2') is-invalid @enderror"
+                                value="{{ old('skripsi2Pembimbing2', @$gaji->skripsi2Pembimbing2) }}">
+                            @error('skripsi2Pembimbing2')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
                 </div>
-                <h5>Tugas Akhir</h5>
+                <h5>Tugas Akhir I</h5>
+                <div class="form-group">
+                    <label for="ta1">Tugas Akhir I</label>
+                    <input type="text" name="ta1" class="form-control  @error('ta1') is-invalid @enderror"
+                        value="{{ old('ta1', @$gaji->ta1) }}">
+                    @error('ta1')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <h5>Tugas Akhir II</h5>
                 <div class="row">
                     <div class="col-md-6 col-sm-12">
                         <div class="form-group">
-                            <label for="ta1">Tugas Akhir I</label>
-                            <input type="text" name="ta1" class="form-control  @error('ta1') is-invalid @enderror"
-                                value="{{ old('ta1', @$gaji->ta1) }}">
-                            @error('ta1')
+                            <label for="ta2Pembimbing1">Pembimbing I</label>
+                            <input type="text" name="ta2Pembimbing1"
+                                class="form-control  @error('ta2Pembimbing1') is-invalid @enderror"
+                                value="{{ old('ta2Pembimbing1', @$gaji->ta2Pembimbing1) }}">
+                            @error('ta2Pembimbing1')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-12">
                         <div class="form-group">
-                            <label for="ta2">Tugas Akhir II</label>
-                            <input type="text" name="ta2" class="form-control  @error('ta2') is-invalid @enderror"
-                                value="{{ old('ta2', @$gaji->ta2) }}">
-                            @error('ta2')
+                            <label for="ta2Pembimbing2">Pembimbing II</label>
+                            <input type="text" name="ta2Pembimbing2"
+                                class="form-control  @error('ta2Pembimbing2') is-invalid @enderror"
+                                value="{{ old('ta2Pembimbing2', @$gaji->ta2Pembimbing2) }}">
+                            @error('ta2Pembimbing2')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>

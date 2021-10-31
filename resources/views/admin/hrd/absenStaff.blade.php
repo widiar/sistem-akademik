@@ -114,7 +114,6 @@
         
         if (kehadiran.length === totalDosen){
             let tgl = $("#tgl").val()
-            toastr.success("Mantap")
             $.ajax({
                 url: urlPost,
                 method: 'POST',
@@ -124,7 +123,7 @@
                     tanggal: tgl
                 },
                 success: (res) => {
-                    if (res.status == 200) window.location.href = ''
+                    if (res.status == 200)toastr.success("Berhasil menyimpan absen", "Absen")
                 }
             })
         }else toastr.info("Harap absen semua", "Absen")

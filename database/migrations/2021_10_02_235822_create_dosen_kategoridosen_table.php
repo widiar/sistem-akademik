@@ -16,10 +16,27 @@ class CreateDosenKategoridosenTable extends Migration
         Schema::create('dosen', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('pegawai_id');
-            $table->unsignedBigInteger('kategori_id');
-            $table->text('semester_ganjil')->nullable();
-            $table->text('semester_genap')->nullable();
-            $table->string('tahun_ajaran');
+            $table->string('bulan')->nullable();
+            $table->string('tahun')->nullable();
+            $table->integer('tugas_akhir_1')->nullable();
+            $table->text('tugas_akhir_1_nama')->nullable();
+            $table->integer('tugas_akhir_2_pembimbing_1')->nullable();
+            $table->text('tugas_akhir_2_pembimbing_1_nama')->nullable();
+            $table->integer('tugas_akhir_2_pembimbing_2')->nullable();
+            $table->text('tugas_akhir_2_pembimbing_2_nama')->nullable();
+            $table->integer('skripsi_1')->nullable();
+            $table->text('skripsi_1_nama')->nullable();
+            $table->integer('skripsi_2_pembimbing_1')->nullable();
+            $table->text('skripsi_2_pembimbing_1_nama')->nullable();
+            $table->integer('skripsi_2_pembimbing_2')->nullable();
+            $table->text('skripsi_2_pembimbing_2_nama')->nullable();
+            $table->integer('penguji_seminar_skripsi')->nullable();
+            $table->integer('penguji_seminar_terbuka')->nullable();
+            $table->integer('penguji_proposal_TA')->nullable();
+            $table->integer('penguji_tugas_akhir')->nullable();
+            $table->integer('koordinator')->nullable();
+            $table->integer('wali')->nullable();
+            $table->integer('kerja_praktek')->nullable();
             $table->timestamps();
         });
     }

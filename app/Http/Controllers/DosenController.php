@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\DosenRequest;
+use App\Models\Dosen;
 use App\Models\KategoriDosen;
 use App\Models\Pegawai;
 use Illuminate\Http\Request;
@@ -77,23 +78,40 @@ class DosenController extends Controller
     }
     */
 
+    public function laporanBulanan()
+    {
+        $m = date('n');
+        $bulan = array_slice(getBulan(), 0, $m);
+        $dosen = Pegawai::where('is_dosen', true)->get();
+        return view('admin.akademik.laporanBulanan',  compact('dosen', 'bulan'));
+    }
+
     public function show($id)
     {
         //
     }
 
-    public function edit(Pegawai $pegawai)
+    public function edit(Pegawai $pegawai, $bulan)
     {
-        $tmp = [];
+        $bulanTahun = $bulan;
+        $tmp = explode("-", $bulan);
+        $bulan = $tmp[0];
+        $tahun = $tmp[1];
+
         if ($pegawai->is_dosen === FALSE || $pegawai->is_dosen === NULL) abort(404);
+        $pegawai = $pegawai->load(['dosen' => function ($q) use ($bulan, $tahun) {
+            $q->where('bulan', $bulan)->where('tahun', $tahun);
+        }]);
+        // dd($pegawai);
+        return view('admin.akademik.editDosen', compact('bulanTahun', 'pegawai'));
+        /*
         $kategori = KategoriDosen::all();
-        // dd($pegawai->dosen);
-        $ta = $pegawai->dosen()->where('kategori_id', 1)->wherePivot('tahun_ajaran', tahunAjaran())->first();
-        $skripsi = $pegawai->dosen()->where('kategori_id', 2)->wherePivot('tahun_ajaran', tahunAjaran())->first();
-        $penguji = $pegawai->dosen()->where('kategori_id', 3)->wherePivot('tahun_ajaran', tahunAjaran())->first();
-        $koor = $pegawai->dosen()->where('kategori_id', 4)->wherePivot('tahun_ajaran', tahunAjaran())->first();
-        $wali = $pegawai->dosen()->where('kategori_id', 5)->wherePivot('tahun_ajaran', tahunAjaran())->first();
-        $kp = $pegawai->dosen()->where('kategori_id', 6)->wherePivot('tahun_ajaran', tahunAjaran())->first();
+        $ta = $pegawai->dosen()->where('kategori_id', 1)->wherePivot('bulan', $bulan)->wherePivot('tahun', $tahun)->first();
+        $skripsi = $pegawai->dosen()->where('kategori_id', 2)->wherePivot('bulan', $bulan)->wherePivot('tahun', $tahun)->first();
+        $penguji = $pegawai->dosen()->where('kategori_id', 3)->wherePivot('bulan', $bulan)->wherePivot('tahun', $tahun)->first();
+        $koor = $pegawai->dosen()->where('kategori_id', 4)->wherePivot('bulan', $bulan)->wherePivot('tahun', $tahun)->first();
+        $wali = $pegawai->dosen()->where('kategori_id', 5)->wherePivot('bulan', $bulan)->wherePivot('tahun', $tahun)->first();
+        $kp = $pegawai->dosen()->where('kategori_id', 6)->wherePivot('bulan', $bulan)->wherePivot('tahun', $tahun)->first();
         // dd(json_decode($ta->pivot->semester_ganjil));
         // $sks = $pembimbing = $penguji = $koor = $wali = null;
         return view('admin.akademik.editDosen', compact(
@@ -104,102 +122,49 @@ class DosenController extends Controller
             'penguji',
             'koor',
             'wali',
-            'kp'
+            'kp',
+            'bulanTahun'
         ));
+        */
     }
 
     public function update(DosenRequest $request, Pegawai $dosen)
     {
         // dd($request->sksGanjil);
         // dd($request->all());
+        $tmp = explode("-", $request->bulanTahun);
+        $bulan = $tmp[0];
+        $tahun = $tmp[1];
+        $data = Dosen::firstOrCreate([
+            'pegawai_id' => $dosen->id,
+            'bulan' => $bulan,
+            'tahun' => $tahun
+        ]);
+        $data->tugas_akhir_1 = $request->ta1;
+        $data->tugas_akhir_1_nama = json_encode(($request->ta1Nama) ? $request->ta1Nama : []);
+        $data->tugas_akhir_2_pembimbing_1 = $request->ta2pembimbing1;
+        $data->tugas_akhir_2_pembimbing_1_nama = json_encode(($request->ta2pembimbing1nama) ? $request->ta2pembimbing1nama : []);
+        $data->tugas_akhir_2_pembimbing_2 = $request->ta2pembimbing2;
+        $data->tugas_akhir_2_pembimbing_2_nama = json_encode(($request->ta2pembimbing2nama) ? $request->ta2pembimbing2nama : []);
 
-        $data = [];
-        if (in_array(1, $request->kategori)) {
-            $ganjil = [
-                'ganjil' => $request->taGanjil,
-                'ta1' => $request->ta1Ganjil,
-                'ta2' => $request->ta2Ganjil
-            ];
-            $genap = [
-                'genap' => $request->taGenap,
-                'ta1' => $request->ta1Genap,
-                'ta2' => $request->ta2Genap
-            ];
-            $data[1] = [
-                'semester_ganjil' => json_encode($ganjil),
-                'semester_genap' => json_encode($genap),
-                'tahun_ajaran' => tahunAjaran()
-            ];
-        }
-        if (in_array(2, $request->kategori)) {
-            $ganjil = [
-                'ganjil' => $request->skripsiGanjil,
-                'skripsi1' => $request->skripsi1Ganjil,
-                'skripsi2' => $request->skripsi2Ganjil
-            ];
-            $genap = [
-                'genap' => $request->skripsiGenap,
-                'skripsi1' => $request->skripsi1Genap,
-                'skripsi2' => $request->skripsi2Genap
-            ];
-            $data[2] = [
-                'semester_ganjil' => json_encode($ganjil),
-                'semester_genap' => json_encode($genap),
-                'tahun_ajaran' => tahunAjaran()
-            ];
-        }
-        if (in_array(3, $request->kategori)) {
-            $data[3] = [
-                'semester_ganjil' => 0,
-                'semester_genap' =>  0,
-                'tahun_ajaran' => tahunAjaran()
-            ];
-        }
-        if (in_array(4, $request->kategori)) {
-            $ganjil = [
-                'ganjil' => $request->koorGanjil,
-            ];
-            $genap = [
-                'genap' => $request->koorGenap,
-            ];
-            $data[4] = [
-                'semester_ganjil' => json_encode($ganjil),
-                'semester_genap' => json_encode($genap),
-                'tahun_ajaran' => tahunAjaran()
-            ];
-        }
-        if (in_array(5, $request->kategori)) {
-            $ganjil = [
-                'ganjil' => $request->waliGanjil,
-            ];
-            $genap = [
-                'genap' => $request->waliGenap,
-            ];
-            $data[5] = [
-                'semester_ganjil' => json_encode($ganjil),
-                'semester_genap' => json_encode($genap),
-                'tahun_ajaran' => tahunAjaran()
-            ];
-        }
-        if (in_array(6, $request->kategori)) {
-            $ganjil = [
-                'ganjil' => $request->kpGanjil,
-            ];
-            $genap = [
-                'genap' => $request->kpGenap,
-            ];
-            $data[6] = [
-                'semester_ganjil' => json_encode($ganjil),
-                'semester_genap' => json_encode($genap),
-                'tahun_ajaran' => tahunAjaran()
-            ];
-        }
+        $data->skripsi_1 = $request->skripsi1;
+        $data->skripsi_1_nama = json_encode(($request->skripsi1Nama) ? $request->skripsi1Nama : []);
+        $data->skripsi_2_pembimbing_1 = $request->skripsi2pembimbing1;
+        $data->skripsi_2_pembimbing_1_nama = json_encode(($request->skripsi2pembimbing1nama) ? $request->skripsi2pembimbing1nama : []);
+        $data->skripsi_2_pembimbing_2 = $request->skripsi2pembimbing2;
+        $data->skripsi_2_pembimbing_2_nama = json_encode(($request->skripsi2pembimbing2nama) ? $request->skripsi2pembimbing2nama : []);
 
-        $dosen->dosen()->sync($data);
-        $dosen->save();
+        $data->penguji_seminar_skripsi = $request->seminarSkripsi;
+        $data->penguji_seminar_terbuka =  $request->seminarTerbuka;
+        $data->penguji_proposal_TA =  $request->proposal;
+        $data->penguji_tugas_akhir = $request->pengujiTugasAkhir;
 
+        $data->koordinator =  $request->koordinator;
+        $data->wali = $request->wali;
+        $data->kerja_praktek = $request->kerjaPraktek;
+        $data->save();
 
-        return redirect()->route('admin.dosen')->with(['success' => 'Berhasil update dosen']);
+        return redirect()->route('admin.dosen.laporan.bulanan')->with(['success' => 'Berhasil update dosen']);
     }
 
     public function destroy(Pegawai $dosen)
