@@ -1,5 +1,5 @@
 <?php
-if (env("APP_ENV") != "local")
+if (env("APP_ENV") == "local")
     $bin = '"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"';
 else $bin = base_path('vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64');
 
