@@ -45,8 +45,8 @@ return [
     ],
 
     'image' => [
-        'enabled' => false,
-        'binary'  => '"C:\Program Files\wkhtmltopdf\bin\wkhtmltoimage.exe"',
+        'enabled' => true,
+        'binary'  => $bin,
         'timeout' => false,
         'options' => [],
         'env'     => [],

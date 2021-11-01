@@ -19,6 +19,7 @@
 
         .img-header {
             width: 70px;
+            height: auto;
             margin-right: 20px;
         }
 
@@ -33,7 +34,8 @@
 
 <body>
     <table class="kop">
-        <td><img src="{{ asset('assets/img/favicon.png') }}" class="img-header" alt=""></td>
+        <td><img src="https://ik.imagekit.io/prbydmwbm8c/favicon_6ZU04mhrG.PNG" class="img-header" alt="logo stikom">
+        </td>
         <td class="kop-isi">
             <h3>INSTITUT TEKNOLOGI DAN BISNIS</h3>
             <h2>(ITB) STIKOM BALI</h2>
