@@ -118,7 +118,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('rekap/absen-staff', [RekapController::class, 'absenStaff'])->name('rekap.absen.staff');
 
             //dev
-            Route::get('dev', [RekapController::class, 'dev']);
+            // Route::get('dev', [RekapController::class, 'dev']);
         });
     });
 });
