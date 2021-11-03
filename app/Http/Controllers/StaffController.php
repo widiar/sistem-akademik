@@ -61,10 +61,10 @@ class StaffController extends Controller
                 'interTeori' => $request->interTeori,
                 'interPraktek' => $request->interPraktek,
                 'kerjaPraktek' => $request->kerjaPraktek,
-                'skripsi1' => $request->skripsi1,
+                // 'skripsi1' => $request->skripsi1,
                 'skripsi2Pembimbing1' => $request->skripsi2Pembimbing1,
                 'skripsi2Pembimbing2' => $request->skripsi2Pembimbing2,
-                'ta1' => $request->ta1,
+                // 'ta1' => $request->ta1,
                 'ta2Pembimbing1' => $request->ta2Pembimbing1,
                 'ta2Pembimbing2' => $request->ta2Pembimbing2,
                 'seminarSkripsi' => $request->seminarSkripsi,
@@ -157,10 +157,10 @@ class StaffController extends Controller
             $detailDosen->interTeori = $request->interTeori;
             $detailDosen->interPraktek = $request->interPraktek;
             $detailDosen->kerjaPraktek = $request->kerjaPraktek;
-            $detailDosen->skripsi1 = $request->skripsi1;
+            // $detailDosen->skripsi1 = $request->skripsi1;
             $detailDosen->skripsi2Pembimbing1 = $request->skripsi2Pembimbing1;
             $detailDosen->skripsi2Pembimbing2 = $request->skripsi2Pembimbing2;
-            $detailDosen->ta1 = $request->ta1;
+            // $detailDosen->ta1 = $request->ta1;
             $detailDosen->ta2Pembimbing1 = $request->ta2Pembimbing1;
             $detailDosen->ta2Pembimbing2 = $request->ta2Pembimbing2;
             $detailDosen->seminarSkripsi = $request->seminarSkripsi;

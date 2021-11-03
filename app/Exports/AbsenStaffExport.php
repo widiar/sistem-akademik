@@ -23,19 +23,44 @@ class AbsenStaffExport implements FromCollection, WithMapping, WithHeadings
 
     public function collection()
     {
-        $bulan = $this->bulan;
-        $tahun = $this->tahun;
-        return Pegawai::with(['absenStaff' => function ($q) use ($bulan, $tahun) {
-            $q->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->where('hadir', 1);
+        $month = $this->bulan;
+        $year = $this->tahun;
+        $absen = Pegawai::with(['absenStaff' => function ($q) use ($month, $year) {
+            $q->whereMonth('tanggal', $month)->whereYear('tanggal', $year);
         }])->where('is_staff', 1)->get();
+        $dt = [];
+        foreach ($absen as $as) {
+            $hadir = 0;
+            $izin = -2;
+            $telat = 0;
+            $alpha = 0;
+            foreach ($as->absenStaff as $absenStaff) {
+                if ($absenStaff->hadir == 1) $hadir += 1;
+                if ($absenStaff->izin == 1) $izin += 1;
+                if ($absenStaff->keterangan == 'telat' || $absenStaff->keterangan == 'nofinger' || $absenStaff == 'sethari') $telat += 1;
+                if ($absenStaff->keterangan == 'alpha') $alpha += 1;
+            }
+            $dt[] = [
+                'nip' => $as->nip,
+                'nama' => $as->nama,
+                'hadir' => $hadir,
+                'izin' => ($izin > 0) ? $izin : 0,
+                'telat' => $telat,
+                'alpha' => $alpha,
+            ];
+        }
+        return collect($dt);
     }
 
     public function map($data): array
     {
         return [
-            $data->nip,
-            $data->nama,
-            $data->absenStaff->count(),
+            $data['nip'],
+            $data['nama'],
+            ($data['hadir'] == 0) ? '0' : $data['hadir'],
+            ($data['izin'] == 0) ? '0' : $data['izin'],
+            ($data['telat'] == 0) ? '0' : $data['telat'],
+            ($data['alpha'] == 0) ? '0' : $data['alpha'],
         ];
     }
 
@@ -45,7 +70,10 @@ class AbsenStaffExport implements FromCollection, WithMapping, WithHeadings
             [
                 'NIP',
                 'NAMA',
-                'Total Kehadiran',
+                'Total Hadir',
+                'Total Izin',
+                'Total Telat',
+                'Total Alpha',
             ],
         ];
     }

@@ -41,15 +41,21 @@
             <tr>
                 <th style="vertical-align: middle">NIP</th>
                 <th style="vertical-align: middle">Nama</th>
-                <th>Total Kehadiran</th>
+                <th>Total Hadir</th>
+                <th>Total Izin/Sakit</th>
+                <th>Total Telat</th>
+                <th>Total Alpha</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($absen as $data)
+            @foreach ($data as $absen)
             <tr>
-                <td>{{ $data->nip }}</td>
-                <td>{{ $data->nama }}</td>
-                <td class="text-center">{{ $data->absenStaff->count() }}</td>
+                <td>{{ $absen->nip }}</td>
+                <td>{{ $absen->nama }}</td>
+                <td class="text-center">{{ $absen->hadir }}</td>
+                <td class="text-center">{{ $absen->izin }}</td>
+                <td class="text-center">{{ $absen->telat }}</td>
+                <td class="text-center">{{ $absen->alpha }}</td>
             </tr>
             @endforeach
         </tbody>

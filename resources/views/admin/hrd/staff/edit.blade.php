@@ -394,15 +394,6 @@
                         </div>
                     </div>
                 </div>
-                <h5>Skripsi I</h5>
-                <div class="form-group">
-                    <label for="skripsi1">Skripsi I</label>
-                    <input type="text" name="skripsi1" class="form-control  @error('skripsi1') is-invalid @enderror"
-                        value="{{ old('skripsi1', @$data->detailDosen->skripsi1) }}">
-                    @error('skripsi1')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
                 <h5>Skripsi II</h5>
                 <div class="row">
                     <div class="col-md-6 col-sm-12">
@@ -428,193 +419,184 @@
                         </div>
                     </div>
                 </div>
-                <<h5>Tugas Akhir I</h5>
-                    <div class="form-group">
-                        <label for="ta1">Tugas Akhir I</label>
-                        <input type="text" name="ta1" class="form-control  @error('ta1') is-invalid @enderror"
-                            value="{{ old('ta1', @$data->detailDosen->ta1) }}">
-                        @error('ta1')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <h5>Tugas Akhir II</h5>
-                    <div class="row">
-                        <div class="col-md-6 col-sm-12">
-                            <div class="form-group">
-                                <label for="ta2Pembimbing1">Pembimbing I</label>
-                                <input type="text" name="ta2Pembimbing1"
-                                    class="form-control  @error('ta2Pembimbing1') is-invalid @enderror"
-                                    value="{{ old('ta2Pembimbing1', @$data->detailDosen->ta2Pembimbing1) }}">
-                                @error('ta2Pembimbing1')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-12">
-                            <div class="form-group">
-                                <label for="ta2Pembimbing2">Pembimbing II</label>
-                                <input type="text" name="ta2Pembimbing2"
-                                    class="form-control  @error('ta2Pembimbing2') is-invalid @enderror"
-                                    value="{{ old('ta2Pembimbing2', @$data->detailDosen->ta2Pembimbing2) }}">
-                                @error('ta2Pembimbing2')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                <h5>Tugas Akhir II</h5>
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label for="ta2Pembimbing1">Pembimbing I</label>
+                            <input type="text" name="ta2Pembimbing1"
+                                class="form-control  @error('ta2Pembimbing1') is-invalid @enderror"
+                                value="{{ old('ta2Pembimbing1', @$data->detailDosen->ta2Pembimbing1) }}">
+                            @error('ta2Pembimbing1')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
-                    <h5>Penguji</h5>
-                    <div class="row">
-                        <div class="col-md-3 col-sm-12">
-                            <div class="form-group">
-                                <label for="seminarSkripsi">Seminar Skripsi</label>
-                                <input type="text" name="seminarSkripsi"
-                                    class="form-control  @error('seminarSkripsi') is-invalid @enderror"
-                                    value="{{ old('seminarSkripsi', @$data->detailDosen->seminarSkripsi) }}">
-                                @error('seminarSkripsi')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-12">
-                            <div class="form-group">
-                                <label for="seminarTerbuka">Seminar Terbuka</label>
-                                <input type="text" name="seminarTerbuka"
-                                    class="form-control  @error('seminarTerbuka') is-invalid @enderror"
-                                    value="{{ old('seminarTerbuka', @$data->detailDosen->seminarTerbuka) }}">
-                                @error('seminarTerbuka')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-12">
-                            <div class="form-group">
-                                <label for="proposal">Proposal Tugas Akhir</label>
-                                <input type="text" name="proposal"
-                                    class="form-control  @error('proposal') is-invalid @enderror"
-                                    value="{{ old('proposal', @$data->detailDosen->proposal) }}">
-                                @error('proposal')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-12">
-                            <div class="form-group">
-                                <label for="ngujiTA">Tugas Akhir</label>
-                                <input type="text" name="ngujiTA"
-                                    class="form-control  @error('ngujiTA') is-invalid @enderror"
-                                    value="{{ old('ngujiTA', @$data->detailDosen->ngujiTA) }}">
-                                @error('ngujiTA')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label for="ta2Pembimbing2">Pembimbing II</label>
+                            <input type="text" name="ta2Pembimbing2"
+                                class="form-control  @error('ta2Pembimbing2') is-invalid @enderror"
+                                value="{{ old('ta2Pembimbing2', @$data->detailDosen->ta2Pembimbing2) }}">
+                            @error('ta2Pembimbing2')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
-                    <h5>Koreksi</h5>
-                    <div class="row">
-                        <div class="col-md-4 col-sm-12">
-                            <div class="form-group">
-                                <label for="koreksiRegular">Regular</label>
-                                <input type="text" name="koreksiRegular"
-                                    class="form-control  @error('koreksiRegular') is-invalid @enderror"
-                                    value="{{ old('koreksiRegular', @$data->detailDosen->koreksiRegular) }}">
-                                @error('koreksiRegular')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-12">
-                            <div class="form-group">
-                                <label for="koreksiKaryawan">Karyawan</label>
-                                <input type="text" name="koreksiKaryawan"
-                                    class="form-control  @error('koreksiKaryawan') is-invalid @enderror"
-                                    value="{{ old('koreksiKaryawan', @$data->detailDosen->koreksiKaryawan) }}">
-                                @error('koreksiKaryawan')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-12">
-                            <div class="form-group">
-                                <label for="koreksiInter">International</label>
-                                <input type="text" name="koreksiInter"
-                                    class="form-control  @error('koreksiInter') is-invalid @enderror"
-                                    value="{{ old('koreksiInter', @$data->detailDosen->koreksiInter) }}">
-                                @error('koreksiInter')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                </div>
+                <h5>Penguji</h5>
+                <div class="row">
+                    <div class="col-md-3 col-sm-12">
+                        <div class="form-group">
+                            <label for="seminarSkripsi">Seminar Skripsi</label>
+                            <input type="text" name="seminarSkripsi"
+                                class="form-control  @error('seminarSkripsi') is-invalid @enderror"
+                                value="{{ old('seminarSkripsi', @$data->detailDosen->seminarSkripsi) }}">
+                            @error('seminarSkripsi')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
-                    <h5>Soal</h5>
-                    <div class="row">
-                        <div class="col-md-4 col-sm-12">
-                            <div class="form-group">
-                                <label for="soalRegular">Regular</label>
-                                <input type="text" name="soalRegular"
-                                    class="form-control  @error('soalRegular') is-invalid @enderror"
-                                    value="{{ old('soalRegular', @$data->detailDosen->soalRegular) }}">
-                                @error('soalRegular')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-12">
-                            <div class="form-group">
-                                <label for="soalKaryawan">Karyawan</label>
-                                <input type="text" name="soalKaryawan"
-                                    class="form-control  @error('soalKaryawan') is-invalid @enderror"
-                                    value="{{ old('soalKaryawan', @$data->detailDosen->soalKaryawan) }}">
-                                @error('soalKaryawan')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-12">
-                            <div class="form-group">
-                                <label for="soalInter">International</label>
-                                <input type="text" name="soalInter"
-                                    class="form-control  @error('soalInter') is-invalid @enderror"
-                                    value="{{ old('soalInter', @$data->detailDosen->soalInter) }}">
-                                @error('soalInter')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                    <div class="col-md-3 col-sm-12">
+                        <div class="form-group">
+                            <label for="seminarTerbuka">Seminar Terbuka</label>
+                            <input type="text" name="seminarTerbuka"
+                                class="form-control  @error('seminarTerbuka') is-invalid @enderror"
+                                value="{{ old('seminarTerbuka', @$data->detailDosen->seminarTerbuka) }}">
+                            @error('seminarTerbuka')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 col-sm-12">
-                            <div class="form-group">
-                                <label for="pengawas">Pengawas</label>
-                                <input type="text" name="pengawas"
-                                    class="form-control  @error('pengawas') is-invalid @enderror"
-                                    value="{{ old('pengawas', @$data->detailDosen->pengawas) }}">
-                                @error('pengawas')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-12">
-                            <div class="form-group">
-                                <label for="lemburPengawas">Lembur Pengawas</label>
-                                <input type="text" name="lemburPengawas"
-                                    class="form-control  @error('lemburPengawas') is-invalid @enderror"
-                                    value="{{ old('lemburPengawas', @$data->detailDosen->lemburPengawas) }}">
-                                @error('lemburPengawas')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-12">
-                            <div class="form-group">
-                                <label for="koor">Koor Mata Kuliah</label>
-                                <input type="text" name="koor" class="form-control  @error('koor') is-invalid @enderror"
-                                    value="{{ old('koor', @$data->detailDosen->koor) }}">
-                                @error('koor')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                    <div class="col-md-3 col-sm-12">
+                        <div class="form-group">
+                            <label for="proposal">Proposal Tugas Akhir</label>
+                            <input type="text" name="proposal"
+                                class="form-control  @error('proposal') is-invalid @enderror"
+                                value="{{ old('proposal', @$data->detailDosen->proposal) }}">
+                            @error('proposal')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
+                    <div class="col-md-3 col-sm-12">
+                        <div class="form-group">
+                            <label for="ngujiTA">Tugas Akhir</label>
+                            <input type="text" name="ngujiTA"
+                                class="form-control  @error('ngujiTA') is-invalid @enderror"
+                                value="{{ old('ngujiTA', @$data->detailDosen->ngujiTA) }}">
+                            @error('ngujiTA')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+                <h5>Koreksi</h5>
+                <div class="row">
+                    <div class="col-md-4 col-sm-12">
+                        <div class="form-group">
+                            <label for="koreksiRegular">Regular</label>
+                            <input type="text" name="koreksiRegular"
+                                class="form-control  @error('koreksiRegular') is-invalid @enderror"
+                                value="{{ old('koreksiRegular', @$data->detailDosen->koreksiRegular) }}">
+                            @error('koreksiRegular')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-12">
+                        <div class="form-group">
+                            <label for="koreksiKaryawan">Karyawan</label>
+                            <input type="text" name="koreksiKaryawan"
+                                class="form-control  @error('koreksiKaryawan') is-invalid @enderror"
+                                value="{{ old('koreksiKaryawan', @$data->detailDosen->koreksiKaryawan) }}">
+                            @error('koreksiKaryawan')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-12">
+                        <div class="form-group">
+                            <label for="koreksiInter">International</label>
+                            <input type="text" name="koreksiInter"
+                                class="form-control  @error('koreksiInter') is-invalid @enderror"
+                                value="{{ old('koreksiInter', @$data->detailDosen->koreksiInter) }}">
+                            @error('koreksiInter')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+                <h5>Soal</h5>
+                <div class="row">
+                    <div class="col-md-4 col-sm-12">
+                        <div class="form-group">
+                            <label for="soalRegular">Regular</label>
+                            <input type="text" name="soalRegular"
+                                class="form-control  @error('soalRegular') is-invalid @enderror"
+                                value="{{ old('soalRegular', @$data->detailDosen->soalRegular) }}">
+                            @error('soalRegular')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-12">
+                        <div class="form-group">
+                            <label for="soalKaryawan">Karyawan</label>
+                            <input type="text" name="soalKaryawan"
+                                class="form-control  @error('soalKaryawan') is-invalid @enderror"
+                                value="{{ old('soalKaryawan', @$data->detailDosen->soalKaryawan) }}">
+                            @error('soalKaryawan')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-12">
+                        <div class="form-group">
+                            <label for="soalInter">International</label>
+                            <input type="text" name="soalInter"
+                                class="form-control  @error('soalInter') is-invalid @enderror"
+                                value="{{ old('soalInter', @$data->detailDosen->soalInter) }}">
+                            @error('soalInter')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label for="pengawas">Pengawas</label>
+                            <input type="text" name="pengawas"
+                                class="form-control  @error('pengawas') is-invalid @enderror"
+                                value="{{ old('pengawas', @$data->detailDosen->pengawas) }}">
+                            @error('pengawas')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label for="lemburPengawas">Lembur Pengawas</label>
+                            <input type="text" name="lemburPengawas"
+                                class="form-control  @error('lemburPengawas') is-invalid @enderror"
+                                value="{{ old('lemburPengawas', @$data->detailDosen->lemburPengawas) }}">
+                            @error('lemburPengawas')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label for="koor">Koor Mata Kuliah</label>
+                            <input type="text" name="koor" class="form-control  @error('koor') is-invalid @enderror"
+                                value="{{ old('koor', @$data->detailDosen->koor) }}">
+                            @error('koor')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
             </div>
             <button type="submit" class="btn btn-block btn-primary">Edit</button>
         </form>
