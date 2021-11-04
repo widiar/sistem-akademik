@@ -3,7 +3,7 @@
 @section('title', 'Update Dosen')
 
 @section('main-content')
-{{-- @if ($errors->any())
+@if ($errors->any())
 <div class="alert alert-danger">
     <ul>
         @foreach ($errors->all() as $error)
@@ -11,7 +11,7 @@
         @endforeach
     </ul>
 </div>
-@endif --}}
+@endif
 <div class="card shadow mx-3">
     <div class="card-body">
         <form action="{{ route('admin.dosen.update', $pegawai->id) }}" method="post" enctype="multipart/form-data">
@@ -41,58 +41,9 @@
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
-            {{-- <div class="form-group">
-                @php
-                $kategoriDosen = [];
-                if($pegawai->dosen)
-                foreach($pegawai->dosen as $pg)
-                array_push($kategoriDosen, $pg->id)
-                @endphp
-                <label for="kategori">Kategori</label>
-                <select name="kategori[]" multiple="multiple" class="kategori @error('kategori') is-invalid @enderror"
-                    style="width: 100%">
-                    @foreach ($kategori as $k)
-                    <option value="{{ $k->id }}" {{ (is_array(old('kategori', $kategoriDosen)) && in_array($k->id,
-                        old('kategori', $kategoriDosen))) ? '
-                        selected' : '' }}>
-                        {{ $k->kategori }}
-                    </option>
-                    @endforeach
-                </select>
-                @error('kategori')
-                <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div> --}}
             <div class="pembimbingTA">
                 <hr>
                 <h4>Pembimbing TA</h4>
-                <div class="row">
-                    <div class="form-group col-md-6 col-xs-12">
-                        <label for="ta1">Jumlah Tugas Akhir 1</label>
-                        <input required type="number" min="0" name="ta1"
-                            class="form-control  @error('ta1') is-invalid @enderror"
-                            value="{{ old('ta1', @$pegawai->dosen[0]->tugas_akhir_1) }}">
-                        @error('ta1')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="nama-ta1 col-md-6 col-xs-12">
-                        <div class="form-group">
-                            <label for="ta1Nama">Input Nama TA 1</label>
-                            <select name="ta1Nama[]" id="ta1Nama" multiple="multiple"
-                                class="form-control custom-select">
-                                @if($pegawai->dosen->count() > 0)
-                                @foreach (@json_decode($pegawai->dosen[0]->tugas_akhir_1_nama) as $nama)
-                                <option selected value="{{ $nama }}">{{ $nama }}</option>
-                                @endforeach
-                                @endif
-                            </select>
-                            @error('ta1Nama')
-                            <p class="text-danger">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
                 <h5>Jumlah TA 2</h5>
                 <div class="row">
                     <div class="form-group col-md-6 col-xs-12">
@@ -152,33 +103,6 @@
             <div class="pembimbingSkripsi">
                 <hr>
                 <h4>Pembimbing Skripsi</h4>
-                <div class="row">
-                    <div class="form-group col-md-6 col-xs-12">
-                        <label for="skripsi1">Jumlah Skripsi 1</label>
-                        <input required type="number" min="0" name="skripsi1"
-                            class="form-control  @error('skripsi1') is-invalid @enderror"
-                            value="{{ old('skripsi1', @$pegawai->dosen[0]->skripsi_1) }}">
-                        @error('skripsi1')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="nama-ta1 col-md-6 col-xs-12">
-                        <div class="form-group">
-                            <label for="skripsi1Nama">Input Nama Skripsi 1</label>
-                            <select name="skripsi1Nama[]" id="skripsi1Nama" multiple="multiple"
-                                class="form-control custom-select">
-                                @if($pegawai->dosen->count() > 0)
-                                @foreach (json_decode($pegawai->dosen[0]->skripsi_1_nama) as $nama)
-                                <option selected value="{{ $nama }}">{{ $nama }}</option>
-                                @endforeach
-                                @endif
-                            </select>
-                            @error('skripsi1Nama')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
                 <h5>Jumlah Skripsi 2</h5>
                 <div class="row">
                     <div class="form-group col-md-6 col-xs-12">
@@ -249,6 +173,22 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
+                    <div class="col-md-6 col-xs-12">
+                        <div class="form-group">
+                            <label for="seminarSkripsiNama">Seminar Skripsi (Nama Mhs)</label>
+                            <select name="seminarSkripsiNama[]" id="seminarSkripsiNama" multiple="multiple"
+                                class="form-control custom-select">
+                                @if($pegawai->dosen->count() > 0)
+                                @foreach (json_decode($pegawai->dosen[0]->penguji_seminar_skripsi_nama) as $nama)
+                                <option selected value="{{ $nama }}">{{ $nama }}</option>
+                                @endforeach
+                                @endif
+                            </select>
+                            @error('seminarSkripsiNama')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
                     <div class="form-group col-md-6 col-xs-12">
                         <label for="seminarTerbuka">Seminar Terbuka</label>
                         <input required type="number" min="0" name="seminarTerbuka"
@@ -257,6 +197,22 @@
                         @error('seminarTerbuka')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
+                    </div>
+                    <div class="nama-ta2-pembimbing1 col-md-6 col-xs-12">
+                        <div class="form-group">
+                            <label for="seminarTerbukaNama">Seminar Terbuka (Nama Mhs)</label>
+                            <select name="seminarTerbukaNama[]" id="seminarTerbukaNama" multiple="multiple"
+                                class="form-control custom-select">
+                                @if($pegawai->dosen->count() > 0)
+                                @foreach (json_decode($pegawai->dosen[0]->penguji_seminar_terbuka_nama) as $nama)
+                                <option selected value="{{ $nama }}">{{ $nama }}</option>
+                                @endforeach
+                                @endif
+                            </select>
+                            @error('seminarTerbukaNama')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
                     </div>
                     <div class="form-group col-md-6 col-xs-12">
                         <label for="proposal">Proposal Tugas Akhir</label>
@@ -267,6 +223,22 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
+                    <div class="nama-ta2-pembimbing1 col-md-6 col-xs-12">
+                        <div class="form-group">
+                            <label for="proposalNama">Proposal Tugas Akhir (Nama Mhs)</label>
+                            <select name="proposalNama[]" id="proposalNama" multiple="multiple"
+                                class="form-control custom-select">
+                                @if($pegawai->dosen->count() > 0)
+                                @foreach (json_decode($pegawai->dosen[0]->penguji_proposal_TA_nama) as $nama)
+                                <option selected value="{{ $nama }}">{{ $nama }}</option>
+                                @endforeach
+                                @endif
+                            </select>
+                            @error('proposalNama')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
                     <div class="form-group col-md-6 col-xs-12">
                         <label for="pengujiTugasAkhir">Tugas Akhir</label>
                         <input required type="number" min="0" name="pengujiTugasAkhir"
@@ -276,22 +248,25 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
+                    <div class="nama-ta2-pembimbing1 col-md-6 col-xs-12">
+                        <div class="form-group">
+                            <label for="pengujiTugasAkhirNama">Tugas Akhir (Nama Mhs)</label>
+                            <select name="pengujiTugasAkhirNama[]" id="pengujiTugasAkhirNama" multiple="multiple"
+                                class="form-control custom-select">
+                                @if($pegawai->dosen->count() > 0)
+                                @foreach (json_decode($pegawai->dosen[0]->penguji_tugas_akhir_nama) as $nama)
+                                <option selected value="{{ $nama }}">{{ $nama }}</option>
+                                @endforeach
+                                @endif
+                            </select>
+                            @error('pengujiTugasAkhirNama')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="koordinator">
-                <hr>
-                <h4>Koordinator</h4>
-                <div class="form-group">
-                    <label for="koordinator">Jumlah</label>
-                    <input required type="number" name="koordinator"
-                        class="form-control  @error('koordinator') is-invalid @enderror"
-                        value="{{ old('koordinator', @$pegawai->dosen[0]->koordinator) }}">
-                    @error('koordinator')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
             <div class="wali">
                 <hr>
                 <h4>Dosen Wali</h4>

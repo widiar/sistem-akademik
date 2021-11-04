@@ -140,26 +140,25 @@ class DosenController extends Controller
             'bulan' => $bulan,
             'tahun' => $tahun
         ]);
-        $data->tugas_akhir_1 = $request->ta1;
-        $data->tugas_akhir_1_nama = json_encode(($request->ta1Nama) ? $request->ta1Nama : []);
         $data->tugas_akhir_2_pembimbing_1 = $request->ta2pembimbing1;
         $data->tugas_akhir_2_pembimbing_1_nama = json_encode(($request->ta2pembimbing1nama) ? $request->ta2pembimbing1nama : []);
         $data->tugas_akhir_2_pembimbing_2 = $request->ta2pembimbing2;
         $data->tugas_akhir_2_pembimbing_2_nama = json_encode(($request->ta2pembimbing2nama) ? $request->ta2pembimbing2nama : []);
 
-        $data->skripsi_1 = $request->skripsi1;
-        $data->skripsi_1_nama = json_encode(($request->skripsi1Nama) ? $request->skripsi1Nama : []);
         $data->skripsi_2_pembimbing_1 = $request->skripsi2pembimbing1;
         $data->skripsi_2_pembimbing_1_nama = json_encode(($request->skripsi2pembimbing1nama) ? $request->skripsi2pembimbing1nama : []);
         $data->skripsi_2_pembimbing_2 = $request->skripsi2pembimbing2;
         $data->skripsi_2_pembimbing_2_nama = json_encode(($request->skripsi2pembimbing2nama) ? $request->skripsi2pembimbing2nama : []);
 
         $data->penguji_seminar_skripsi = $request->seminarSkripsi;
+        $data->penguji_seminar_skripsi_nama = json_encode(($request->seminarSkripsiNama) ? $request->seminarSkripsiNama : []);
         $data->penguji_seminar_terbuka =  $request->seminarTerbuka;
+        $data->penguji_seminar_terbuka_nama =  json_encode(($request->seminarTerbukaNama) ? $request->seminarTerbukaNama : []);
         $data->penguji_proposal_TA =  $request->proposal;
+        $data->penguji_proposal_TA_nama =  json_encode(($request->proposalNama) ? $request->proposalNama : []);
         $data->penguji_tugas_akhir = $request->pengujiTugasAkhir;
+        $data->penguji_tugas_akhir_nama = json_encode(($request->pengujiTugasAkhirNama) ? $request->pengujiTugasAkhirNama : []);
 
-        $data->koordinator =  $request->koordinator;
         $data->wali = $request->wali;
         $data->kerja_praktek = $request->kerjaPraktek;
         $data->save();

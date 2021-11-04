@@ -63,6 +63,15 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{ route('admin.dosen.laporan.bulanan') }}"
+                        class="nav-link{{request()->is('admin/koordinator/dosen*') ? ' active' : '' }}">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            Dosen koordinator
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{ route('admin.matakuliah.index') }}"
                         class="nav-link{{request()->is('admin/mata-kuliah*') ? ' active' : '' }}">
                         <i class="nav-icon fas fa-book-open"></i>
