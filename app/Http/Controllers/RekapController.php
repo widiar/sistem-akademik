@@ -68,7 +68,7 @@ class RekapController extends Controller
         }, 'koordinator' => function ($q) use ($bulan) {
             $q->where('semester', tahunAjaran($bulan));
         }])->where('is_dosen', true)->get();
-        $pdf = PDF::loadView('admin.akademik.pdf.rekapDosen', compact('dosen', 'bulan', 'tahun'));
+        $pdf = PDF::loadView('admin.akademik.pdf.rekapDosen2', compact('dosen', 'bulan', 'tahun'));
         $pdf->setOption('header-html', view('header'))->save('storage/rekap-dosen/pdf/' . $fpdf);
 
         return response()->json('Sukses');

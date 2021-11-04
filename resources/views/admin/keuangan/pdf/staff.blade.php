@@ -124,9 +124,13 @@
                 <th>Reward</th>
                 <td>Rp {{ number_format($gaji->reward ,2,",",".") }}</td>
             </tr>
-            <tr style="border-bottom: 1px solid black">
+            <tr>
                 <th>Tunjangan Hari Raya</th>
                 <td>Rp {{ number_format($gaji->thr ,2,",",".") }}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid black">
+                <th>Insentif Marketing</th>
+                <td>Rp {{ number_format($gaji->insentif_marketing ,2,",",".") }}</td>
             </tr>
             <tr style="border-bottom: 1px solid black">
                 <th style="font-size: 18px">Gaji Kotor</th>

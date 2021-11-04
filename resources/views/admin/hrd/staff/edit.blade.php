@@ -373,7 +373,7 @@
                     </div>
                     <div class="col-md-4 col-sm-12">
                         <div class="form-group">
-                            <label for="interPraktek">International Praktek</label>
+                            <label for="interPraktek">International Tutor</label>
                             <input type="text" name="interPraktek"
                                 class="form-control  @error('interPraktek') is-invalid @enderror"
                                 value="{{ old('interPraktek', @$data->detailDosen->interPraktek) }}">
