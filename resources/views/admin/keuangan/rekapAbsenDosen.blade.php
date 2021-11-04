@@ -38,9 +38,6 @@
                 <tr>
                     <td>{{ ++$no }}</td>
                     <td class="text-center">
-                        <a href="{{ Storage::url('rekap-absen-dosen/excel/' . $ban->excel) }}" class="mx-2">
-                            <button class="btn btn-sm btn-success"><i class="fas fa-file-excel"></i></button>
-                        </a>
                         <a href="{{ Storage::url('rekap-absen-dosen/pdf/' . $ban->pdf) }}" class="mx-2">
                             <button class="btn btn-sm btn-danger"><i class="fas fa-file-pdf"></i></button>
                         </a>
