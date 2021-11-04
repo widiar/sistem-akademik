@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DosenRequest;
 use App\Models\Dosen;
+use App\Models\DosenKoordinator;
 use App\Models\KategoriDosen;
 use App\Models\Pegawai;
 use Illuminate\Http\Request;
@@ -177,7 +178,10 @@ class DosenController extends Controller
     public function list(Request $request)
     {
         $search = $request->search;
-        $dosen = Pegawai::where("nama", 'ilike', "%$search%")->where('is_dosen', 1)->get();
+        if (env('DB_CONNECTION') == 'mysql')
+            $dosen = Pegawai::where("nama", 'like', "%$search%")->where('is_dosen', 1)->get();
+        else
+            $dosen = Pegawai::where("nama", 'ilike', "%$search%")->where('is_dosen', 1)->get();
         $data = [];
         foreach ($dosen as $ds) {
             $data[] = [
@@ -186,5 +190,42 @@ class DosenController extends Controller
             ];
         }
         return response()->json($data);
+    }
+
+    public function koordinator()
+    {
+        $tahunAjaran = listTahunAjaran();
+        $dosen = Pegawai::where('is_dosen', true)->get();
+        return view('admin.akademik.koordinatorDosen', compact('tahunAjaran', 'dosen'));
+    }
+
+    public function editKoor(Pegawai $pegawai, $semester)
+    {
+        if ($pegawai->is_dosen === FALSE || $pegawai->is_dosen === NULL) abort(404);
+
+        $pegawai = $pegawai->load(['koordinator' => function ($q) use ($semester) {
+            $q->where('semester', $semester);
+        }]);
+        return view('admin.akademik.editKoor', compact('pegawai', 'semester'));
+    }
+
+    public function updateKoor(Pegawai $pegawai, $semester, Request $request)
+    {
+        if ($request->koor > 0) $matkul = 'required';
+        else $matkul = '';
+        $request->validate([
+            'koor' => 'required|integer',
+            'matkul' => $matkul
+        ]);
+
+        $data = DosenKoordinator::firstOrCreate([
+            'pegawai_id' => $pegawai->id,
+            'semester' => $semester,
+        ]);
+        $data->jumlah = $request->koor;
+        $data->matakuliah = json_encode(($request->matkul) ? $request->matkul : []);
+        $data->save();
+
+        return redirect()->route('admin.dosen.koordinator')->with(['success' => 'Berhasil update']);
     }
 }

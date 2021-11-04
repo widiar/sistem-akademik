@@ -15,6 +15,10 @@ class CreateDosenKoordinatorsTable extends Migration
     {
         Schema::create('dosen_koordinators', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('pegawai_id');
+            $table->string('semester');
+            $table->unsignedBigInteger('jumlah')->nullable();
+            $table->text('matakuliah')->nullable();
             $table->timestamps();
         });
     }

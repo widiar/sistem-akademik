@@ -14,6 +14,29 @@ function tahunAjaran()
     return $tahunAjaran;
 }
 
+function listTahunAjaran()
+{
+    $start = 2020;
+    $year = date('Y');
+    $month = date('n');
+    $loop = $year - $start;
+    $dt = [];
+    if ($month > 6) $loop = $loop * 2 + 1;
+    else $loop = $loop * 2;
+    for ($i = 1; $i <= $loop; $i++) {
+        if ($i % 2 != 0 && $i != 1) ++$start;
+        if ($i % 2 != 0) $dt[] = [
+            'id' => "ganjil-$start-" . ($start + 1),
+            'text' => "Ganjil $start/" . ($start + 1)
+        ];
+        else $dt[] = [
+            'id' => "genap-$start-" . ($start + 1),
+            'text' => "Genap $start/" . ($start + 1)
+        ];
+    }
+    return $dt;
+}
+
 function getBulan()
 {
     return [

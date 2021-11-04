@@ -52,6 +52,11 @@
                     href="#International">International
                     Teori</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link tab-link" data-toggle="tab" data-id="International Tutor"
+                    href="#International">International
+                    Tutor</a>
+            </li>
         </ul>
         <table id="absenTable" class="table table-bordered dt-responsive nowrap" style="width: 100%;">
             <thead>

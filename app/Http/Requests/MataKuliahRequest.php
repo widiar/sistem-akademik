@@ -30,10 +30,12 @@ class MataKuliahRequest extends FormRequest
                 'required',
                 Rule::unique('mata_kuliah')->ignore($id),
             ],
+            'kode_kelas' => 'required',
             'nama' => 'required',
             'jam' => 'required',
             'hari' => 'required',
             'sks' => 'required|integer',
+            'jumlah_mahasiswa' => 'required|integer',
             'kategori' => 'required'
         ];
     }

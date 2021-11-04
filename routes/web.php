@@ -77,6 +77,11 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('mata-kuliah/{matakuliah}/edit', [MataKuliahController::class, 'update']);
                 Route::delete('mata-kuliah/{matakuliah}', [MataKuliahController::class, 'delete'])->name('matakuliah.delete');
                 Route::get('mata-kuliah/list-dosen', [DosenController::class, 'list'])->name('dosen.list');
+                Route::get('mata-kuliah/list', [MataKuliahController::class, 'list'])->name('matakuliah.list');
+
+                Route::get('koordinator/dosen', [DosenController::class, 'koordinator'])->name('dosen.koordinator');
+                Route::get('koordinator/dosen/{pegawai}/{semester}', [DosenController::class, 'editKoor'])->name('dosen.koordinator.edit');
+                Route::put('koordinator/dosen/{pegawai}/{semester}', [DosenController::class, 'updateKoor']);
             });
 
             //keuangan

@@ -55,4 +55,9 @@ class Pegawai extends Model
     {
         return $this->hasMany(SlipGajiDosen::class);
     }
+
+    public function koordinator()
+    {
+        return $this->hasMany(DosenKoordinator::class);
+    }
 }
