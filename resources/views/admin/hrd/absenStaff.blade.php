@@ -231,12 +231,12 @@
             if (index != -1) dt[index] = tmp
             else dt.push(tmp)
             $('#modalTidakHadir').modal('hide')
-            console.log(dt)
+            // console.log(dt)
         })
     })
 
     $('.saveBtn').click(() => {
-        console.log(dt)
+        // console.log(dt)
         // return false;
         let kehadiran = table.$(".hadir:checked").map(function(){
             // dt.push($(this).data("id"))
