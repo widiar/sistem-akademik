@@ -179,9 +179,11 @@
                             <select name="seminarSkripsiNama[]" id="seminarSkripsiNama" multiple="multiple"
                                 class="form-control custom-select">
                                 @if($pegawai->dosen->count() > 0)
+                                @if($pegawai->dosen[0]->penguji_seminar_skripsi_nama)
                                 @foreach (json_decode($pegawai->dosen[0]->penguji_seminar_skripsi_nama) as $nama)
                                 <option selected value="{{ $nama }}">{{ $nama }}</option>
                                 @endforeach
+                                @endif
                                 @endif
                             </select>
                             @error('seminarSkripsiNama')
@@ -204,9 +206,11 @@
                             <select name="seminarTerbukaNama[]" id="seminarTerbukaNama" multiple="multiple"
                                 class="form-control custom-select">
                                 @if($pegawai->dosen->count() > 0)
+                                @if($pegawai->dosen[0]->penguji_seminar_terbuka_nama)
                                 @foreach (json_decode($pegawai->dosen[0]->penguji_seminar_terbuka_nama) as $nama)
                                 <option selected value="{{ $nama }}">{{ $nama }}</option>
                                 @endforeach
+                                @endif
                                 @endif
                             </select>
                             @error('seminarTerbukaNama')
@@ -229,9 +233,11 @@
                             <select name="proposalNama[]" id="proposalNama" multiple="multiple"
                                 class="form-control custom-select">
                                 @if($pegawai->dosen->count() > 0)
+                                @if($pegawai->dosen[0]->penguji_proposal_TA_nama)
                                 @foreach (json_decode($pegawai->dosen[0]->penguji_proposal_TA_nama) as $nama)
                                 <option selected value="{{ $nama }}">{{ $nama }}</option>
                                 @endforeach
+                                @endif
                                 @endif
                             </select>
                             @error('proposalNama')
@@ -254,9 +260,11 @@
                             <select name="pengujiTugasAkhirNama[]" id="pengujiTugasAkhirNama" multiple="multiple"
                                 class="form-control custom-select">
                                 @if($pegawai->dosen->count() > 0)
+                                @if($pegawai->dosen[0]->penguji_tugas_akhir_nama)
                                 @foreach (json_decode($pegawai->dosen[0]->penguji_tugas_akhir_nama) as $nama)
                                 <option selected value="{{ $nama }}">{{ $nama }}</option>
                                 @endforeach
+                                @endif
                                 @endif
                             </select>
                             @error('pengujiTugasAkhirNama')
