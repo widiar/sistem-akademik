@@ -200,7 +200,7 @@ class RekapController extends Controller
             foreach ($as->absenStaff as $absenStaff) {
                 if ($absenStaff->hadir == 1) $hadir += 1;
                 if ($absenStaff->izin == 1) $izin += 1;
-                if ($absenStaff->keterangan == 'telat' || $absenStaff->keterangan == 'nofinger' || $absenStaff == 'sethari') $telat += 1;
+                if ($absenStaff->keterangan == 'telat' || $absenStaff->keterangan == 'nofinger' || $absenStaff->keterangan == 'sethari') $telat += 1;
                 if ($absenStaff->keterangan == 'alpha') $alpha += 1;
             }
             $dt[] = [
