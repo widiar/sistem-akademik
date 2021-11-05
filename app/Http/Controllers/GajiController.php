@@ -76,8 +76,17 @@ class GajiController extends Controller
         $tahun = $tmp[1];
         if ($staff->is_staff != 1) abort(404);
         $absen =  $staff->absenStaff()->whereMonth('tanggal', $bulan)->where('hadir', 1)->get();
-        $gaji = $staff->detailStaff;
-        return view('admin.keuangan.detailStaff', compact('gaji', 'absen'));
+        $cek = $staff->slipStaff()->where('bulan', $bulan)->where('tahun', $tahun)->first();
+        $insentif = $staff->insentif()->where('bulan', $bulan)->where('tahun', $tahun)->first();
+        if ($cek) {
+            $gaji = $cek;
+            $insentif = $cek->insentif_marketing;
+        } else {
+            $gaji = $staff->detailStaff;
+            if ($insentif) $insentif = $insentif->jumlah;
+            else $insentif = 0;
+        }
+        return view('admin.keuangan.detailStaff', compact('gaji', 'absen', 'insentif'));
     }
 
     public function gajiStaffStore($bulan, Pegawai $staff, Request $request)
@@ -117,7 +126,7 @@ class GajiController extends Controller
         $slip->gaji_kotor = $request->gajiKotor;
         $slip->total_potongan = $request->potongan;
         $slip->gaji_bersih = $request->gajiBersih;
-        $slip->insentif_marketing = $request->insentifMarketing || 0;
+        $slip->insentif_marketing = ($request->insentifMarketing == NULL) ? 0 : $request->insentifMarketing;
         $slip->save();
         return redirect()->route('admin.penggajian.staff')->with(['success' => 'Berhasil menyimpan slip']);
     }
@@ -228,14 +237,14 @@ class GajiController extends Controller
         $slip->interPraktek =  $request->interPraktek;
         $slip->kerjaPraktekTotal =  $request->kerjaPraktekTotal;
         $slip->kerjaPraktek =  $request->kerjaPraktek;
-        $slip->skripsi1Total =  $request->skripsi1Total;
-        $slip->skripsi1 =  $request->skripsi1;
+        // $slip->skripsi1Total =  $request->skripsi1Total;
+        // $slip->skripsi1 =  $request->skripsi1;
         $slip->skripsi2Pembimbing1Total =  $request->skripsi2Pembimbing1Total;
         $slip->skripsi2Pembimbing1 =  $request->skripsi2Pembimbing1;
         $slip->skripsi2Pembimbing2Total =  $request->skripsi2Pembimbing2Total;
         $slip->skripsi2Pembimbing2 =  $request->skripsi2Pembimbing2;
-        $slip->ta1Total =  $request->ta1Total;
-        $slip->ta1 =  $request->ta1;
+        // $slip->ta1Total =  $request->ta1Total;
+        // $slip->ta1 =  $request->ta1;
         $slip->ta2Pembimbing1Total =  $request->ta2Pembimbing1Total;
         $slip->ta2Pembimbing1 =  $request->ta2Pembimbing1;
         $slip->ta2Pembimbing2Total =  $request->ta2Pembimbing2Total;

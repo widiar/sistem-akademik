@@ -57,7 +57,7 @@
             <div class="form-row">
                 <div class="form-group col">
                     <label for="absen">Absen</label>
-                    <input type="number" required readonly name="absen"
+                    <input type="number" required name="absen"
                         class="form-control  @error('absen') is-invalid @enderror"
                         value="{{ old('absen', @$absen->count()) }}">
                     @error('absen')
@@ -177,27 +177,6 @@
             <hr>
             <h5>Skripsi</h5>
             <div class="form-row">
-                <div class="form-group col">
-                    <label for="skripsi1Total">Total</label>
-                    <input type="number" required name="skripsi1Total"
-                        class="form-control  @error('skripsi1Total') is-invalid @enderror"
-                        value="{{ old('skripsi1Total', @$gaji->skripsi1Total) }}">
-                    @error('skripsi1Total')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="form-group col">
-                    <label for="skripsi1">Skripsi I</label>
-                    <input type="number" required readonly name="skripsi1"
-                        class="form-control  @error('skripsi1') is-invalid @enderror"
-                        value="{{ old('skripsi1', @$gaji->skripsi1) }}">
-                    @error('skripsi1')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-            <p>Skripsi II</p>
-            <div class="form-row">
                 <div class="form-group col-6 col-md-3">
                     <label for="skripsi2Pembimbing1Total">Total Pembimbing 1</label>
                     <input type="number" required name="skripsi2Pembimbing1Total"
@@ -238,27 +217,6 @@
             <hr>
             <div class="ta">
                 <h5>Tugas Akhir</h5>
-                <div class="form-row">
-                    <div class="form-group col">
-                        <label for="ta1Total">Total</label>
-                        <input type="number" required name="ta1Total"
-                            class="form-control  @error('ta1Total') is-invalid @enderror"
-                            value="{{ old('ta1Total', @$gaji->ta1Total) }}">
-                        @error('ta1Total')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="form-group col">
-                        <label for="ta1">Tugas Akhir I</label>
-                        <input type="number" required readonly name="ta1"
-                            class="form-control  @error('ta1') is-invalid @enderror"
-                            value="{{ old('ta1', @$gaji->ta1) }}">
-                        @error('ta1')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-                <p>Tugas Akhir II</p>
                 <div class="form-row">
                     <div class="form-group col-6 col-md-3">
                         <label for="ta2Pembimbing1Total">Total Pembimbing 1</label>
@@ -587,7 +545,7 @@
     $(document).ready(function(){
         let gajiTotal
         initTotal()
-        $("input[type='number']").change(initTotal)
+        $("input[type='number']").keyup(initTotal)
 
         $(".form-gaji").submit(function(e){
             $("input[name='gajiTotal']").val(gajiTotal)
@@ -637,10 +595,10 @@
             let gajiKerjaPraktek = kerjaPraktekTotal * kerjaPraktek
             total.push(gajiKerjaPraktek)
 
-            let skripsi1Total = parseInt($("input[name='skripsi1Total']").val()) || 0
-            let skripsi1 = parseInt($("input[name='skripsi1']").val())
-            let gajiSkripsi1 = skripsi1Total * skripsi1
-            total.push(gajiSkripsi1)
+            // let skripsi1Total = parseInt($("input[name='skripsi1Total']").val()) || 0
+            // let skripsi1 = parseInt($("input[name='skripsi1']").val())
+            // let gajiSkripsi1 = skripsi1Total * skripsi1
+            // total.push(gajiSkripsi1)
 
             let skripsi2Pembimbing1Total = parseInt($("input[name='skripsi2Pembimbing1Total']").val()) || 0
             let skripsi2Pembimbing1 = parseInt($("input[name='skripsi2Pembimbing1']").val())
@@ -652,10 +610,10 @@
             let gajiSkripsi2p2 = skripsi2Pembimbing2Total * skripsi2Pembimbing1
             total.push(gajiSkripsi2p2)
 
-            let ta1Total = parseInt($("input[name='ta1Total']").val()) || 0
-            let ta1 = parseInt($("input[name='ta1']").val())
-            let gajita1 = ta1Total * ta1
-            total.push(gajita1)
+            // let ta1Total = parseInt($("input[name='ta1Total']").val()) || 0
+            // let ta1 = parseInt($("input[name='ta1']").val())
+            // let gajita1 = ta1Total * ta1
+            // total.push(gajita1)
 
             let ta2Pembimbing1Total = parseInt($("input[name='ta2Pembimbing1Total']").val()) || 0
             let ta2Pembimbing1 = parseInt($("input[name='ta2Pembimbing1']").val())

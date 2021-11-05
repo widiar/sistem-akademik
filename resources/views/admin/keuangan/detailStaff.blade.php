@@ -139,7 +139,7 @@
                 <label for="insentifMarketing">Insentif Marketing</label>
                 <input type="number" min="0" readonly name="insentifMarketing"
                     class="form-control  @error('insentifMarketing') is-invalid @enderror"
-                    value="{{ old('insentifMarketing', @$gaji->insentifMarketing) }}">
+                    value="{{ old('insentifMarketing', @$insentif) }}">
                 @error('insentifMarketing')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -177,7 +177,7 @@
                     <label for="izinTotal">Total Izin</label>
                     <input type="number" min="0" required name="izinTotal"
                         class="form-control  @error('izinTotal') is-invalid @enderror"
-                        value="{{ old('izinTotal', @$gaju->izinTotal) }}">
+                        value="{{ old('izinTotal', @$gaji->izinTotal) }}">
                     @error('izinTotal')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror

@@ -146,15 +146,15 @@
             </tr>
             <tr>
                 <th>Izin / Sakit</th>
-                <td>Rp {{ number_format($gaji->izin ,2,",",".") }}</td>
+                <td>Rp {{ number_format($gaji->izin * $gaji->izinTotal ,2,",",".") }}</td>
             </tr>
             <tr>
                 <th>Telat / Short Time / No Finger</th>
-                <td>Rp {{ number_format($gaji->telat ,2,",",".") }}</td>
+                <td>Rp {{ number_format($gaji->telat * $gaji->telatTotal ,2,",",".") }}</td>
             </tr>
             <tr>
                 <th>I/S/A Non alphaeransi</th>
-                <td>Rp {{ number_format($gaji->alpha ,2,",",".") }}</td>
+                <td>Rp {{ number_format($gaji->alpha * $gaji->alphaTotal ,2,",",".") }}</td>
             </tr>
             <tr>
                 <th>Sanksi SP</th>
