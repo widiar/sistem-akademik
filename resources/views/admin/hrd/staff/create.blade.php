@@ -357,7 +357,7 @@
                     </div>
                     <div class="col-md-4 col-sm-12">
                         <div class="form-group">
-                            <label for="interPraktek">International Praktek</label>
+                            <label for="interPraktek">International Tutor</label>
                             <input type="text" name="interPraktek"
                                 class="form-control  @error('interPraktek') is-invalid @enderror"
                                 value="{{ old('interPraktek', @$gaji->interPraktek) }}">
@@ -377,15 +377,6 @@
                             @enderror
                         </div>
                     </div>
-                </div>
-                <h5>Skripsi I</h5>
-                <div class="form-group">
-                    <label for="skripsi1">Skripsi I</label>
-                    <input type="text" name="skripsi1" class="form-control  @error('skripsi1') is-invalid @enderror"
-                        value="{{ old('skripsi1', @$gaji->skripsi1) }}">
-                    @error('skripsi1')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
                 </div>
                 <h5>Skripsi II</h5>
                 <div class="row">
@@ -411,15 +402,6 @@
                             @enderror
                         </div>
                     </div>
-                </div>
-                <h5>Tugas Akhir I</h5>
-                <div class="form-group">
-                    <label for="ta1">Tugas Akhir I</label>
-                    <input type="text" name="ta1" class="form-control  @error('ta1') is-invalid @enderror"
-                        value="{{ old('ta1', @$gaji->ta1) }}">
-                    @error('ta1')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
                 </div>
                 <h5>Tugas Akhir II</h5>
                 <div class="row">

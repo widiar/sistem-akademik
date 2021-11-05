@@ -16,6 +16,15 @@
                 @enderror
             </div>
             <div class="form-group">
+                <label for="kode_kelas">Kode Kelas</label>
+                <input type="text" required name="kode_kelas"
+                    class="form-control  @error('kode_kelas') is-invalid @enderror"
+                    value="{{ old('kode_kelas', $matakuliah->kode_kelas) }}">
+                @error('kode_kelas')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="form-group">
                 <label for="nama">Nama</label>
                 <input type="text" required name="nama" class="form-control  @error('nama') is-invalid @enderror"
                     value="{{ old('nama', $matakuliah->nama) }}">
@@ -47,6 +56,15 @@
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
+            <div class="form-group">
+                <label for="jumlah_mahasiswa">Jumlah Mahasiswa</label>
+                <input type="number" required name="jumlah_mahasiswa"
+                    class="form-control  @error('jumlah_mahasiswa') is-invalid @enderror"
+                    value="{{ old('jumlah_mahasiswa', $matakuliah->jumlah_mahasiswa) }}">
+                @error('jumlah_mahasiswa')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
 
             <div class="form-group">
                 <label for="">Kategori</label>
@@ -60,6 +78,8 @@
                         value="Eksekutif / Semester Pendek">Eksekutif / Semester Pendek</option>
                     <option {{ ($matakuliah->kategori == "International Teori") ? 'selected' : '' }}
                         value="International Teori">International Teori</option>
+                    <option {{ ($matakuliah->kategori == "International Tutor") ? 'selected' : '' }}
+                        value="International Tutor">International Tutor</option>
                 </select>
             </div>
 

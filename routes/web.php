@@ -5,7 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\GajiController;
-use App\Http\Controllers\IntensifController;
+use App\Http\Controllers\InsentifController;
 use App\Http\Controllers\MataKuliahController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\RekapController;
@@ -47,7 +47,11 @@ Route::middleware(['auth'])->group(function () {
             Route::middleware(['marketing'])->group(function () {
                 Route::resource('banner', BannerController::class);
                 Route::resource('news', NewsController::class);
-                Route::resource('intensif-marketing', IntensifController::class);
+                Route::get('master/insentif-marketing', [InsentifController::class, 'master'])->name('insentif.master');
+                Route::post('master/insentif-marketing', [InsentifController::class, 'masterPost']);
+                Route::get('insentif-marketing', [InsentifController::class, 'index'])->name('insentif-marketing.index');
+                Route::get('insentif-marketing/{staff}/{tanggal}', [InsentifController::class, 'edit'])->name('insentif-marketing.edit');
+                Route::put('insentif-marketing/{staff}/{tanggal}', [InsentifController::class, 'update']);
             });
 
             //akademik
@@ -77,6 +81,11 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('mata-kuliah/{matakuliah}/edit', [MataKuliahController::class, 'update']);
                 Route::delete('mata-kuliah/{matakuliah}', [MataKuliahController::class, 'delete'])->name('matakuliah.delete');
                 Route::get('mata-kuliah/list-dosen', [DosenController::class, 'list'])->name('dosen.list');
+                Route::get('mata-kuliah/list', [MataKuliahController::class, 'list'])->name('matakuliah.list');
+
+                Route::get('koordinator/dosen', [DosenController::class, 'koordinator'])->name('dosen.koordinator');
+                Route::get('koordinator/dosen/{pegawai}/{semester}', [DosenController::class, 'editKoor'])->name('dosen.koordinator.edit');
+                Route::put('koordinator/dosen/{pegawai}/{semester}', [DosenController::class, 'updateKoor']);
             });
 
             //keuangan

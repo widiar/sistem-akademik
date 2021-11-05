@@ -25,17 +25,11 @@ class DosenRequest extends FormRequest
     public function rules()
     {
         $additional = [];
-        if ($this->ta1 > 0) {
-            $additional['ta1Nama'] = 'required';
-        }
         if ($this->ta2pembimbing1 > 0) {
             $additional['ta2pembimbing1nama'] = 'required';
         }
         if ($this->ta2pembimbing2 > 0) {
             $additional['ta2pembimbing2nama'] = 'required';
-        }
-        if ($this->skripsi1 > 0) {
-            $additional['skripsi1Nama'] = 'required';
         }
         if ($this->skripsi2pembimbing1 > 0) {
             $additional['skripsi2pembimbing1nama'] = 'required';
@@ -43,21 +37,30 @@ class DosenRequest extends FormRequest
         if ($this->skripsi2pembimbing2 > 0) {
             $additional['skripsi2pembimbing2nama'] = 'required';
         }
+        if ($this->seminarSkripsi > 0) {
+            $additional['seminarSkripsiNama'] = 'required';
+        }
+        if ($this->seminarTerbuka > 0) {
+            $additional['seminarTerbukaNama'] = 'required';
+        }
+        if ($this->proposal > 0) {
+            $additional['proposalNama'] = 'required';
+        }
+        if ($this->pengujiTugasAkhir > 0) {
+            $additional['pengujiTugasAkhirNama'] = 'required';
+        }
 
         return [
             'nip' => 'required',
             'nama' => 'required',
-            'ta1' => 'required',
             'ta2pembimbing1' => 'required|numeric',
             'ta2pembimbing2' => 'required|numeric',
-            'skripsi1' => 'required|numeric',
             'skripsi2pembimbing1' => 'required|numeric',
             'skripsi2pembimbing2' => 'required|numeric',
             'seminarSkripsi' => 'required|numeric',
             'seminarTerbuka' => 'required|numeric',
             'proposal' => 'required|numeric',
             'pengujiTugasAkhir' => 'required|numeric',
-            'koordinator' => 'required|numeric',
             'wali' => 'required|numeric',
             'kerjaPraktek' => 'required|numeric',
         ] + $additional;

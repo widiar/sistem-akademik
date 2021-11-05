@@ -35,11 +35,20 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('admin.intensif-marketing.index') }}"
-                        class="nav-link{{request()->is('admin/intensif-marketing') ? ' active' : '' }}">
+                    <a href="{{ route('admin.insentif.master') }}"
+                        class="nav-link{{request()->is('admin/master/insentif-marketing') ? ' active' : '' }}">
                         <i class="nav-icon fas fa-money-check"></i>
                         <p>
-                            Intensif Marketing
+                            Master Insentif Marketing
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.insentif-marketing.index') }}"
+                        class="nav-link{{request()->is('admin/insentif-marketing') ? ' active' : '' }}">
+                        <i class="nav-icon fas fa-money-check"></i>
+                        <p>
+                            Insentif Marketing
                         </p>
                     </a>
                 </li>
@@ -59,6 +68,15 @@
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             Laporan Bulanan
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.dosen.koordinator') }}"
+                        class="nav-link{{request()->is('admin/koordinator/dosen*') ? ' active' : '' }}">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            Dosen koordinator
                         </p>
                     </a>
                 </li>

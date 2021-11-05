@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DosenRequest;
 use App\Models\Dosen;
+use App\Models\DosenKoordinator;
 use App\Models\KategoriDosen;
 use App\Models\Pegawai;
 use Illuminate\Http\Request;
@@ -140,26 +141,25 @@ class DosenController extends Controller
             'bulan' => $bulan,
             'tahun' => $tahun
         ]);
-        $data->tugas_akhir_1 = $request->ta1;
-        $data->tugas_akhir_1_nama = json_encode(($request->ta1Nama) ? $request->ta1Nama : []);
         $data->tugas_akhir_2_pembimbing_1 = $request->ta2pembimbing1;
         $data->tugas_akhir_2_pembimbing_1_nama = json_encode(($request->ta2pembimbing1nama) ? $request->ta2pembimbing1nama : []);
         $data->tugas_akhir_2_pembimbing_2 = $request->ta2pembimbing2;
         $data->tugas_akhir_2_pembimbing_2_nama = json_encode(($request->ta2pembimbing2nama) ? $request->ta2pembimbing2nama : []);
 
-        $data->skripsi_1 = $request->skripsi1;
-        $data->skripsi_1_nama = json_encode(($request->skripsi1Nama) ? $request->skripsi1Nama : []);
         $data->skripsi_2_pembimbing_1 = $request->skripsi2pembimbing1;
         $data->skripsi_2_pembimbing_1_nama = json_encode(($request->skripsi2pembimbing1nama) ? $request->skripsi2pembimbing1nama : []);
         $data->skripsi_2_pembimbing_2 = $request->skripsi2pembimbing2;
         $data->skripsi_2_pembimbing_2_nama = json_encode(($request->skripsi2pembimbing2nama) ? $request->skripsi2pembimbing2nama : []);
 
         $data->penguji_seminar_skripsi = $request->seminarSkripsi;
+        $data->penguji_seminar_skripsi_nama = json_encode(($request->seminarSkripsiNama) ? $request->seminarSkripsiNama : []);
         $data->penguji_seminar_terbuka =  $request->seminarTerbuka;
+        $data->penguji_seminar_terbuka_nama =  json_encode(($request->seminarTerbukaNama) ? $request->seminarTerbukaNama : []);
         $data->penguji_proposal_TA =  $request->proposal;
+        $data->penguji_proposal_TA_nama =  json_encode(($request->proposalNama) ? $request->proposalNama : []);
         $data->penguji_tugas_akhir = $request->pengujiTugasAkhir;
+        $data->penguji_tugas_akhir_nama = json_encode(($request->pengujiTugasAkhirNama) ? $request->pengujiTugasAkhirNama : []);
 
-        $data->koordinator =  $request->koordinator;
         $data->wali = $request->wali;
         $data->kerja_praktek = $request->kerjaPraktek;
         $data->save();
@@ -178,7 +178,10 @@ class DosenController extends Controller
     public function list(Request $request)
     {
         $search = $request->search;
-        $dosen = Pegawai::where("nama", 'ilike', "%$search%")->where('is_dosen', 1)->get();
+        if (env('DB_CONNECTION') == 'mysql')
+            $dosen = Pegawai::where("nama", 'like', "%$search%")->where('is_dosen', 1)->get();
+        else
+            $dosen = Pegawai::where("nama", 'ilike', "%$search%")->where('is_dosen', 1)->get();
         $data = [];
         foreach ($dosen as $ds) {
             $data[] = [
@@ -187,5 +190,42 @@ class DosenController extends Controller
             ];
         }
         return response()->json($data);
+    }
+
+    public function koordinator()
+    {
+        $tahunAjaran = listTahunAjaran();
+        $dosen = Pegawai::where('is_dosen', true)->get();
+        return view('admin.akademik.koordinatorDosen', compact('tahunAjaran', 'dosen'));
+    }
+
+    public function editKoor(Pegawai $pegawai, $semester)
+    {
+        if ($pegawai->is_dosen === FALSE || $pegawai->is_dosen === NULL) abort(404);
+
+        $pegawai = $pegawai->load(['koordinator' => function ($q) use ($semester) {
+            $q->where('semester', $semester);
+        }]);
+        return view('admin.akademik.editKoor', compact('pegawai', 'semester'));
+    }
+
+    public function updateKoor(Pegawai $pegawai, $semester, Request $request)
+    {
+        if ($request->koor > 0) $matkul = 'required';
+        else $matkul = '';
+        $request->validate([
+            'koor' => 'required|integer',
+            'matkul' => $matkul
+        ]);
+
+        $data = DosenKoordinator::firstOrCreate([
+            'pegawai_id' => $pegawai->id,
+            'semester' => $semester,
+        ]);
+        $data->jumlah = $request->koor;
+        $data->matakuliah = json_encode(($request->matkul) ? $request->matkul : []);
+        $data->save();
+
+        return redirect()->route('admin.dosen.koordinator')->with(['success' => 'Berhasil update']);
     }
 }

@@ -124,21 +124,21 @@
                 <th>Honor Mengajar Kerja Praktek</th>
                 <td>Rp {{ number_format($gaji->kerjaPraktekTotal * $gaji->kerjaPraktek ,2,",",".") }}</td>
             </tr>
-            <tr>
+            {{-- <tr>
                 <th>Skripsi I</th>
                 <td>Rp {{ number_format($gaji->skripsi1Total * $gaji->skripsi1 ,2,",",".") }}</td>
-            </tr>
+            </tr> --}}
             <tr>
-                <th>Skripsi II</th>
+                <th>Skripsi</th>
                 <td>Rp {{ number_format(($gaji->skripsi2Pembimbing1Total * $gaji->skripsi2Pembimbing1) +
                     ($gaji->skripsi2Pembimbing2Total * $gaji->skripsi2Pembimbing2) ,2,",",".") }}</td>
             </tr>
-            <tr>
+            {{-- <tr>
                 <th>Tugas Akhir I</th>
                 <td>Rp {{ number_format($gaji->ta1Total * $gaji->ta1 ,2,",",".") }}</td>
-            </tr>
+            </tr> --}}
             <tr>
-                <th>Tugas Akhir II</th>
+                <th>Tugas Akhir</th>
                 <td>Rp {{ number_format(($gaji->ta2Pembimbing1Total * $gaji->ta2Pembimbing1) +
                     ($gaji->ta2Pembimbing2Total * $gaji->ta2Pembimbing2) ,2,",",".") }}</td>
             </tr>

@@ -124,9 +124,13 @@
                 <th>Reward</th>
                 <td>Rp {{ number_format($gaji->reward ,2,",",".") }}</td>
             </tr>
-            <tr style="border-bottom: 1px solid black">
+            <tr>
                 <th>Tunjangan Hari Raya</th>
                 <td>Rp {{ number_format($gaji->thr ,2,",",".") }}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid black">
+                <th>Insentif Marketing</th>
+                <td>Rp {{ number_format($gaji->insentif_marketing ,2,",",".") }}</td>
             </tr>
             <tr style="border-bottom: 1px solid black">
                 <th style="font-size: 18px">Gaji Kotor</th>
@@ -142,15 +146,15 @@
             </tr>
             <tr>
                 <th>Izin / Sakit</th>
-                <td>Rp {{ number_format($gaji->izin ,2,",",".") }}</td>
+                <td>Rp {{ number_format($gaji->izin * $gaji->izinTotal ,2,",",".") }}</td>
             </tr>
             <tr>
                 <th>Telat / Short Time / No Finger</th>
-                <td>Rp {{ number_format($gaji->telat ,2,",",".") }}</td>
+                <td>Rp {{ number_format($gaji->telat * $gaji->telatTotal ,2,",",".") }}</td>
             </tr>
             <tr>
                 <th>I/S/A Non alphaeransi</th>
-                <td>Rp {{ number_format($gaji->alpha ,2,",",".") }}</td>
+                <td>Rp {{ number_format($gaji->alpha * $gaji->alphaTotal ,2,",",".") }}</td>
             </tr>
             <tr>
                 <th>Sanksi SP</th>

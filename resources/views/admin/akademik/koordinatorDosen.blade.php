@@ -18,13 +18,12 @@
 @endif
 <div class="tanggal m-3 row">
     <div class="col-md-6 col-xs-12">
-        <label for="">Pilih Tanggal</label>
-        <div class="input-group">
-            <input type="text" id="tgl" class="form-control datepicker" value="{{ date('m-Y') }}">
-            <div class="input-group-append">
-                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
-            </div>
-        </div>
+        <label for="">Pilih Semester</label>
+        <select class="form-control bulan" name="semester" id="semester">
+            @foreach ($tahunAjaran as $semester)
+            <option value="{{ $semester['id'] }}">{{ $semester['text'] }}</option>
+            @endforeach
+        </select>
     </div>
 </div>
 <div class="card shadow mx-3">
@@ -42,20 +41,17 @@
                 @php
                 $no=0;
                 @endphp
-                @if (!is_null($pegawai))
-                @foreach ($pegawai as $ban)
-                @if($ban->staff->count() > 0)
+                @if (!is_null($dosen))
+                @foreach ($dosen as $ban)
                 <tr>
                     <td>{{ ++$no }}</td>
                     <td>{{ $ban->nip }}</td>
                     <td>{{ $ban->nama }}</td>
                     <td class="text-center">
-                        <button class="btn btn-sm btn-primary intensif-button mx-3" data-dosen="{{ $ban->id }}">
-                            <i class="fas fa-file-signature"></i>
-                        </button>
+                        <button class="btn btn-edit btn-sm btn-primary" data-id="{{ $ban->id }}"><i
+                                class="fas fa-edit"></i></button>
                     </td>
                 </tr>
-                @endif
                 @endforeach
                 @endif
             </tbody>
@@ -67,29 +63,19 @@
 
 @section('script')
 <script>
-    let tanggal = `{{ date('m-Y') }}`;
-    let url = `{{ route('admin.insentif-marketing.edit', ['tanggal' => '#bulan', 'staff' => '#id']) }}`
-
-    $("#tgl").change(() => {
-        tanggal = $("#tgl").val()
+    $('.bulan').select2({
+        theme: "bootstrap"
     })
-    $("body").on("click", ".intensif-button", function(){
-        let id = $(this).data("dosen")
-        let urlEdit = url.replace("#bulan", tanggal)
+    let url = `{{ route('admin.dosen.koordinator.edit', ['semester' => '#bulan', 'pegawai' => '#id']) }}`
+    let smt = $('#semester').val()
+    $("#semester").change(() => {
+        smt = $("#semester").val()
+    })
+    $("body").on("click", ".btn-edit", function(){
+        let id = $(this).data("id")
+        let urlEdit = url.replace("#bulan", smt)
         urlEdit = urlEdit.replace("#id", id)
         window.location.href = urlEdit
     })
-
-    $(".datepicker").datepicker({
-        format: 'mm-yyyy',
-        todayBtn: "linked",
-        startView: "months", 
-        minViewMode: "months",
-        // daysOfWeekDisabled: "0,6",
-        autoclose: true,
-        endDate: "+0d",
-        todayHighlight: true
-    });
-
 </script>
 @endsection

@@ -1,17 +1,42 @@
 <?php
 
-function tahunAjaran()
+use App\Models\AbsenDosen;
+
+function tahunAjaran($month = NULL)
 {
-    $month = date('n');
+    if (is_null($month)) $month = date('n');
     $year = date('Y');
     if ($month <= 6) {
         $y = $year - 1;
-        $tahunAjaran = $y . "/" . $year;
+        $tahunAjaran = "genap-" . $y . "-" . $year;
     } else {
         $y = $year + 1;
-        $tahunAjaran = $year . "/" . $y;
+        $tahunAjaran = "ganjil-" .  $year . "-" . $y;
     }
     return $tahunAjaran;
+}
+
+function listTahunAjaran()
+{
+    $start = 2020;
+    $year = date('Y');
+    $month = date('n');
+    $loop = $year - $start;
+    $dt = [];
+    if ($month > 6) $loop = $loop * 2 + 1;
+    else $loop = $loop * 2;
+    for ($i = 1; $i <= $loop; $i++) {
+        if ($i % 2 != 0 && $i != 1) ++$start;
+        if ($i % 2 != 0) $dt[] = [
+            'id' => "ganjil-$start-" . ($start + 1),
+            'text' => "Ganjil $start/" . ($start + 1)
+        ];
+        else $dt[] = [
+            'id' => "genap-$start-" . ($start + 1),
+            'text' => "Genap $start/" . ($start + 1)
+        ];
+    }
+    return $dt;
 }
 
 function getBulan()
@@ -69,4 +94,24 @@ function dayInIndonesia($day)
     }
 
     return $hari_ini;
+}
+
+function totalPertemuan($pgw, $matkul, $kat, $bulan, $tahun)
+{
+    $total = AbsenDosen::where([
+        ['pegawai_id', $pgw],
+        ['kategori', $kat],
+        ['matakuliah_id', $matkul],
+        ['hadir', 1]
+    ])->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->count();
+    return $total;
+}
+function absenMatkul($pgw, $kat, $bulan, $tahun)
+{
+    $total = AbsenDosen::with('matkul')->where([
+        ['pegawai_id', $pgw],
+        ['kategori', $kat],
+        ['hadir', 1]
+    ])->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->distinct('matakuliah_id')->get();
+    return $total;
 }

@@ -87,6 +87,7 @@ class AbsenController extends Controller
     {
         $absen =  AbsenStaff::where('tanggal', date('Y-m-d', strtotime($request->tanggal)))->get();
         $dt = [];
+        $sudahAbsen = [];
         $no = 0;
         if ($absen->count()) {
             foreach ($absen as $a) {
@@ -96,6 +97,12 @@ class AbsenController extends Controller
                     'id' => $a->pegawai->id,
                     'f' => 1,
                     'absen' => $a->hadir
+                ];
+                $sudahAbsen[] = [
+                    'id' => $a->pegawai->id,
+                    'is_hadir' => $a->hadir,
+                    'is_izin' => $a->izin,
+                    'keterangan' => $a->keterangan
                 ];
             }
         } else {
@@ -112,28 +119,24 @@ class AbsenController extends Controller
         }
         return response()->json([
             'data' => $dt,
-            'total' => $no
+            'total' => $no,
+            'absen' => $sudahAbsen
         ]);
     }
 
     public function absenStaff(Request $request)
     {
+        // dd($request->data[0]['id']);
         $absen =  AbsenStaff::where('tanggal', date('Y-m-d', strtotime($request->tanggal)))->get();
-        foreach (array_combine($request->id, $request->absen) as $id => $hadir) {
-            if ($absen->count()) {
-                $cek = AbsenStaff::where([
-                    ['pegawai_id', $id],
-                    ['tanggal', date('Y-m-d', strtotime($request->tanggal))]
-                ])->first();
-                $cek->hadir = $hadir;
-                $cek->save();
-            } else {
-                AbsenStaff::create([
-                    'pegawai_id' => $id,
-                    'hadir' => $hadir,
-                    'tanggal' => date('Y-m-d', strtotime($request->tanggal))
-                ]);
-            }
+        foreach ($request->data as $data) {
+            $cek = AbsenStaff::firstOrCreate([
+                'pegawai_id' => $data['id'],
+                'tanggal' => date('Y-m-d', strtotime($request->tanggal))
+            ]);
+            $cek->hadir = $data['is_hadir'];
+            $cek->izin = isset($data['is_izin']) ? $data['is_izin'] : NULL;
+            $cek->keterangan = isset($data['keterangan']) ? $data['keterangan'] : NULL;
+            $cek->save();
         }
         return response()->json([
             'status' => 200

@@ -21,52 +21,6 @@ use Illuminate\Support\Facades\File;
 class GajiController extends Controller
 {
 
-    protected function imageKit()
-    {
-        return new ImageKit(
-            env('IMAGE_KIT_PUBLIC_KEY'),
-            env('IMAGE_KIT_SECRET_KEY'),
-            env('IMAGE_KIT_ENDPOINT')
-        );
-    }
-    /*
-    public function staff()
-    {
-        $gaji = MasterGajiStaff::where('status', 2)->first();
-        return view('admin.keuangan.staff', compact('gaji'));
-    }
-
-    public function storeStaff(GajiRequest $request)
-    {
-        // dd($request->all());
-        $staff = MasterGajiStaff::firstOrCreate([
-            'status' => 2
-        ]);
-        $staff->gaji = $request->gaji;
-        $staff->lembur = $request->lembur;
-        $staff->makan = $request->makan;
-        $staff->jabatan = $request->jabatan;
-        $staff->keahlian = $request->keahlian;
-        $staff->pulsa = $request->pulsa;
-        $staff->tol = $request->tol;
-        $staff->kurang_gaji = $request->kurangGaji;
-        $staff->reward = $request->reward;
-        $staff->thr = $request->thr;
-        $staff->bpjs_kesehatan = $request->bpjsKesehatan;
-        $staff->bpjs_kerja = $request->bpjsKerja;
-        $staff->izin = $request->izin;
-        $staff->telat = $request->telat;
-        $staff->gaji = $request->gaji;
-        $staff->alpha = $request->alpha;
-        $staff->sanksi = $request->sanksi;
-        $staff->kasbon = $request->kasbon;
-        $staff->makanNonDinas = $request->makanNonDinas;
-        $staff->potonganLain = $request->potonganLain;
-        $staff->save();
-        return redirect()->route('admin.gaji.staff')->with(['success' => 'Berhasil Update Data']);
-    }
-    */
-
     public function indexStaff()
     {
         $m = date('n');
@@ -124,8 +78,17 @@ class GajiController extends Controller
         $tahun = $tmp[1];
         if ($staff->is_staff != 1) abort(404);
         $absen =  $staff->absenStaff()->whereMonth('tanggal', $bulan)->where('hadir', 1)->get();
-        $gaji = $staff->detailStaff;
-        return view('admin.keuangan.detailStaff', compact('gaji', 'absen'));
+        $cek = $staff->slipStaff()->where('bulan', $bulan)->where('tahun', $tahun)->first();
+        $insentif = $staff->insentif()->where('bulan', $bulan)->where('tahun', $tahun)->first();
+        if ($cek) {
+            $gaji = $cek;
+            $insentif = $cek->insentif_marketing;
+        } else {
+            $gaji = $staff->detailStaff;
+            if ($insentif) $insentif = $insentif->jumlah;
+            else $insentif = 0;
+        }
+        return view('admin.keuangan.detailStaff', compact('gaji', 'absen', 'insentif'));
     }
 
     public function gajiStaffStore($bulan, Pegawai $staff, Request $request)
@@ -153,8 +116,11 @@ class GajiController extends Controller
         $slip->bpjs_kesehatan = $request->bpjsKesehatan;
         $slip->bpjs_kerja = $request->bpjsKerja;
         $slip->izin = $request->izin;
+        $slip->izinTotal = $request->izinTotal;
         $slip->telat = $request->telat;
+        $slip->telatTotal = $request->telatTotal;
         $slip->alpha = $request->alpha;
+        $slip->alphaTotal = $request->alphaTotal;
         $slip->sanksi = $request->sanksi;
         $slip->kasbon = $request->kasbon;
         $slip->makanNonDinas = $request->makanNonDinas;
@@ -162,54 +128,11 @@ class GajiController extends Controller
         $slip->gaji_kotor = $request->gajiKotor;
         $slip->total_potongan = $request->potongan;
         $slip->gaji_bersih = $request->gajiBersih;
+        $slip->insentif_marketing = ($request->insentifMarketing == NULL) ? 0 : $request->insentifMarketing;
         $slip->save();
         return redirect()->route('admin.penggajian.staff')->with(['success' => 'Berhasil menyimpan slip']);
     }
 
-    /*
-    public function dosen()
-    {
-        $gaji = MasterGajiDosen::where('status', 1)->first();
-        return view('admin.keuangan.dosen', compact('gaji'));
-    }
-
-    public function storeDosen(GajiDosenRequest $request)
-    {
-        // dd($request->all());
-        $data = MasterGajiDosen::firstOrCreate([
-            'status' => 1
-        ]);
-        $data->mengajar = $request->mengajar;
-        $data->wali = $request->wali;
-        $data->transport = $request->transport;
-        $data->regular = $request->regular;
-        $data->karyawan = $request->karyawan;
-        $data->eksekutif = $request->eksekutif;
-        $data->interTeori = $request->interTeori;
-        $data->interPraktek = $request->interPraktek;
-        $data->kerjaPraktek = $request->kerjaPraktek;
-        $data->skripsi1 = $request->skripsi1;
-        $data->skripsi2 = $request->skripsi2;
-        $data->ta1 = $request->ta1;
-        $data->ta2 = $request->ta2;
-        $data->seminarSkripsi = $request->seminarSkripsi;
-        $data->seminarTerbuka = $request->seminarTerbuka;
-        $data->proposal = $request->proposal;
-        $data->ngujiTA = $request->ngujiTA;
-        $data->koreksiRegular = $request->koreksiRegular;
-        $data->koreksiKaryawan = $request->koreksiKaryawan;
-        $data->koreksiInter = $request->koreksiInter;
-        $data->soalRegular = $request->soalRegular;
-        $data->soalKaryawan = $request->soalKaryawan;
-        $data->soalInter = $request->soalInter;
-        $data->dosenWali = $request->dosenWali;
-        $data->pengawas = $request->pengawas;
-        $data->lemburPengawas = $request->lemburPengawas;
-        $data->koor = $request->koor;
-        $data->save();
-        return redirect()->route('admin.gaji.dosen')->with(['success' => 'Berhasil Update Data']);
-    }
-    */
 
     public function indexDosen()
     {
@@ -316,14 +239,14 @@ class GajiController extends Controller
         $slip->interPraktek =  $request->interPraktek;
         $slip->kerjaPraktekTotal =  $request->kerjaPraktekTotal;
         $slip->kerjaPraktek =  $request->kerjaPraktek;
-        $slip->skripsi1Total =  $request->skripsi1Total;
-        $slip->skripsi1 =  $request->skripsi1;
+        // $slip->skripsi1Total =  $request->skripsi1Total;
+        // $slip->skripsi1 =  $request->skripsi1;
         $slip->skripsi2Pembimbing1Total =  $request->skripsi2Pembimbing1Total;
         $slip->skripsi2Pembimbing1 =  $request->skripsi2Pembimbing1;
         $slip->skripsi2Pembimbing2Total =  $request->skripsi2Pembimbing2Total;
         $slip->skripsi2Pembimbing2 =  $request->skripsi2Pembimbing2;
-        $slip->ta1Total =  $request->ta1Total;
-        $slip->ta1 =  $request->ta1;
+        // $slip->ta1Total =  $request->ta1Total;
+        // $slip->ta1 =  $request->ta1;
         $slip->ta2Pembimbing1Total =  $request->ta2Pembimbing1Total;
         $slip->ta2Pembimbing1 =  $request->ta2Pembimbing1;
         $slip->ta2Pembimbing2Total =  $request->ta2Pembimbing2Total;
