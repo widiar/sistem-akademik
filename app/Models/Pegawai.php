@@ -60,4 +60,9 @@ class Pegawai extends Model
     {
         return $this->hasMany(DosenKoordinator::class);
     }
+
+    public function insentif()
+    {
+        return $this->hasMany(InsentifMarketing::class);
+    }
 }

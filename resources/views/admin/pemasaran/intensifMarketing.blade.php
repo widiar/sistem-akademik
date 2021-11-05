@@ -16,6 +16,17 @@
     {{session('error')}}
 </div>
 @endif
+<div class="tanggal m-3 row">
+    <div class="col-md-6 col-xs-12">
+        <label for="">Pilih Tanggal</label>
+        <div class="input-group">
+            <input type="text" id="tgl" class="form-control datepicker" value="{{ date('m-Y') }}">
+            <div class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="card shadow mx-3">
     <div class="card-body table-responsive">
         <table id="adminTable" class="table table-bordered dt-responsive nowrap" style="width: 100%;">
@@ -52,62 +63,33 @@
     </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="modalAdmin" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Tahun Ajaran {{ tahunAjaran() }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="{{ route('admin.intensif-marketing.store') }}" method="POST" class="absen-form">
-                @csrf
-                <input type="hidden" name="dosen" value="" class="idDosen">
-                <div class="modal-body">
-                    <div class="form-group mt-3">
-                        <label for="sks">Jumlah Mahasiswa</label>
-                        <input type="number" name="jumlah" class="form-control sks" value="">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Update</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
 @endsection
 
 @section('script')
 <script>
-    $('.bulan').select2({
-        theme: "bootstrap"
-    });
-    // let tipe = "{{ route('admin.intensif-marketing.index') }}";
-    // if (performance.navigation.type == 1) window.location.href = tipe
+    let tanggal = `{{ date('m-Y') }}`;
+    let url = `{{ route('admin.insentif-marketing.edit', ['tanggal' => '#bulan', 'staff' => '#id']) }}`
 
-    var id = '';
-    $(".intensif-button").click(function(e){
-        e.preventDefault()
-        let button = $(this);
-        id = button.data('dosen');
-        var u = "{{ route('admin.intensif-marketing.show', 0) }}"
-        var ur = u.substring(0, u.length-1) + id;
-        // console.log(ur)
-        $.ajax({
-            url: ur,
-            dataType: 'json',
-            success: function(data){
-                $(".sks").val(data.jumlah)
-                $(".idDosen").val(id)
-                // console.log(data.absen)
-                $("#modalAdmin").modal('show');
-            }
-        })
+    $("#tgl").change(() => {
+        tanggal = $("#tgl").val()
+    })
+    $("body").on("click", ".intensif-button", function(){
+        let id = $(this).data("dosen")
+        let urlEdit = url.replace("#bulan", tanggal)
+        urlEdit = urlEdit.replace("#id", id)
+        window.location.href = urlEdit
+    })
+
+    $(".datepicker").datepicker({
+        format: 'mm-yyyy',
+        todayBtn: "linked",
+        startView: "months", 
+        minViewMode: "months",
+        // daysOfWeekDisabled: "0,6",
+        autoclose: true,
+        endDate: "+0d",
+        todayHighlight: true
     });
+
 </script>
 @endsection
