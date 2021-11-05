@@ -47,8 +47,8 @@
         $total = 0;
         @endphp
         <tr>
-            <th class="text-large text-center">I Kadek Yogi Wiguna</th>
-            <th class="text-large text-center">2802829280</th>
+            <th class="text-large text-center">{{ $dosen->nama }}</th>
+            <th class="text-large text-center">{{ $dosen->nip }}</th>
         </tr>
         @foreach($absen as $dt)
         <tr>
