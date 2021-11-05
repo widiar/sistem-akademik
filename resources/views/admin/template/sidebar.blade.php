@@ -46,9 +46,18 @@
                 <li class="nav-item">
                     <a href="{{ route('admin.insentif-marketing.index') }}"
                         class="nav-link{{request()->is('admin/insentif-marketing') ? ' active' : '' }}">
-                        <i class="nav-icon fas fa-money-check"></i>
+                        <i class="nav-icon fas fa-money-bill"></i>
                         <p>
                             Insentif Marketing
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.rekap.insentif') }}"
+                        class="nav-link{{request()->is('admin/rekap/insentif-marketing') ? ' active' : '' }}">
+                        <i class="nav-icon fas fa-file-archive"></i>
+                        <p>
+                            Rekap Insentif Marketing
                         </p>
                     </a>
                 </li>

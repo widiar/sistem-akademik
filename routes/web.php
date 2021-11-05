@@ -52,6 +52,9 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('insentif-marketing', [InsentifController::class, 'index'])->name('insentif-marketing.index');
                 Route::get('insentif-marketing/{staff}/{tanggal}', [InsentifController::class, 'edit'])->name('insentif-marketing.edit');
                 Route::put('insentif-marketing/{staff}/{tanggal}', [InsentifController::class, 'update']);
+                Route::get('rekap/insentif-marketing', [InsentifController::class, 'rekap'])->name('rekap.insentif');
+                Route::post('rekap/insentif-marketing', [InsentifController::class, 'postRekap'])->name('rekap.insentif.post');
+                Route::delete('rekap/insentif-marketing/{id}', [InsentifController::class, 'deleteRekap'])->name('rekap.insentif.delete');
             });
 
             //akademik

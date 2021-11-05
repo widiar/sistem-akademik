@@ -6,7 +6,10 @@ use App\Http\Requests\MasterInsentifRequest;
 use App\Models\InsentifMarketing;
 use App\Models\MasterInsentifMarketing;
 use App\Models\Pegawai;
+use App\Models\RekapInsentifMarketing;
 use Illuminate\Http\Request;
+use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
+use Illuminate\Support\Facades\Storage;
 
 class InsentifController extends Controller
 {
@@ -20,9 +23,40 @@ class InsentifController extends Controller
     }
 
 
-    public function create()
+    public function rekap()
     {
-        //
+        $rekapan = RekapInsentifMarketing::all();
+        return view('admin.pemasaran.insentifMarketing.rekap', compact('rekapan'));
+    }
+
+    public function postRekap(Request $request)
+    {
+        $tmp = explode("-", $request->tanggal);
+        $bulan = $tmp[0];
+        $tahun = $tmp[1];
+        $cek = RekapInsentifMarketing::where('tahun', $tahun)->where('bulan', $bulan)->first();
+        if ($cek) return response()->json('Ada');
+
+        $filename = uniqid() . ".pdf";
+        $data = InsentifMarketing::with('pegawai')->where('bulan', $bulan)->where('tahun', $tahun)->get();
+        $pdf = PDF::loadView('admin.pemasaran.insentifMarketing.rekappdf', compact('data'));
+        $pdf->setOption('header-html', view('header'))->save('storage/rekap-insentif-marketing/' . $filename);
+
+        RekapInsentifMarketing::create([
+            'file' => $filename,
+            'bulan' => $bulan,
+            'tahun' => $tahun
+        ]);
+
+        return response()->json('Sukses');
+    }
+
+    public function deleteRekap($id)
+    {
+        $rekap = RekapInsentifMarketing::find($id);
+        Storage::disk('public')->delete('rekap-insentif-marketing/' . $rekap->file);
+        $rekap->delete();
+        return response()->json('Sukses');
     }
 
     public function store(Request $request)
