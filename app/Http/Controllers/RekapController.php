@@ -72,7 +72,7 @@ class RekapController extends Controller
             $q->where('semester', tahunAjaran($bulan));
         }])->where('is_dosen', true)->get();
 
-        $pdf = PDF::loadView('admin.akademik.pdf.rekapDosen', compact('dosen', 'bulan', 'tahun'));
+        $pdf = PDF::loadView('admin.akademik.pdf.rekapDosen2', compact('dosen', 'bulan', 'tahun'));
 
         if (env('APP_ENV') == 'heroku') {
             $imageKit = $this->imageKit();
@@ -163,7 +163,7 @@ class RekapController extends Controller
         // Excel::store(new AbsenDosenExport($month, $year), 'rekap-absen-dosen/excel/' . $excel, 'public');
 
         $pegawai =  Pegawai::with(['absenDosen'])->where('is_dosen', 1)->get();
-        $pdf = PDF::loadView('admin.akademik.pdf.rekapAbsen2', compact(
+        $pdf = PDF::loadView('admin.akademik.pdf.rekapAbsen', compact(
             'pegawai',
             'month',
             'tahun'
