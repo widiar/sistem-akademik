@@ -11,11 +11,15 @@
             <hr>
             <div class="row">
                 <div class="col-md-6 col-sm-12">
+                    @php
+                    if($gaji->gaji) $pokok=$gaji->gaji;
+                    else $pokok = $gaji->gaji_pokok;
+                    @endphp
                     <div class="form-group">
                         <label for="gaji">Gaji Pokok</label>
                         <input type="number" min="0" readonly required name="gaji"
                             class="form-control  @error('gaji') is-invalid @enderror"
-                            value="{{ old('gaji', @$gaji->gaji) }}">
+                            value="{{ old('gaji', @$pokok) }}">
                         @error('gaji')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
