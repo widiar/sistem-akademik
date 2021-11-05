@@ -72,7 +72,7 @@ class RekapController extends Controller
             $q->where('semester', tahunAjaran($bulan));
         }])->where('is_dosen', true)->get();
 
-        $pdf = PDF::loadView('admin.akademik.pdf.rekapDosen2', compact('dosen', 'bulan', 'tahun'));
+        $pdf = PDF::loadView('admin.akademik.pdf.rekapDosen', compact('dosen', 'bulan', 'tahun'));
 
         if (env('APP_ENV') == 'heroku') {
             $imageKit = $this->imageKit();
@@ -159,14 +159,6 @@ class RekapController extends Controller
         $month = $bulan;
         $year = $tahun;
 
-        RekapAbsen::create([
-            'excel' => '-',
-            'pdf' => $fpdf,
-            'tahun' => $year,
-            'bulan' => $month,
-            'is_staff' => false
-        ]);
-
         //add excel
         // Excel::store(new AbsenDosenExport($month, $year), 'rekap-absen-dosen/excel/' . $excel, 'public');
 
@@ -201,7 +193,7 @@ class RekapController extends Controller
             // Excel::store(new AbsenDosenExport($month, $year), 'rekap-absen-dosen/excel/' . $excel, 'public');
             $pdf->setPaper('a4')->setOption('header-html', view('header'))->save('storage/rekap-absen-dosen/pdf/' . $fpdf);
             RekapAbsen::create([
-                'excel' => $excel,
+                'excel' => '-',
                 'pdf' => $fpdf,
                 'tahun' => $year,
                 'bulan' => $month,
@@ -221,7 +213,6 @@ class RekapController extends Controller
             $imageKit->deleteFile(json_decode($rekap->pdf)->field);
         } else {
             Storage::disk('public')->delete('rekap-absen-dosen/pdf/' . $rekap->pdf);
-            Storage::disk('public')->delete('rekap-absen-dosen/excel/' . $rekap->excel);
         }
         $rekap->delete();
         return response()->json('Sukses');
@@ -252,7 +243,10 @@ class RekapController extends Controller
 
         $month = $bulan;
         $year = $tahun;
-
+        //pdf
+        $absen = Pegawai::with(['absenStaff' => function ($q) use ($month, $year) {
+            $q->whereMonth('tanggal', $month)->whereYear('tanggal', $year);
+        }])->where('is_staff', 1)->get();
         $dt = [];
         foreach ($absen as $as) {
             $hadir = 0;
@@ -278,7 +272,7 @@ class RekapController extends Controller
         $pdf = PDF::loadView('admin.hrd.pdfRekapAbsen', compact('data', 'month', 'tahun'));
         if (env('APP_ENV') == 'local') {
             //add excel
-            // Excel::store(new AbsenStaffExport($month, $year), 'rekap-absen-staff/excel/' . $excel, 'public');
+            Excel::store(new AbsenStaffExport($month, $year), 'rekap-absen-staff/excel/' . $excel, 'public');
             $pdf->setPaper('a4')->setOption('header-html', view('header'))->save('storage/rekap-absen-staff/pdf/' . $fpdf);
             RekapAbsen::create([
                 'excel' => $excel,
