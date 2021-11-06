@@ -64,6 +64,12 @@
                                 <button class="btn btn-sm btn-warning"><i class="fas fa-print"></i></button>
                             </a>
                             @endenv
+                            @env('heroku')
+                            <a href="{{ json_decode($ban->pdf)->url }}" class="mx-3 printt">
+                                <button class="btn btn-sm btn-warning"><i class="fas fa-print"></i></button>
+                            </a>
+                            @endenv
+                            @if(Auth::user()->role_id == 1)
                             <form action="{{ route('admin.delete.rekap.dosen', $ban->id) }}" method="POST"
                                 class="deleted">
                                 @method("DELETE")
@@ -71,6 +77,7 @@
                                 <button class="btn btn-sm btn-danger" type="submit"><i
                                         class="fas fa-trash"></i></button>
                             </form>
+                            @endif
                         </div>
                     </td>
                 </tr>

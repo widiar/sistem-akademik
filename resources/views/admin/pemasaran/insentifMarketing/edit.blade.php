@@ -90,7 +90,7 @@
             </div>
             <div class="form-row">
                 <div class="form-group col-xs-12 col-md-6">
-                    <label for="wawancaraTotal">Total Presenter Wawancara</label>
+                    <label for="wawancaraTotal">Total Wawancara</label>
                     <input type="number" required name="wawancaraTotal"
                         class="form-control  @error('wawancaraTotal') is-invalid @enderror"
                         value="{{ old('wawancaraTotal', @$data->total_wawancara) }}">
@@ -99,7 +99,7 @@
                     @enderror
                 </div>
                 <div class="form-group col-xs-12 col-md-6">
-                    <label for="wawancara">Presenter Wawancara</label>
+                    <label for="wawancara">Wawancara</label>
                     <input type="number" required readonly name="wawancara"
                         class="form-control  @error('wawancara') is-invalid @enderror"
                         value="{{ old('wawancara', @$data->wawancara) }}">

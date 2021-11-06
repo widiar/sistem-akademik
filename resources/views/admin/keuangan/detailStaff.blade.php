@@ -141,7 +141,7 @@
             </div>
             <div class="form-group">
                 <label for="insentifMarketing">Insentif Marketing</label>
-                <input type="number" min="0" readonly name="insentifMarketing"
+                <input type="number" min="0" name="insentifMarketing"
                     class="form-control  @error('insentifMarketing') is-invalid @enderror"
                     value="{{ old('insentifMarketing', @$insentif) }}">
                 @error('insentifMarketing')
