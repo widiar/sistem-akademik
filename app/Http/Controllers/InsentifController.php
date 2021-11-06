@@ -10,9 +10,19 @@ use App\Models\RekapInsentifMarketing;
 use Illuminate\Http\Request;
 use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
 use Illuminate\Support\Facades\Storage;
+use ImageKit\ImageKit;
+use Illuminate\Support\Facades\File;
 
 class InsentifController extends Controller
 {
+    protected function imageKit()
+    {
+        return new imageKit(
+            env('IMAGE_KIT_PUBLIC_KEY'),
+            env('IMAGE_KIT_SECRET_KEY'),
+            env('IMAGE_KIT_ENDPOINT')
+        );
+    }
     public function index(Request $request)
     {
         $pegawai = Pegawai::with(['staff' => function ($q) {
@@ -40,13 +50,33 @@ class InsentifController extends Controller
         $filename = uniqid() . ".pdf";
         $data = InsentifMarketing::with('pegawai')->where('bulan', $bulan)->where('tahun', $tahun)->get();
         $pdf = PDF::loadView('admin.pemasaran.insentifMarketing.rekappdf', compact('data'));
-        $pdf->setOption('header-html', view('header'))->save('storage/rekap-insentif-marketing/' . $filename);
 
-        RekapInsentifMarketing::create([
-            'file' => $filename,
-            'bulan' => $bulan,
-            'tahun' => $tahun
-        ]);
+        if (env('APP_ENV') == 'local') {
+            $pdf->setOption('header-html', view('header'))->save('storage/rekap-insentif-marketing/' . $filename);
+            RekapInsentifMarketing::create([
+                'file' => $filename,
+                'bulan' => $bulan,
+                'tahun' => $tahun
+            ]);
+        } else {
+            $imageKit = $this->imageKit();
+            $path = base_path('public/uploads/files/');
+            $pdf->setOption('header-html', view('header'))->save($path . $filename);
+            $uploadFile = $imageKit->upload([
+                'file' => fopen($path . $filename, "r"),
+                'fileName' => $filename,
+                'folder' => "sistem-akademik//rekap-insentif-marketing//"
+            ]);
+            RekapInsentifMarketing::create([
+                'file' => json_encode([
+                    "field" => $uploadFile->success->fileId,
+                    "url" => $uploadFile->success->url,
+                ]),
+                'bulan' => $bulan,
+                'tahun' => $tahun
+            ]);
+            File::delete($path . $filename);
+        }
 
         return response()->json('Sukses');
     }
