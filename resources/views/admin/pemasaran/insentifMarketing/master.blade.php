@@ -48,7 +48,7 @@
                 @enderror
             </div>
             <div class="form-group">
-                <label for="wawancara">Presenter Wawancara</label>
+                <label for="wawancara">Wawancara</label>
                 <input type="text" name="wawancara" class="form-control  @error('wawancara') is-invalid @enderror"
                     value="{{ old('wawancara', @$data->wawancara) }}">
                 @error('wawancara')

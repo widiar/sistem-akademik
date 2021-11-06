@@ -16,12 +16,12 @@
             margin-bottom: 1rem;
             color: #212529;
             border-collapse: collapse;
-            /* margin: 0 auto; */
-        }
-
-        table {
             margin: 0 auto;
         }
+
+        /* table {
+            margin: 0 auto;
+        } */
 
         .table td,
         .table th {
@@ -84,31 +84,49 @@
                 {{-- <th>{{ $gaji->pegawai->email }}</th> --}}
             </tr>
         </table>
-        <hr width="50%">
+        <hr width="50%" align="left">
         <table class="table">
             <tr>
                 <th>Persenter Daftar</th>
+                <td>{{ $gaji->total_daftar }}</td>
+                <td>x</td>
+                <td>Rp {{ number_format($gaji->daftar ,2,",",".") }}</td>
                 <td>Rp {{ number_format($gaji->total_daftar * $gaji->daftar ,2,",",".") }}</td>
             </tr>
             <tr>
                 <th>Registrasi Regular</th>
+                <td>{{ $gaji->total_regular }}</td>
+                <td>x</td>
+                <td>Rp {{ number_format($gaji->regular ,2,",",".") }}</td>
                 <td>Rp {{ number_format($gaji->total_regular * $gaji->regular ,2,",",".") }}</td>
             </tr>
             <tr>
                 <th>Registrasi Karyawan</th>
+                <td>{{ $gaji->total_karyawan }}</td>
+                <td>x</td>
+                <td>Rp {{ number_format($gaji->karyawan ,2,",",".") }}</td>
                 <td>Rp {{ number_format($gaji->total_karyawan * $gaji->karyawan ,2,",",".") }}</td>
             </tr>
             <tr>
                 <th>Registrasi International</th>
+                <td>{{ $gaji->total_international }}</td>
+                <td>x</td>
+                <td>Rp {{ number_format($gaji->international ,2,",",".") }}</td>
                 <td>Rp {{ number_format($gaji->total_international * $gaji->international ,2,",",".") }}</td>
             </tr>
             <tr style="border-bottom: 1px solid black;">
                 <th>Presenter Wawancara</th>
+                <td>{{ $gaji->total_wawancara }}</td>
+                <td>x</td>
+                <td>Rp {{ number_format($gaji->wawancara ,2,",",".") }}</td>
                 <td>Rp {{ number_format($gaji->total_wawancara * $gaji->wawancara ,2,",",".") }}</td>
             </tr>
-            <tr style="background-color: #dddddd">
-                <th>Total</th>
-                <td>Rp {{ number_format($gaji->jumlah ,2,",",".") }}</td>
+            <tr>
+                <th></th>
+                <td></td>
+                <td></td>
+                <th style="background-color: #dddddd" class="text-center">Total</th>
+                <td style="background-color: #dddddd">Rp {{ number_format($gaji->jumlah ,2,",",".") }}</td>
             </tr>
         </table>
         {{-- <div class="new-page"></div> --}}

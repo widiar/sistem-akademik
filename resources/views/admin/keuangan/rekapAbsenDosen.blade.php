@@ -3,7 +3,9 @@
 @section('title', 'Rekap Absen Dosen')
 
 @section('main-content')
+@if(Auth::user()->role_id == 1)
 <button class="btn btn-primary btn-sm mb-3 ml-3" data-toggle="modal" data-target="#modalAdmin">Buat Rekap</button>
+@endif
 @if(session('success'))
 <div class="alert alert-success alert-dismissible">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -49,6 +51,7 @@
                             <a href="{{ Storage::url('rekap-absen-dosen/pdf/' . $ban->pdf) }}" class="mx-3 printt">
                                 <button class="btn btn-sm btn-warning"><i class="fas fa-print"></i></button>
                             </a>
+                            @if(Auth::user()->role_id == 1)
                             <form action="{{ route('admin.delete.rekap.absen.dosen', $ban->id) }}" method="POST"
                                 class="deleted">
                                 @method("DELETE")
@@ -56,6 +59,7 @@
                                 <button class="btn btn-sm btn-danger" type="submit"><i
                                         class="fas fa-trash"></i></button>
                             </form>
+                            @endif
                         </div>
                     </td>
                 </tr>
