@@ -119,7 +119,7 @@
                 <div class="col-md-4 col-sm-12">
                     <div class="form-group">
                         <label for="reward">Reward</label>
-                        <input type="number" min="0" required readonly name="reward"
+                        <input type="number" min="0" required name="reward"
                             class="form-control  @error('reward') is-invalid @enderror"
                             value="{{ old('reward', @$gaji->reward) }}">
                         @error('reward')
@@ -130,7 +130,7 @@
                 <div class="col-md-4 col-sm-12">
                     <div class="form-group">
                         <label for="thr">THR</label>
-                        <input type="number" min="0" required readonly name="thr"
+                        <input type="number" min="0" required name="thr"
                             class="form-control  @error('thr') is-invalid @enderror"
                             value="{{ old('thr', @$gaji->thr) }}">
                         @error('thr')
