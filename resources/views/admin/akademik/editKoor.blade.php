@@ -47,7 +47,7 @@
                 <div class="row">
                     <div class="form-group col-md-6 col-xs-12">
                         <label for="koor">Jumlah</label>
-                        <input required type="number" min="0" name="koor"
+                        <input required type="number" min="0" max="3" name="koor"
                             class="form-control  @error('koor') is-invalid @enderror"
                             value="{{ old('koor', @$pegawai->koordinator[0]->jumlah) }}">
                         @error('koor')
@@ -91,6 +91,7 @@
             theme: 'bootstrap',
             width: '100%',
             minimumInputLength: 2,
+            maximumSelectionLength: 3,
             ajax: {
                 url: url,
                 dataType: 'json',
