@@ -108,10 +108,18 @@ function totalPertemuan($pgw, $matkul, $kat, $bulan, $tahun)
 }
 function absenMatkul($pgw, $kat, $bulan, $tahun)
 {
-    $total = AbsenDosen::with('matkul')->where([
-        ['pegawai_id', $pgw],
-        ['kategori', $kat],
-        ['hadir', 1]
-    ])->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->distinct('matakuliah_id')->get();
+    if (env('DB_CONNECTION') == 'mysql') {
+        $total = AbsenDosen::with('matkul')->where([
+            ['pegawai_id', $pgw],
+            ['kategori', $kat],
+            ['hadir', 1]
+        ])->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->groupBy('matakuliah_id')->get();
+    } else {
+        $total = AbsenDosen::with('matkul')->where([
+            ['pegawai_id', $pgw],
+            ['kategori', $kat],
+            ['hadir', 1]
+        ])->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->distinct('matakuliah_id')->get();
+    }
     return $total;
 }
