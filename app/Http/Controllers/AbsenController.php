@@ -133,7 +133,7 @@ class AbsenController extends Controller
                 'pegawai_id' => $data['id'],
                 'tanggal' => date('Y-m-d', strtotime($request->tanggal))
             ]);
-            $cek->hadir = ($data['is_hadir']) ? 1 : 0;
+            $cek->hadir = ($data['is_hadir'] == "true") ? 1 : 0;
             $cek->izin = isset($data['is_izin']) ? 1 : NULL;
             $cek->keterangan = isset($data['keterangan']) ? $data['keterangan'] : NULL;
             $cek->save();
