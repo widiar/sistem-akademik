@@ -211,7 +211,7 @@
                         class="nav-link{{request()->is('admin/absen-staff*') ? ' active' : '' }}">
                         <i class="nav-icon far fa-folder-open"></i>
                         <p>
-                            Absen Staff
+                            Absen Staff Bulanan
                         </p>
                     </a>
                 </li>
@@ -221,6 +221,15 @@
                         <i class="nav-icon far fa-folder-open"></i>
                         <p>
                             Rekap Absen Staff
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.hari.efektif') }}"
+                        class="nav-link{{request()->is('admin/hari-efektif') ? ' active' : '' }}">
+                        <i class="nav-icon far fa-folder-open"></i>
+                        <p>
+                            Jumlah Hari Efektif
                         </p>
                     </a>
                 </li>

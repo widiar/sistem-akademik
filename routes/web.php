@@ -126,6 +126,10 @@ Route::middleware(['auth'])->group(function () {
                 Route::put('absen-staff/{pegawai}/{bulan}', [AbsenController::class, 'postAbsenStaff'])->name('post.absen.staff');
                 Route::post('rekap/absen-staff', [RekapController::class, 'postAbsenStaff'])->name('rekap.absen.staff.post');
                 Route::delete('rekap/absen-staff/{id}', [RekapController::class, 'deleteAbsenStaff'])->name('delete.absen.staff');
+
+                Route::get('hari-efektif', [StaffController::class, 'hariEfektif'])->name('hari.efektif');
+                Route::post('hari-efektif', [StaffController::class, 'postHariEfektif']);
+                Route::put('hari-efektif', [StaffController::class, 'putHariEfektif']);
             });
 
             Route::get('rekap/absen-staff', [RekapController::class, 'absenStaff'])->name('rekap.absen.staff');
