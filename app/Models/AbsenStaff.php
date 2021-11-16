@@ -9,7 +9,7 @@ class AbsenStaff extends Model
 {
     use HasFactory;
 
-    protected $table = 'absen_staff';
+    protected $table = 'absen_staff_bulanan';
     protected $guarded = ['id'];
 
     public function pegawai()

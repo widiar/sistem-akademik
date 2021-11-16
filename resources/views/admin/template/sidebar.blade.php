@@ -208,7 +208,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('admin.absen.staff') }}"
-                        class="nav-link{{request()->is('admin/absen-staff') ? ' active' : '' }}">
+                        class="nav-link{{request()->is('admin/absen-staff*') ? ' active' : '' }}">
                         <i class="nav-icon far fa-folder-open"></i>
                         <p>
                             Absen Staff

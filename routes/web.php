@@ -120,9 +120,10 @@ Route::middleware(['auth'])->group(function () {
                 Route::resource('staff', StaffController::class);
 
                 Route::get('absen-staff', [AbsenController::class, 'staff'])->name('absen.staff');
-                Route::get('list/absen-staff', [AbsenController::class, 'listStaff'])->name('absen.staff.list');
-                Route::post('absen-staff', [AbsenController::class, 'absenStaff'])->name('absen.staff.post');
-                Route::get('absen-staff/{dosen}/{bulan}', [AbsenController::class, 'cekStaff'])->name('cekAbsenStaff');
+                // Route::get('list/absen-staff', [AbsenController::class, 'listStaff'])->name('absen.staff.list');
+                // Route::post('absen-staff', [AbsenController::class, 'absenStaff'])->name('absen.staff.post');
+                Route::get('absen-staff/{pegawai}/{bulan}', [AbsenController::class, 'showAbsenStaff'])->name('show.absen.staff');
+                Route::put('absen-staff/{pegawai}/{bulan}', [AbsenController::class, 'postAbsenStaff'])->name('post.absen.staff');
                 Route::post('rekap/absen-staff', [RekapController::class, 'postAbsenStaff'])->name('rekap.absen.staff.post');
                 Route::delete('rekap/absen-staff/{id}', [RekapController::class, 'deleteAbsenStaff'])->name('delete.absen.staff');
             });
