@@ -92,7 +92,7 @@ class StaffController extends Controller
             $pegawai->staff()->createMany($dt);
             $pegawai->detailStaff()->create([
                 'gaji' => $request->gaji,
-                'lembur' => $request->lembur,
+                // 'lembur' => $request->lembur,
                 'makan' => $request->makan,
                 'jabatan' => $request->jabatanGaji,
                 'keahlian' => $request->keahlian,
@@ -103,14 +103,16 @@ class StaffController extends Controller
                 'thr' => $request->thr,
                 'bpjs_kesehatan' => $request->bpjsKesehatan,
                 'bpjs_kerja' => $request->bpjsKerja,
-                'izin' => $request->izin,
-                'telat' => $request->telat,
+                // 'izin' => $request->izin,
+                // 'telat' => $request->telat,
                 'gaji' => $request->gaji,
                 'alpha' => $request->alpha,
                 'sanksi' => $request->sanksi,
                 'kasbon' => $request->kasbon,
-                'makanNonDinas' => $request->makanNonDinas,
+                // 'makanNonDinas' => $request->makanNonDinas,
                 'potonganLain' => $request->potonganLain,
+                'short_time' => $request->short_time,
+                'no_finger' => $request->no_finger,
             ]);
         }
         return redirect()->route('admin.staff.index')->with(['success' => 'Berhasil menambah data pegawai']);
@@ -191,7 +193,7 @@ class StaffController extends Controller
 
             $detailStaff = DetailStaff::firstOrCreate(['pegawai_id' => $data->id]);
             $detailStaff->gaji = $request->gaji;
-            $detailStaff->lembur = $request->lembur;
+            // $detailStaff->lembur = $request->lembur;
             $detailStaff->makan = $request->makan;
             $detailStaff->jabatan = $request->jabatanGaji;
             $detailStaff->keahlian = $request->keahlian;
@@ -202,14 +204,16 @@ class StaffController extends Controller
             $detailStaff->thr = $request->thr;
             $detailStaff->bpjs_kesehatan = $request->bpjsKesehatan;
             $detailStaff->bpjs_kerja = $request->bpjsKerja;
-            $detailStaff->izin = $request->izin;
-            $detailStaff->telat = $request->telat;
+            // $detailStaff->izin = $request->izin;
+            // $detailStaff->telat = $request->telat;
             $detailStaff->gaji = $request->gaji;
             $detailStaff->alpha = $request->alpha;
             $detailStaff->sanksi = $request->sanksi;
             $detailStaff->kasbon = $request->kasbon;
-            $detailStaff->makanNonDinas = $request->makanNonDinas;
+            // $detailStaff->makanNonDinas = $request->makanNonDinas;
             $detailStaff->potonganLain = $request->potonganLain;
+            $detailStaff->short_time = $request->short_time;
+            $detailStaff->no_finger = $request->no_finger;
             $detailStaff->save();
         } else {
             if ($data->detailStaff) {

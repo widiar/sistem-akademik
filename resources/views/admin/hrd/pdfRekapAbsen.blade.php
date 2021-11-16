@@ -65,6 +65,7 @@
             $total_SIA = 0;
             @endphp
             @foreach ($absen as $data)
+            @if($data->absenStaff->count() > 0)
             <tr>
                 <td>{{ $data->nip }}</td>
                 <td>{{ $data->nama }}</td>
@@ -89,6 +90,7 @@
                 $total_SIA += $data->absenStaff[0]->total_SIA;
                 @endphp
             </tr>
+            @endif
             @endforeach
             <tr>
                 <td colspan="2" class="text-center">Total</td>
