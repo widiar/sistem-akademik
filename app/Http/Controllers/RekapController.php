@@ -156,6 +156,14 @@ class RekapController extends Controller
         $year = date('Y');
         $bulan = array_slice(getBulan(), 0, $month);
 
+        // $absen = Pegawai::with(['absenStaff' => function ($q) use ($month, $year) {
+        //     $q->where('bulan', $month)->where('tahun', $year);
+        // }])->where('is_staff', 1)->get();
+        // return view('admin.hrd.excelRekapAbsen', compact('absen'));
+        // $tahun = $year;
+        // $pdf = PDF::loadView('admin.hrd.pdfRekapAbsen', compact('absen', 'month', 'tahun'));
+        // return $pdf->setOrientation('landscape')->stream();
+
         if (Auth::user()->role_id != 4 && Auth::user()->role_id != 2) return redirect()->route('admin.dashboard');
         $rekapan = RekapAbsen::where('is_staff', true)->get();
         return view('admin.hrd.rekapAbsen', compact('bulan', 'rekapan'));
@@ -189,32 +197,11 @@ class RekapController extends Controller
 
         //pdf
         $absen = Pegawai::with(['absenStaff' => function ($q) use ($month, $year) {
-            $q->whereMonth('tanggal', $month)->whereYear('tanggal', $year);
+            $q->where('bulan', $month)->where('tahun', $year);
         }])->where('is_staff', 1)->get();
-        $dt = [];
-        foreach ($absen as $as) {
-            $hadir = 0;
-            $izin = -2;
-            $telat = 0;
-            $alpha = 0;
-            foreach ($as->absenStaff as $absenStaff) {
-                if ($absenStaff->hadir == 1) $hadir += 1;
-                if ($absenStaff->izin == 1) $izin += 1;
-                if ($absenStaff->keterangan == 'telat' || $absenStaff->keterangan == 'nofinger' || $absenStaff->keterangan == 'sethari') $telat += 1;
-                if ($absenStaff->keterangan == 'alpha') $alpha += 1;
-            }
-            $dt[] = [
-                'nip' => $as->nip,
-                'nama' => $as->nama,
-                'hadir' => $hadir,
-                'izin' => ($izin > 0) ? $izin : 0,
-                'telat' => $telat,
-                'alpha' => $alpha,
-            ];
-        }
-        $data = json_decode(json_encode($dt));
-        $pdf = PDF::loadView('admin.hrd.pdfRekapAbsen', compact('data', 'month', 'tahun'));
-        $pdf->setPaper('a4')->setOption('header-html', view('header'))->save('storage/rekap-absen-staff/pdf/' . $fpdf);
+
+        $pdf = PDF::loadView('admin.hrd.pdfRekapAbsen', compact('absen', 'month', 'tahun'));
+        $pdf->setOrientation('landscape')->setPaper('a4')->setOption('header-html', view('header'))->save('storage/rekap-absen-staff/pdf/' . $fpdf);
 
         return response()->json('Sukses');
     }
