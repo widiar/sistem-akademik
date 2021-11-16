@@ -204,6 +204,8 @@ class GajiController extends Controller
 
         $pegawai = $dosen->load(['dosen' => function ($q) use ($bulan, $tahun) {
             $q->where('bulan', $bulan)->where('tahun', $tahun);
+        }, 'koordinator' => function ($q) use ($bulan) {
+            $q->where('semester', tahunAjaran($bulan));
         }]);
 
         $cek = $dosen->slipDosen()->where('bulan', $bulan)->where('tahun', $tahun)->first();
@@ -212,9 +214,35 @@ class GajiController extends Controller
         } else {
             $gaji = $dosen->detailDosen;
         }
-        $absen =  $dosen->absenDosen()->whereMonth('tanggal', $bulan)->where('hadir', 1)->get();
+        // dd($pegawai);
+        $regular =  $dosen->absenDosen()->where([
+            ['kategori', 'Regular'],
+            ['hadir', 1]
+        ])->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->get();
+        $karyawan =  $dosen->absenDosen()->where([
+            ['kategori', 'Karyawan'],
+            ['hadir', 1]
+        ])->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->get();
+        $eksekutif =  $dosen->absenDosen()->where([
+            ['kategori', 'Eksekutif / Semester Pendek'],
+            ['hadir', 1]
+        ])->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->get();
+        $interTeori =  $dosen->absenDosen()->where([
+            ['kategori', 'International Teori'],
+            ['hadir', 1]
+        ])->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->get();
+        $interPraktek =  $dosen->absenDosen()->where([
+            ['kategori', 'International Tutor'],
+            ['hadir', 1]
+        ])->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->get();
+
+
         return view('admin.keuangan.detailDosen', compact(
-            'absen',
+            'regular',
+            'karyawan',
+            'eksekutif',
+            'interTeori',
+            'interPraktek',
             'gaji',
             'pegawai',
             'bulanTahun'
