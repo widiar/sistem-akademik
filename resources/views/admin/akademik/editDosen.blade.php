@@ -287,10 +287,10 @@
                     @enderror
                 </div>
             </div>
-            <div class="kerja-praktek">
-                <hr>
-                <h4>Kerja Praktek</h4>
-                <div class="form-group">
+            <hr>
+            <h4>Kerja Praktek</h4>
+            <div class="row kerja-praktek">
+                <div class="form-group col-md-6 col-xs-12">
                     <label for="kerjaPraktek">Jumlah</label>
                     <input required type="text" name="kerjaPraktek"
                         class="form-control  @error('kerjaPraktek') is-invalid @enderror"
@@ -298,6 +298,22 @@
                     @error('kerjaPraktek')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
+                </div>
+                <div class="kerja-praktek-nama col-md-6 col-xs-12">
+                    <div class="form-group">
+                        <label for="kerjaPraktekNama">Kerja Praktek Nama (Mhs)</label>
+                        <select name="kerjaPraktekNama[]" id="kerjaPraktekNama" multiple="multiple"
+                            class="form-control custom-select">
+                            @if($pegawai->dosen->count() > 0)
+                            @foreach (json_decode($pegawai->dosen[0]->kerja_praktek_nama) as $nama)
+                            <option selected value="{{ $nama }}">{{ $nama }}</option>
+                            @endforeach
+                            @endif
+                        </select>
+                        @error('kerjaPraktekNama')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
                 </div>
             </div>
             <input type="hidden" name="bulanTahun" value="{{ $bulanTahun }}">
