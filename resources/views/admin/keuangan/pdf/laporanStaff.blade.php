@@ -85,6 +85,9 @@
             <tr>
                 <th>Email</th>
                 <td>{{ $gaji->pegawai->email }}</td>
+                <th></th>
+                <th>Hari Efektif</th>
+                <td>{{ $hari->jumlah }}</td>
             </tr>
         </table>
         <hr>
@@ -146,12 +149,20 @@
                 <td>Rp {{ number_format($gaji->bpjs_kerja ,2,",",".") }}</td>
             </tr>
             <tr>
-                <th>Izin / Sakit</th>
-                <td>Rp {{ number_format($gaji->izin * $gaji->izinTotal ,2,",",".") }}</td>
+                <th>Telat Kurang Dari 30 Menit</th>
+                <td>Rp {{ number_format($gaji->telat_kurang * $gaji->telat_kurangTotal ,2,",",".") }}</td>
             </tr>
             <tr>
-                <th>Telat / Short Time / No Finger</th>
-                <td>Rp {{ number_format($gaji->telat * $gaji->telatTotal ,2,",",".") }}</td>
+                <th>Telat Lebih Dari 30 Menit</th>
+                <td>Rp {{ number_format($gaji->telat_lebih * $gaji->telat_lebihTotal ,2,",",".") }}</td>
+            </tr>
+            <tr>
+                <th>Short Time</th>
+                <td>Rp {{ number_format($gaji->short * $gaji->shortTotal ,2,",",".") }}</td>
+            </tr>
+            <tr>
+                <th>Tidak Finger</th>
+                <td>Rp {{ number_format($gaji->no_finger * $gaji->no_fingerTotal ,2,",",".") }}</td>
             </tr>
             <tr>
                 <th>I/S/A Non alphaeransi</th>

@@ -16,6 +16,19 @@
 </div>
 <div class="card shadow mx-3">
     <div class="card-body table-responsive">
+        @if(session('success'))
+        <div class="alert alert-success alert-dismissible mx-3">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <h5><i class="icon fas fa-check"></i> BERHASIL!</h5>
+            {{session('success')}}
+        </div>
+        @elseif(session('error'))
+        <div class="alert alert-danger alert-dismissible mx-3">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <h5><i class="icon fas fa-exclamation-triangle"></i> GAGAL!</h5>
+            {{session('error')}}
+        </div>
+        @endif
         <table id="gajiTable" class="table table-bordered dt-responsive nowrap" style="width: 100%;">
             <thead>
                 <tr>
