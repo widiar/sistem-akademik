@@ -35,10 +35,14 @@
             </div>
             <div class="form-row">
                 <div class="form-group col">
+                    @php
+                    if(isset($gaji->gajiTotal)) $waliTotal = $gaji->waliTotal;
+                    else $waliTotal = $pegawai->dosen[0]->wali;
+                    @endphp
                     <label for="waliTotal">Total</label>
                     <input type="number" required name="waliTotal"
                         class="form-control  @error('waliTotal') is-invalid @enderror"
-                        value="{{ old('waliTotal', @$gaji->waliTotal) }}">
+                        value="{{ old('waliTotal', @$waliTotal) }}">
                     @error('waliTotal')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -56,10 +60,14 @@
             <h4>Honor Mengajar: </h4>
             <div class="form-row">
                 <div class="form-group col">
+                    @php
+                    if(isset($gaji->gajiTotal)) $regularTotal = $gaji->absen;
+                    else $regularTotal = $regular->count();
+                    @endphp
                     <label for="absen">Absen</label>
                     <input type="number" required name="absen"
                         class="form-control  @error('absen') is-invalid @enderror"
-                        value="{{ old('absen', @$absen->count()) }}">
+                        value="{{ old('absen', @$regularTotal) }}">
                     @error('absen')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -76,10 +84,14 @@
             </div>
             <div class="form-row">
                 <div class="form-group col">
+                    @php
+                    if(isset($gaji->gajiTotal)) $karyawanTotal = $gaji->karyawanTotal;
+                    else $karyawanTotal = $karyawan->count();
+                    @endphp
                     <label for="karyawanTotal">Total</label>
                     <input type="number" required name="karyawanTotal"
                         class="form-control  @error('karyawanTotal') is-invalid @enderror"
-                        value="{{ old('karyawanTotal', @$gaji->karyawanTotal) }}">
+                        value="{{ old('karyawanTotal', @$karyawanTotal) }}">
                     @error('karyawanTotal')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -96,10 +108,14 @@
             </div>
             <div class="form-row">
                 <div class="form-group col">
+                    @php
+                    if(isset($gaji->gajiTotal)) $eksekutifTotal = $gaji->eksekutifTotal;
+                    else $eksekutifTotal = $eksekutif->count();
+                    @endphp
                     <label for="eksekutifTotal">Total</label>
                     <input type="number" required name="eksekutifTotal"
                         class="form-control  @error('eksekutifTotal') is-invalid @enderror"
-                        value="{{ old('eksekutifTotal', @$gaji->eksekutifTotal) }}">
+                        value="{{ old('eksekutifTotal', @$eksekutifTotal) }}">
                     @error('eksekutifTotal')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -117,9 +133,13 @@
             <div class="form-row">
                 <div class="form-group col">
                     <label for="interTeoriTotal">Total</label>
+                    @php
+                    if(isset($gaji->gajiTotal)) $interTeoriTotal = $gaji->interTeoriTotal;
+                    else $interTeoriTotal = $interTeori->count();
+                    @endphp
                     <input type="number" required name="interTeoriTotal"
                         class="form-control  @error('interTeoriTotal') is-invalid @enderror"
-                        value="{{ old('interTeoriTotal', @$gaji->interTeoriTotal) }}">
+                        value="{{ old('interTeoriTotal', @$interTeoriTotal) }}">
                     @error('interTeoriTotal')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -136,10 +156,14 @@
             </div>
             <div class="form-row">
                 <div class="form-group col">
+                    @php
+                    if(isset($gaji->gajiTotal)) $interPraktekTotal = $gaji->interPraktekTotal;
+                    else $interPraktekTotal = $interPraktek->count();
+                    @endphp
                     <label for="interPraktekTotal">Total</label>
                     <input type="number" required name="interPraktekTotal"
                         class="form-control  @error('interPraktekTotal') is-invalid @enderror"
-                        value="{{ old('interPraktekTotal', @$gaji->interPraktekTotal) }}">
+                        value="{{ old('interPraktekTotal', @$interPraktekTotal) }}">
                     @error('interPraktekTotal')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -156,10 +180,14 @@
             </div>
             <div class="form-row">
                 <div class="form-group col">
+                    @php
+                    if(isset($gaji->gajiTotal)) $kerjaPraktekTotal = $gaji->kerjaPraktekTotal;
+                    else $kerjaPraktekTotal = $pegawai->dosen[0]->kerja_praktek;
+                    @endphp
                     <label for="kerjaPraktekTotal">Total</label>
                     <input type="number" required name="kerjaPraktekTotal"
                         class="form-control  @error('kerjaPraktekTotal') is-invalid @enderror"
-                        value="{{ old('kerjaPraktekTotal', @$gaji->kerjaPraktekTotal) }}">
+                        value="{{ old('kerjaPraktekTotal', @$kerjaPraktekTotal) }}">
                     @error('kerjaPraktekTotal')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -178,10 +206,14 @@
             <h5>Skripsi</h5>
             <div class="form-row">
                 <div class="form-group col-6 col-md-3">
+                    @php
+                    if(isset($gaji->gajiTotal)) $skripsi2Pembimbing1Total = $gaji->skripsi2Pembimbing1Total;
+                    else $skripsi2Pembimbing1Total = $pegawai->dosen[0]->skripsi_2_pembimbing_1;
+                    @endphp
                     <label for="skripsi2Pembimbing1Total">Total Pembimbing 1</label>
                     <input type="number" required name="skripsi2Pembimbing1Total"
                         class="form-control  @error('skripsi2Pembimbing1Total') is-invalid @enderror"
-                        value="{{ old('skripsi2Pembimbing1Total', @$gaji->skripsi2Pembimbing1Total) }}">
+                        value="{{ old('skripsi2Pembimbing1Total', @$skripsi2Pembimbing1Total) }}">
                     @error('skripsi2Pembimbing1Total')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -196,10 +228,14 @@
                     @enderror
                 </div>
                 <div class="form-group col-6 col-md-3">
+                    @php
+                    if(isset($gaji->gajiTotal)) $skripsi2Pembimbing2Total = $gaji->skripsi2Pembimbing2Total;
+                    else $skripsi2Pembimbing2Total = $pegawai->dosen[0]->skripsi_2_pembimbing_2;
+                    @endphp
                     <label for="skripsi2Pembimbing2Total">Total Pembimbing 2</label>
                     <input type="number" required name="skripsi2Pembimbing2Total"
                         class="form-control  @error('skripsi2Pembimbing2Total') is-invalid @enderror"
-                        value="{{ old('skripsi2Pembimbing2Total', @$gaji->skripsi2Pembimbing2Total) }}">
+                        value="{{ old('skripsi2Pembimbing2Total', @$skripsi2Pembimbing2Total) }}">
                     @error('skripsi2Pembimbing2Total')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -219,10 +255,14 @@
                 <h5>Tugas Akhir</h5>
                 <div class="form-row">
                     <div class="form-group col-6 col-md-3">
+                        @php
+                        if(isset($gaji->gajiTotal)) $ta2Pembimbing1Total = $gaji->ta2Pembimbing1Total;
+                        else $ta2Pembimbing1Total = $pegawai->dosen[0]->tugas_akhir_2_pembimbing_1;
+                        @endphp
                         <label for="ta2Pembimbing1Total">Total Pembimbing 1</label>
                         <input type="number" required name="ta2Pembimbing1Total"
                             class="form-control  @error('ta2Pembimbing1Total') is-invalid @enderror"
-                            value="{{ old('ta2Pembimbing1Total', @$gaji->ta2Pembimbing1Total) }}">
+                            value="{{ old('ta2Pembimbing1Total', @$ta2Pembimbing1Total) }}">
                         @error('ta2Pembimbing1Total')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -237,10 +277,14 @@
                         @enderror
                     </div>
                     <div class="form-group col-6 col-md-3">
+                        @php
+                        if(isset($gaji->gajiTotal)) $ta2Pembimbing2Total = $gaji->ta2Pembimbing2Total;
+                        else $ta2Pembimbing2Total = $pegawai->dosen[0]->tugas_akhir_2_pembimbing_2;
+                        @endphp
                         <label for="ta2Pembimbing2Total">Total Pembimbing 2</label>
                         <input type="number" required name="ta2Pembimbing2Total"
                             class="form-control  @error('ta2Pembimbing2Total') is-invalid @enderror"
-                            value="{{ old('ta2Pembimbing2Total', @$gaji->ta2Pembimbing2Total) }}">
+                            value="{{ old('ta2Pembimbing2Total', @$ta2Pembimbing2Total) }}">
                         @error('ta2Pembimbing2Total')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -261,10 +305,14 @@
                 <h5>Penguji</h5>
                 <div class="form-row">
                     <div class="form-group col">
+                        @php
+                        if(isset($gaji->gajiTotal)) $seminarSkripsiTotal = $gaji->seminarSkripsiTotal;
+                        else $seminarSkripsiTotal = $pegawai->dosen[0]->penguji_seminar_skripsi;
+                        @endphp
                         <label for="seminarSkripsiTotal">Total</label>
                         <input type="number" required name="seminarSkripsiTotal"
                             class="form-control  @error('seminarSkripsiTotal') is-invalid @enderror"
-                            value="{{ old('seminarSkripsiTotal', @$gaji->seminarSkripsiTotal) }}">
+                            value="{{ old('seminarSkripsiTotal', @$seminarSkripsiTotal) }}">
                         @error('seminarSkripsiTotal')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -281,10 +329,14 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col">
+                        @php
+                        if(isset($gaji->gajiTotal)) $seminarTerbukaTotal = $gaji->seminarTerbukaTotal;
+                        else $seminarTerbukaTotal = $pegawai->dosen[0]->penguji_seminar_terbuka;
+                        @endphp
                         <label for="seminarTerbukaTotal">Total</label>
                         <input type="number" required name="seminarTerbukaTotal"
                             class="form-control  @error('seminarTerbukaTotal') is-invalid @enderror"
-                            value="{{ old('seminarTerbukaTotal', @$gaji->seminarTerbukaTotal) }}">
+                            value="{{ old('seminarTerbukaTotal', @$seminarTerbukaTotal) }}">
                         @error('seminarTerbukaTotal')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -301,10 +353,14 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col">
+                        @php
+                        if(isset($gaji->gajiTotal)) $proposalTotal = $gaji->proposalTotal;
+                        else $proposalTotal = $pegawai->dosen[0]->penguji_proposal_TA;
+                        @endphp
                         <label for="proposalTotal">Total</label>
                         <input type="number" required name="proposalTotal"
                             class="form-control  @error('proposalTotal') is-invalid @enderror"
-                            value="{{ old('proposalTotal', @$gaji->proposalTotal) }}">
+                            value="{{ old('proposalTotal', @$proposalTotal) }}">
                         @error('proposalTotal')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -321,10 +377,14 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col">
+                        @php
+                        if(isset($gaji->gajiTotal)) $ngujiTATotal = $gaji->ngujiTATotal;
+                        else $ngujiTATotal = $pegawai->dosen[0]->penguji_tugas_akhir;
+                        @endphp
                         <label for="ngujiTATotal">Total</label>
                         <input type="number" required name="ngujiTATotal"
                             class="form-control  @error('ngujiTATotal') is-invalid @enderror"
-                            value="{{ old('ngujiTATotal', @$gaji->ngujiTATotal) }}">
+                            value="{{ old('ngujiTATotal', @$ngujiTATotal) }}">
                         @error('ngujiTATotal')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -511,10 +571,14 @@
             </div>
             <div class="form-row">
                 <div class="form-group col">
+                    @php
+                    if(isset($gaji->gajiTotal)) $koorTotal = $gaji->koorTotal;
+                    else $koorTotal = $pegawai->koordinator[0]->jumlah;
+                    @endphp
                     <label for="koorTotal">Total</label>
                     <input type="number" required name="koorTotal"
                         class="form-control  @error('koorTotal') is-invalid @enderror"
-                        value="{{ old('koorTotal', @$gaji->koorTotal) }}">
+                        value="{{ old('koorTotal', @$koorTotal) }}">
                     @error('koorTotal')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror

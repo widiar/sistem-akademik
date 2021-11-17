@@ -12,7 +12,7 @@
             <div class="row">
                 <div class="col-md-6 col-sm-12">
                     @php
-                    if($gaji->gaji) $pokok=$gaji->gaji;
+                    if (isset($gaji->gaji)) $pokok=$gaji->gaji;
                     else $pokok = $gaji->gaji_pokok;
                     @endphp
                     <div class="form-group">
@@ -25,17 +25,24 @@
                         @enderror
                     </div>
                 </div>
-                <div class="col-md-6 col-sm-12">
-                    <div class="form-group">
-                        <label for="lembur">Lembur</label>
-                        <input type="number" min="0" readonly required name="lembur"
-                            class="form-control  @error('lembur') is-invalid @enderror"
-                            value="{{ old('lembur', @$gaji->lembur) }}">
-                        @error('lembur')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
+            </div>
+            <div class="form-group">
+                <label for="jam_lembur">Jam Lembur</label>
+                <input type="number" min="0" required name="jam_lembur"
+                    class="form-control  @error('jam_lembur') is-invalid @enderror"
+                    value="{{ old('jam_lembur', @$gaji->jam_lembur) }}">
+                @error('jam_lembur')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label for="lembur">Lembur</label>
+                <input type="number" min="0" readonly required name="lembur"
+                    class="form-control  @error('lembur') is-invalid @enderror"
+                    value="{{ old('lembur', @$gaji->lembur) }}">
+                @error('lembur')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
             <h4>Tunjangan: </h4>
             <div class="form-row">
@@ -43,7 +50,7 @@
                     <label for="absen">Kehadiran</label>
                     <input type="number" min="0" required name="absen"
                         class="form-control  @error('absen') is-invalid @enderror"
-                        value="{{ old('absen', @$absen->count()) }}">
+                        value="{{ old('absen', @$kehadiran) }}">
                     @error('absen')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -178,50 +185,121 @@
             </div>
             <div class="form-row">
                 <div class="form-group col-xs-12 col-md-6">
-                    <label for="izinTotal">Total Izin</label>
-                    <input type="number" min="0" required name="izinTotal"
-                        class="form-control  @error('izinTotal') is-invalid @enderror"
-                        value="{{ old('izinTotal', @$gaji->izinTotal) }}">
-                    @error('izinTotal')
+                    @php
+                    if(isset($gaji->gaji_pokok)) $telatKurangTotal = $gaji->telat_kurangTotal;
+                    else $telatKurangTotal = $absen->telat_kurang;
+                    @endphp
+                    <label for="telat_kurangTotal">Total Telat Kurang Dari 30 Menit</label>
+                    <input type="number" min="0" required name="telat_kurangTotal"
+                        class="form-control  @error('telat_kurangTotal') is-invalid @enderror"
+                        value="{{ old('telat_kurangTotal', @$telatKurangTotal) }}">
+                    @error('telat_kurangTotal')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="form-group col-xs-12 col-md-6">
-                    <label for="izin">Izin/Sakit</label>
-                    <input type="number" min="0" required readonly name="izin"
-                        class="form-control  @error('izin') is-invalid @enderror"
-                        value="{{ old('izin', @$gaji->izin) }}">
-                    @error('izin')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-xs-12 col-md-6">
-                    <label for="telatTotal">Total Telat</label>
-                    <input type="number" min="0" required name="telatTotal"
-                        class="form-control  @error('telatTotal') is-invalid @enderror"
-                        value="{{ old('telatTotal', @$gaji->telatTotal) }}">
-                    @error('telatTotal')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="form-group col-xs-12 col-md-6">
-                    <label for="telat">Telat / Short Time / No Finger</label>
-                    <input type="number" min="0" required readonly name="telat"
-                        class="form-control  @error('telat') is-invalid @enderror"
-                        value="{{ old('telat', @$gaji->telat) }}">
-                    @error('telat')
+                    @php
+                    if(isset($gaji->gaji_pokok)) $telatKurang = $gaji->telat_kurang;
+                    else $telatKurang = $gaji->makan * 0.5;
+                    @endphp
+                    <label for="telat_kurang">Telat Kurang Dari 30 Menit</label>
+                    <input type="number" min="0" required readonly name="telat_kurang"
+                        class="form-control  @error('telat_kurang') is-invalid @enderror"
+                        value="{{ old('telat_kurang', @$telatKurang) }}">
+                    @error('telat_kurang')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-xs-12 col-md-6">
-                    <label for="alphaTotal">Total Telat</label>
+                    @php
+                    if(isset($gaji->gaji_pokok)) $telatLebihTotal = $gaji->telat_lebihTotal;
+                    else $telatLebihTotal = $absen->telat_lebih;
+                    @endphp
+                    <label for="telat_lebihTotal">Total Telat Lebih Dari 30 Menit</label>
+                    <input type="number" min="0" required name="telat_lebihTotal"
+                        class="form-control  @error('telat_lebihTotal') is-invalid @enderror"
+                        value="{{ old('telat_lebihTotal', @$telatLebihTotal) }}">
+                    @error('telat_lebihTotal')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group col-xs-12 col-md-6">
+                    @php
+                    if(isset($gaji->gaji_pokok)) $telatlebih = $gaji->telat_lebih;
+                    else $telatlebih = $gaji->makan;
+                    @endphp
+                    <label for="telat_lebih">Telat lebih Dari 30 Menit</label>
+                    <input type="number" min="0" required readonly name="telat_lebih"
+                        class="form-control  @error('telat_lebih') is-invalid @enderror"
+                        value="{{ old('telat_lebih', @$telatlebih) }}">
+                    @error('telat_lebih')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+            <div class="form-row">
+                @php
+                if(isset($gaji->gaji_pokok)) $shortTotal = $gaji->shortTotal;
+                else $shortTotal = $absen->short;
+                @endphp
+                <div class="form-group col-xs-12 col-md-6">
+                    <label for="shortTotal">Total Short Time</label>
+                    <input type="number" min="0" required name="shortTotal"
+                        class="form-control  @error('shortTotal') is-invalid @enderror"
+                        value="{{ old('shortTotal', @$shortTotal) }}">
+                    @error('shortTotal')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group col-xs-12 col-md-6">
+                    @php
+                    if(isset($gaji->gaji_pokok)) $short = $gaji->short;
+                    else $short = $gaji->short_time;
+                    @endphp
+                    <label for="short">Short Time</label>
+                    <input type="number" min="0" required readonly name="short"
+                        class="form-control  @error('short') is-invalid @enderror" value="{{ old('short', @$short) }}">
+                    @error('short')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-xs-12 col-md-6">
+                    @php
+                    if(isset($gaji->gaji_pokok)) $noFingerTotal = $gaji->no_fingerTotal;
+                    else $noFingerTotal = $absen->no_finger;
+                    @endphp
+                    <label for="no_fingerTotal">Total Tidak Finger</label>
+                    <input type="number" min="0" required name="no_fingerTotal"
+                        class="form-control  @error('no_fingerTotal') is-invalid @enderror"
+                        value="{{ old('no_fingerTotal', @$noFingerTotal) }}">
+                    @error('no_fingerTotal')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group col-xs-12 col-md-6">
+                    <label for="no_finger">Tidak Finger</label>
+                    <input type="number" min="0" required readonly name="no_finger"
+                        class="form-control  @error('no_finger') is-invalid @enderror"
+                        value="{{ old('no_finger', @$gaji->no_finger) }}">
+                    @error('no_finger')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-xs-12 col-md-6">
+                    @php
+                    if(isset($gaji->gaji_pokok)) $alphaTotal = $gaji->alphaTotal;
+                    else $alphaTotal = $absen->total_SIA;
+                    @endphp
+                    <label for="alphaTotal">Total I/S/A Non alphaeransi</label>
                     <input type="number" min="0" required name="alphaTotal"
                         class="form-control  @error('alphaTotal') is-invalid @enderror"
-                        value="{{ old('alphaTotal', @$gaji->alphaTotal) }}">
+                        value="{{ old('alphaTotal', @$alphaTotal) }}">
                     @error('alphaTotal')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -305,10 +383,19 @@
         let potongan = 0
         let gajiBersih = 0
         initTotal()
+        $('input[name="jam_lembur"]').keyup(initLembur)
+
+        function initLembur() {
+            const jam = parseInt($('input[name="jam_lembur"]').val())
+            const gaji = parseInt($("input[name='gaji']").val())
+            const lembur = (jam / 173) * gaji
+            $("input[name='lembur']").val(parseInt(lembur))
+        }
+
         function initTotal()
         {
             let gaji = parseInt($("input[name='gaji']").val())
-            let lembur = parseInt($("input[name='lembur']").val())
+            let lembur = parseInt($("input[name='lembur']").val()) || 0
             let absen = parseInt($("input[name='absen']").val())
             let makan = parseInt($("input[name='makan']").val())
             let uangMakan = absen * makan
@@ -326,14 +413,16 @@
             
             let bpjsKesehatan = parseInt($("input[name='bpjsKesehatan']").val())
             let bpjsKerja = parseInt($("input[name='bpjsKerja']").val())
-            let izin = parseInt($("input[name='izin']").val()) * (parseInt($("input[name='izinTotal']").val()) || 0)
-            let telat = parseInt($("input[name='telat']").val()) * (parseInt($("input[name='telatTotal']").val()) || 0)
+            let telat_kurang = parseInt($("input[name='telat_kurang']").val()) * (parseInt($("input[name='telat_kurangTotal']").val()) || 0)
+            let telat_lebih = parseInt($("input[name='telat_lebih']").val()) * (parseInt($("input[name='telat_lebihTotal']").val()) || 0)
+            let short = parseInt($("input[name='short']").val()) * (parseInt($("input[name='shortTotal']").val()) || 0)
+            let no_finger = parseInt($("input[name='no_finger']").val()) * (parseInt($("input[name='no_fingerTotal']").val()) || 0)
             let alpha = parseInt($("input[name='alpha']").val()) * (parseInt($("input[name='alphaTotal']").val()) || 0)
             let sanksi = parseInt($("input[name='sanksi']").val())
             let kasbon = parseInt($("input[name='kasbon']").val())
-            let makanNonDinas = parseInt($("input[name='makanNonDinas']").val())
+            let makanNonDinas = parseInt($("input[name='makanNonDinas']").val()) || 0
             let potonganLain = parseInt($("input[name='potonganLain']").val())
-            potongan = bpjsKerja + bpjsKesehatan + izin + telat + alpha + sanksi + kasbon + makanNonDinas + potonganLain
+            potongan = bpjsKerja + bpjsKesehatan + telat_lebih + telat_kurang + short + no_finger + alpha + sanksi + kasbon + makanNonDinas + potonganLain
             $("#potongan").text(potongan)
             $("#potongan").simpleMoneyFormat()
 

@@ -221,11 +221,23 @@
             <td></td>
         </tr>
         @endif
+
         @if($data->dosen[0]->kerja_praktek > 0)
         <tr class="bg-grey">
             <th class="text-medium">Dosen Kerja Praktek</th>
             <th class="text-center">{{ $data->dosen[0]->kerja_praktek }}</th>
         </tr>
+        <tr>
+            <th>Nama Mahasiswa</th>
+        </tr>
+        @php
+        $no = 0;
+        @endphp
+        @foreach(json_decode($data->dosen[0]->kerja_praktek_nama) as $nama)
+        <tr>
+            <td>{{ ++$no }}. {{ $nama }}</td>
+        </tr>
+        @endforeach
         <tr>
             <td></td>
         </tr>

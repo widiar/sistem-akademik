@@ -23,7 +23,7 @@ class RekapController extends Controller
 {
     protected function imageKit()
     {
-        return new imageKit(
+        return new ImageKit(
             env('IMAGE_KIT_PUBLIC_KEY'),
             env('IMAGE_KIT_SECRET_KEY'),
             env('IMAGE_KIT_ENDPOINT')
@@ -77,7 +77,7 @@ class RekapController extends Controller
         if (env('APP_ENV') == 'heroku') {
             $imageKit = $this->imageKit();
             $path = base_path('public/uploads/files/');
-            $pdf->setOption('header-html', view('header'))->save($path . $fpdf);
+            $pdf->setPaper('legal')->setOption('header-html', view('header'))->save($path . $fpdf);
             $uploadFile = $imageKit->upload([
                 'file' => fopen($path . $fpdf, "r"),
                 'fileName' => $fpdf,
@@ -95,7 +95,7 @@ class RekapController extends Controller
             ]);
             File::delete($path . $fpdf);
         } else {
-            $pdf->setOption('header-html', view('header'))->save('storage/rekap-dosen/pdf/' . $fpdf);
+            $pdf->setPaper('legal')->setOption('header-html', view('header'))->save('storage/rekap-dosen/pdf/' . $fpdf);
             //store db
             RekapDosen::create([
                 'excel' => '-',
@@ -224,6 +224,14 @@ class RekapController extends Controller
         $year = date('Y');
         $bulan = array_slice(getBulan(), 0, $month);
 
+        // $absen = Pegawai::with(['absenStaff' => function ($q) use ($month, $year) {
+        //     $q->where('bulan', $month)->where('tahun', $year);
+        // }])->where('is_staff', 1)->get();
+        // return view('admin.hrd.excelRekapAbsen', compact('absen'));
+        // $tahun = $year;
+        // $pdf = PDF::loadView('admin.hrd.pdfRekapAbsen', compact('absen', 'month', 'tahun'));
+        // return $pdf->setOrientation('landscape')->stream();
+
         if (Auth::user()->role_id != 4 && Auth::user()->role_id != 2) return redirect()->route('admin.dashboard');
         $rekapan = RekapAbsen::where('is_staff', true)->get();
         return view('admin.hrd.rekapAbsen', compact('bulan', 'rekapan'));
@@ -245,35 +253,14 @@ class RekapController extends Controller
         $year = $tahun;
         //pdf
         $absen = Pegawai::with(['absenStaff' => function ($q) use ($month, $year) {
-            $q->whereMonth('tanggal', $month)->whereYear('tanggal', $year);
+            $q->where('bulan', $month)->where('tahun', $year);
         }])->where('is_staff', 1)->get();
-        $dt = [];
-        foreach ($absen as $as) {
-            $hadir = 0;
-            $izin = -2;
-            $telat = 0;
-            $alpha = 0;
-            foreach ($as->absenStaff as $absenStaff) {
-                if ($absenStaff->hadir == 1) $hadir += 1;
-                if ($absenStaff->izin == 1) $izin += 1;
-                if ($absenStaff->keterangan == 'telat' || $absenStaff->keterangan == 'nofinger' || $absenStaff->keterangan == 'sethari') $telat += 1;
-                if ($absenStaff->keterangan == 'alpha') $alpha += 1;
-            }
-            $dt[] = [
-                'nip' => $as->nip,
-                'nama' => $as->nama,
-                'hadir' => $hadir,
-                'izin' => ($izin > 0) ? $izin : 0,
-                'telat' => $telat,
-                'alpha' => $alpha,
-            ];
-        }
-        $data = json_decode(json_encode($dt));
-        $pdf = PDF::loadView('admin.hrd.pdfRekapAbsen', compact('data', 'month', 'tahun'));
+
+        $pdf = PDF::loadView('admin.hrd.pdfRekapAbsen', compact('absen', 'month', 'tahun'));
         if (env('APP_ENV') == 'local') {
             //add excel
             Excel::store(new AbsenStaffExport($month, $year), 'rekap-absen-staff/excel/' . $excel, 'public');
-            $pdf->setPaper('a4')->setOption('header-html', view('header'))->save('storage/rekap-absen-staff/pdf/' . $fpdf);
+            $pdf->setOrientation('landscape')->setPaper('a4')->setOption('header-html', view('header'))->save('storage/rekap-absen-staff/pdf/' . $fpdf);
             RekapAbsen::create([
                 'excel' => $excel,
                 'pdf' => $fpdf,
@@ -284,7 +271,7 @@ class RekapController extends Controller
         } else {
             $imageKit = $this->imageKit();
             $path = base_path('public/uploads/files/');
-            $pdf->setPaper('a4')->setOption('header-html', view('header'))->save($path . $fpdf);
+            $pdf->setOrientation('landscape')->setPaper('a4')->setOption('header-html', view('header'))->save($path . $fpdf);
             $uploadFile = $imageKit->upload([
                 'file' => fopen($path . $fpdf, "r"),
                 'fileName' => $fpdf,
@@ -304,6 +291,8 @@ class RekapController extends Controller
         }
 
         // $pdf->setPaper('a4')->setOption('header-html', view('header'))->save('storage/rekap-absen-staff/pdf/' . $fpdf);
+
+
 
         return response()->json('Sukses');
     }

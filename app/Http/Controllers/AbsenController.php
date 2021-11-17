@@ -80,7 +80,60 @@ class AbsenController extends Controller
     public function staff(Request $request)
     {
         $now = date('d-m-Y');
-        return view('admin.hrd.absenStaff', compact('now'));
+        $dosen = Pegawai::where('is_staff', true)->get();
+        return view('admin.hrd.absenStaff', compact('now', 'dosen'));
+    }
+
+    public function showAbsenStaff(Pegawai $pegawai, $bulan)
+    {
+        $bulanTahun = $bulan;
+        $tmp = explode("-", $bulan);
+        $bulan = $tmp[0];
+        $tahun = $tmp[1];
+
+        if ($pegawai->is_staff === FALSE || $pegawai->is_staff === NULL) abort(404);
+
+        $pegawai = $pegawai->load(['absenStaff' => function ($q) use ($bulan, $tahun) {
+            $q->where('bulan', $bulan)->where('tahun', $tahun);
+        }]);
+        // dd($pegawai);
+        return view('admin.hrd.showAbsenStaff', compact('bulanTahun', 'pegawai'));
+    }
+
+    public function postAbsenStaff(Pegawai $pegawai, $bulan, Request $request)
+    {
+        $request->validate([
+            'cuti' => 'required|integer',
+            'sakit' => 'required|integer',
+            'izin' => 'required|integer',
+            'alpha' => 'required|integer',
+            'short' => 'required|integer',
+            'telat_kurang' => 'required|integer',
+            'telat_lebih' => 'required|integer',
+            'no_finger' => 'required|integer',
+            'total_SIA' => 'required|integer',
+        ]);
+        $tmp = explode("-", $bulan);
+        $bulan = $tmp[0];
+        $tahun = $tmp[1];
+
+        $cek = AbsenStaff::firstOrCreate([
+            'pegawai_id' => $pegawai->id,
+            'bulan' => $bulan,
+            'tahun' => $tahun
+        ]);
+        $cek->cuti = $request->cuti;
+        $cek->sakit = $request->sakit;
+        $cek->izin = $request->izin;
+        $cek->alpha = $request->alpha;
+        $cek->short = $request->short;
+        $cek->telat_kurang = $request->telat_kurang;
+        $cek->telat_lebih = $request->telat_lebih;
+        $cek->no_finger = $request->no_finger;
+        $cek->total_SIA = $request->total_SIA;
+        $cek->save();
+
+        return redirect()->route('admin.absen.staff')->with(['success' => 'Berhasil menyimpan data']);
     }
 
     public function listStaff(Request $request)
@@ -133,8 +186,8 @@ class AbsenController extends Controller
                 'pegawai_id' => $data['id'],
                 'tanggal' => date('Y-m-d', strtotime($request->tanggal))
             ]);
-            $cek->hadir = $data['is_hadir'];
-            $cek->izin = isset($data['is_izin']) ? $data['is_izin'] : NULL;
+            $cek->hadir = ($data['is_hadir'] == "true") ? 1 : 0;
+            $cek->izin = isset($data['is_izin']) ? 1 : NULL;
             $cek->keterangan = isset($data['keterangan']) ? $data['keterangan'] : NULL;
             $cek->save();
         }

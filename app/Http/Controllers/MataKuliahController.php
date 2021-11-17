@@ -73,7 +73,7 @@ class MataKuliahController extends Controller
     {
         $search = $request->search;
         if (env('DB_CONNECTION') == 'mysql')
-            $matkul = MataKuliah::where("nama", 'like', "%$search%")->distinct('nama')->get();
+            $matkul = MataKuliah::where("nama", 'like', "%$search%")->groupBy('nama')->get();
         else
             $matkul = MataKuliah::where("nama", 'ilike', "%$search%")->distinct('nama')->get();
         $data = [];

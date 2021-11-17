@@ -73,7 +73,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-6 col-sm-12">
+                    {{-- <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                             <label for="lembur">Lembur</label>
                             <input type="text" name="lembur" class="form-control  @error('lembur') is-invalid @enderror"
@@ -82,7 +82,7 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
                 <h4>Tunjangan: </h4>
                 <div class="row">
@@ -200,20 +200,22 @@
                     </div>
                     <div class="col-md-4 col-sm-12">
                         <div class="form-group">
-                            <label for="izin">Izin/Sakit</label>
-                            <input type="text" name="izin" class="form-control  @error('izin') is-invalid @enderror"
-                                value="{{ old('izin', @$gaji->izin) }}">
-                            @error('izin')
+                            <label for="no_finger">No Finger</label>
+                            <input type="text" name="no_finger"
+                                class="form-control  @error('no_finger') is-invalid @enderror"
+                                value="{{ old('no_finger', @$data->detailStaff->no_finger) }}">
+                            @error('no_finger')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-12">
                         <div class="form-group">
-                            <label for="telat">Telat / Short Time / No Finger</label>
-                            <input type="text" name="telat" class="form-control  @error('telat') is-invalid @enderror"
-                                value="{{ old('telat', @$gaji->telat) }}">
-                            @error('telat')
+                            <label for="short_time">Short Time</label>
+                            <input type="text" name="short_time"
+                                class="form-control  @error('short_time') is-invalid @enderror"
+                                value="{{ old('short_time', @$data->detailStaff->short_time) }}">
+                            @error('short_time')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
@@ -248,7 +250,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-4 col-sm-12">
+                    {{-- <div class="col-md-4 col-sm-12">
                         <div class="form-group">
                             <label for="makanNonDinas">Uang Makan Non Dinas</label>
                             <input type="text" name="makanNonDinas"
@@ -258,7 +260,7 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="col-md-4 col-sm-12">
                         <div class="form-group">
                             <label for="potonganLain">Potongan Lain-Lain</label>

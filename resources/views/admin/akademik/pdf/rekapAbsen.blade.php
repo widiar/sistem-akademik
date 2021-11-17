@@ -43,7 +43,9 @@
     <table>
         @foreach($pegawai as $dosen)
         @php
-        $absen = $dosen->absenDosen()->where('hadir', 1)->distinct('kategori')->get();
+        if(env('DB_CONNECTION') == 'mysql')
+        $absen = $dosen->absenDosen()->where('hadir', 1)->groupBy('kategori')->get();
+        else $absen = $dosen->absenDosen()->where('hadir', 1)->distinct('kategori')->get();
         $total = 0;
         @endphp
         <tr>

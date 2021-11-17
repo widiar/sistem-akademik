@@ -6,6 +6,7 @@ use App\Http\Requests\GajiDosenRequest;
 use App\Http\Requests\GajiRequest;
 use App\Models\Dosen;
 use App\Models\GajiDosen;
+use App\Models\HariEfektif;
 use App\Models\LaporanGaji;
 use App\Models\MasterGajiDosen;
 use App\Models\MasterGajiStaff;
@@ -20,6 +21,14 @@ use Illuminate\Support\Facades\File;
 
 class GajiController extends Controller
 {
+    protected function imageKit()
+    {
+        return new ImageKit(
+            env('IMAGE_KIT_PUBLIC_KEY'),
+            env('IMAGE_KIT_SECRET_KEY'),
+            env('IMAGE_KIT_ENDPOINT')
+        );
+    }
 
     public function indexStaff()
     {
@@ -65,9 +74,10 @@ class GajiController extends Controller
             ['bulan', $bulan],
             ['tahun', $tahun]
         ])->first();
+        $hari = HariEfektif::where('bulan', $bulan)->where('tahun', $tahun)->first();
         // dd($pegawai, $gaji);
-        $pdf = PDF::loadView('admin.keuangan.pdf.staff', compact('pegawai', 'gaji'));
-        $pdf->setOption('header-html', view('header'));
+        $pdf = PDF::loadView('admin.keuangan.pdf.staff', compact('pegawai', 'gaji', 'hari'));
+        $pdf->setPaper('legal')->setOption('header-html', view('header'));
         return $pdf->stream();
     }
 
@@ -77,9 +87,12 @@ class GajiController extends Controller
         $bulan = $tmp[0];
         $tahun = $tmp[1];
         if ($staff->is_staff != 1) abort(404);
-        $absen =  $staff->absenStaff()->whereMonth('tanggal', $bulan)->where('hadir', 1)->get();
+
+        $absen =  $staff->absenStaff()->where('bulan', $bulan)->where('tahun', $tahun)->first();
         $cek = $staff->slipStaff()->where('bulan', $bulan)->where('tahun', $tahun)->first();
         $insentif = $staff->insentif()->where('bulan', $bulan)->where('tahun', $tahun)->first();
+        $hari = HariEfektif::where('bulan', $bulan)->where('tahun', $tahun)->first();
+        $kehadiran = $hari->jumlah - $absen->total_SIA;
         if ($cek) {
             $gaji = $cek;
             $insentif = $cek->insentif_marketing;
@@ -88,7 +101,8 @@ class GajiController extends Controller
             if ($insentif) $insentif = $insentif->jumlah;
             else $insentif = 0;
         }
-        return view('admin.keuangan.detailStaff', compact('gaji', 'absen', 'insentif'));
+        if (!$absen) return redirect()->route('admin.penggajian.staff')->with(['error' => 'Pegawai ini belum di absen, silahkan absen di hrd']);
+        return view('admin.keuangan.detailStaff', compact('gaji', 'absen', 'insentif', 'kehadiran'));
     }
 
     public function gajiStaffStore($bulan, Pegawai $staff, Request $request)
@@ -103,6 +117,7 @@ class GajiController extends Controller
             'tahun' => $tahun
         ]);
         $slip->gaji_pokok = $request->gaji;
+        $slip->jam_lembur = $request->jam_lembur;
         $slip->lembur = $request->lembur;
         $slip->absen = $request->absen;
         $slip->makan = $request->makan;
@@ -115,10 +130,14 @@ class GajiController extends Controller
         $slip->thr = $request->thr;
         $slip->bpjs_kesehatan = $request->bpjsKesehatan;
         $slip->bpjs_kerja = $request->bpjsKerja;
-        $slip->izin = $request->izin;
-        $slip->izinTotal = $request->izinTotal;
-        $slip->telat = $request->telat;
-        $slip->telatTotal = $request->telatTotal;
+        $slip->telat_kurang = $request->telat_kurang;
+        $slip->telat_kurangTotal = $request->telat_kurangTotal;
+        $slip->telat_lebih = $request->telat_lebih;
+        $slip->telat_lebihTotal = $request->telat_lebihTotal;
+        $slip->short = $request->short;
+        $slip->shortTotal = $request->shortTotal;
+        $slip->no_finger = $request->no_finger;
+        $slip->no_fingerTotal = $request->no_fingerTotal;
         $slip->alpha = $request->alpha;
         $slip->alphaTotal = $request->alphaTotal;
         $slip->sanksi = $request->sanksi;
@@ -180,7 +199,7 @@ class GajiController extends Controller
         ])->first();
         // dd($pegawai, $gaji);
         $pdf = PDF::loadView('admin.keuangan.pdf.dosen', compact('pegawai', 'gaji'));
-        $pdf->setOption('header-html', view('header'));
+        $pdf->setPaper('legal')->setOption('header-html', view('header'));
         return $pdf->stream();
     }
 
@@ -195,6 +214,8 @@ class GajiController extends Controller
 
         $pegawai = $dosen->load(['dosen' => function ($q) use ($bulan, $tahun) {
             $q->where('bulan', $bulan)->where('tahun', $tahun);
+        }, 'koordinator' => function ($q) use ($bulan) {
+            $q->where('semester', tahunAjaran($bulan));
         }]);
 
         $cek = $dosen->slipDosen()->where('bulan', $bulan)->where('tahun', $tahun)->first();
@@ -203,9 +224,35 @@ class GajiController extends Controller
         } else {
             $gaji = $dosen->detailDosen;
         }
-        $absen =  $dosen->absenDosen()->whereMonth('tanggal', $bulan)->where('hadir', 1)->get();
+        // dd($pegawai);
+        $regular =  $dosen->absenDosen()->where([
+            ['kategori', 'Regular'],
+            ['hadir', 1]
+        ])->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->get();
+        $karyawan =  $dosen->absenDosen()->where([
+            ['kategori', 'Karyawan'],
+            ['hadir', 1]
+        ])->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->get();
+        $eksekutif =  $dosen->absenDosen()->where([
+            ['kategori', 'Eksekutif / Semester Pendek'],
+            ['hadir', 1]
+        ])->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->get();
+        $interTeori =  $dosen->absenDosen()->where([
+            ['kategori', 'International Teori'],
+            ['hadir', 1]
+        ])->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->get();
+        $interPraktek =  $dosen->absenDosen()->where([
+            ['kategori', 'International Tutor'],
+            ['hadir', 1]
+        ])->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->get();
+
+
         return view('admin.keuangan.detailDosen', compact(
-            'absen',
+            'regular',
+            'karyawan',
+            'eksekutif',
+            'interTeori',
+            'interPraktek',
             'gaji',
             'pegawai',
             'bulanTahun'
@@ -300,17 +347,19 @@ class GajiController extends Controller
 
         $filename = uniqid() . ".pdf";
 
+        $hari = HariEfektif::where('bulan', $bulan)->where('tahun', $tahun)->first();
+
         //pdf
         $gajiStaff = SlipGajiStaff::with('pegawai')->where('bulan', $bulan)->where('tahun', $tahun)->get();
-        $pdfStaff = PDF::loadView('admin.keuangan.pdf.laporanStaff', compact('gajiStaff'));
+        $pdfStaff = PDF::loadView('admin.keuangan.pdf.laporanStaff', compact('gajiStaff', 'hari'));
 
         $gajiDosen = SlipGajiDosen::with('pegawai')->where('bulan', $bulan)->where('tahun', $tahun)->get();
         $pdfDosen = PDF::loadView('admin.keuangan.pdf.laporanDosen', compact('gajiDosen'));
 
         if (env('APP_ENV') == 'local') {
-            $pdfStaff->setOption('header-html', view('header'))->save('storage/laporan-gaji/staff/staff' . $filename);
+            $pdfStaff->setPaper('legal')->setOption('header-html', view('header'))->save('storage/laporan-gaji/staff/staff' . $filename);
 
-            $pdfDosen->setOption('header-html', view('header'))->save('storage/laporan-gaji/dosen/dosen' . $filename);
+            $pdfDosen->setPaper('legal')->setOption('header-html', view('header'))->save('storage/laporan-gaji/dosen/dosen' . $filename);
             LaporanGaji::create([
                 'dosen' => "dosen" . $filename,
                 'staff' => "staff" . $filename,
@@ -321,8 +370,8 @@ class GajiController extends Controller
             $imageKit = $this->imageKit();
             $path = base_path('public/uploads/files/');
 
-            $pdfStaff->setOption('header-html', view('header'))->save($path . "staff-$filename");
-            $pdfDosen->setOption('header-html', view('header'))->save($path . "dosen-$filename");
+            $pdfStaff->setPaper('legal')->setOption('header-html', view('header'))->save($path . "staff-$filename");
+            $pdfDosen->setPaper('legal')->setOption('header-html', view('header'))->save($path . "dosen-$filename");
 
             $uploadStaff = $imageKit->upload([
                 'file' => fopen($path . "staff-$filename", "r"),
@@ -350,6 +399,12 @@ class GajiController extends Controller
             File::delete($path . "dosen-$filename");
         }
 
+        LaporanGaji::create([
+            'dosen' => "dosen" . $filename,
+            'staff' => "staff" . $filename,
+            'bulan' => $bulan,
+            'tahun' => $tahun
+        ]);
         return response()->json('Sukses');
     }
     public function deleteLaporan($id)

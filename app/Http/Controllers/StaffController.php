@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PegawaiRequest;
 use App\Models\DetailDosen;
 use App\Models\DetailStaff;
+use App\Models\HariEfektif;
 use App\Models\Pegawai;
 use Illuminate\Http\Request;
 
@@ -91,7 +92,7 @@ class StaffController extends Controller
             $pegawai->staff()->createMany($dt);
             $pegawai->detailStaff()->create([
                 'gaji' => $request->gaji,
-                'lembur' => $request->lembur,
+                // 'lembur' => $request->lembur,
                 'makan' => $request->makan,
                 'jabatan' => $request->jabatanGaji,
                 'keahlian' => $request->keahlian,
@@ -102,14 +103,16 @@ class StaffController extends Controller
                 'thr' => $request->thr,
                 'bpjs_kesehatan' => $request->bpjsKesehatan,
                 'bpjs_kerja' => $request->bpjsKerja,
-                'izin' => $request->izin,
-                'telat' => $request->telat,
+                // 'izin' => $request->izin,
+                // 'telat' => $request->telat,
                 'gaji' => $request->gaji,
                 'alpha' => $request->alpha,
                 'sanksi' => $request->sanksi,
                 'kasbon' => $request->kasbon,
-                'makanNonDinas' => $request->makanNonDinas,
+                // 'makanNonDinas' => $request->makanNonDinas,
                 'potonganLain' => $request->potonganLain,
+                'short_time' => $request->short_time,
+                'no_finger' => $request->no_finger,
             ]);
         }
         return redirect()->route('admin.staff.index')->with(['success' => 'Berhasil menambah data pegawai']);
@@ -190,7 +193,7 @@ class StaffController extends Controller
 
             $detailStaff = DetailStaff::firstOrCreate(['pegawai_id' => $data->id]);
             $detailStaff->gaji = $request->gaji;
-            $detailStaff->lembur = $request->lembur;
+            // $detailStaff->lembur = $request->lembur;
             $detailStaff->makan = $request->makan;
             $detailStaff->jabatan = $request->jabatanGaji;
             $detailStaff->keahlian = $request->keahlian;
@@ -201,14 +204,16 @@ class StaffController extends Controller
             $detailStaff->thr = $request->thr;
             $detailStaff->bpjs_kesehatan = $request->bpjsKesehatan;
             $detailStaff->bpjs_kerja = $request->bpjsKerja;
-            $detailStaff->izin = $request->izin;
-            $detailStaff->telat = $request->telat;
+            // $detailStaff->izin = $request->izin;
+            // $detailStaff->telat = $request->telat;
             $detailStaff->gaji = $request->gaji;
             $detailStaff->alpha = $request->alpha;
             $detailStaff->sanksi = $request->sanksi;
             $detailStaff->kasbon = $request->kasbon;
-            $detailStaff->makanNonDinas = $request->makanNonDinas;
+            // $detailStaff->makanNonDinas = $request->makanNonDinas;
             $detailStaff->potonganLain = $request->potonganLain;
+            $detailStaff->short_time = $request->short_time;
+            $detailStaff->no_finger = $request->no_finger;
             $detailStaff->save();
         } else {
             if ($data->detailStaff) {
@@ -237,5 +242,36 @@ class StaffController extends Controller
         if ($data->detailDosen) $data->detailDosen()->delete();
         $data->delete();
         return response()->json('Sukses');
+    }
+
+    public function hariEfektif()
+    {
+        $data = HariEfektif::all();
+        return view('admin.hrd.hariEfektif', compact('data'));
+    }
+
+    public function postHariEfektif(Request $request)
+    {
+        $tmp = explode("-", $request->tanggal);
+        $bulan = $tmp[0];
+        $tahun = $tmp[1];
+        $hari = HariEfektif::where('bulan', $bulan)->where('tahun', $tahun)->first();
+        if ($hari) return redirect()->route('admin.hari.efektif')->with(['error' => 'Data pada bulan tersebut sudah ada']);
+        HariEfektif::create([
+            'bulan' => $bulan,
+            'tahun' => $tahun,
+            'jumlah' => $request->jumlah
+        ]);
+        return redirect()->route('admin.hari.efektif')->with(['success' => 'Berhasil menambah data']);
+    }
+    public function putHariEfektif(Request $request)
+    {
+        $tmp = explode("-", $request->tanggal);
+        $bulan = $tmp[0];
+        $tahun = $tmp[1];
+        $hari = HariEfektif::where('bulan', $bulan)->where('tahun', $tahun)->first();
+        $hari->jumlah = $request->jumlah;
+        $hari->save();
+        return redirect()->route('admin.hari.efektif')->with(['success' => 'Berhasil update data']);
     }
 }

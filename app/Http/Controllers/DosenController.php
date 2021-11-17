@@ -162,6 +162,8 @@ class DosenController extends Controller
 
         $data->wali = $request->wali;
         $data->kerja_praktek = $request->kerjaPraktek;
+        $data->kerja_praktek_nama = json_encode(($request->kerjaPraktekNama) ? $request->kerjaPraktekNama : []);
+
         $data->save();
 
         return redirect()->route('admin.dosen.laporan.bulanan')->with(['success' => 'Berhasil update dosen']);
