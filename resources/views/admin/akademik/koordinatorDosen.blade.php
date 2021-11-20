@@ -21,7 +21,11 @@
         <label for="">Pilih Semester</label>
         <select class="form-control bulan" name="semester" id="semester">
             @foreach ($tahunAjaran as $semester)
+            @if($loop->last)
+            <option selected value="{{ $semester['id'] }}">{{ $semester['text'] }}</option>
+            @else
             <option value="{{ $semester['id'] }}">{{ $semester['text'] }}</option>
+            @endif
             @endforeach
         </select>
     </div>

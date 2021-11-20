@@ -67,7 +67,7 @@
             <form action="" method="POST">
                 @csrf
                 <div class="modal-body">
-                    <label for="">Pilih Tanggal</label>
+                    <label for="">Bulan</label>
                     <div class="input-group">
                         <input type="text" id="tgl" name="tanggal" required class="form-control datepicker"
                             value="{{ date('m-Y') }}">
@@ -100,7 +100,7 @@
                 @csrf
                 @method('PUT')
                 <div class="modal-body">
-                    <label for="">Tanggal</label>
+                    <label for="">Bulan</label>
                     <div class="input-group">
                         <input type="text" id="tglEdit" readonly name="tanggal" required
                             class="form-control datepicker">
