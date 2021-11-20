@@ -82,14 +82,15 @@ class GajiController extends Controller
         $cek = $staff->slipStaff()->where('bulan', $bulan)->where('tahun', $tahun)->first();
         $insentif = $staff->insentif()->where('bulan', $bulan)->where('tahun', $tahun)->first();
         $hari = HariEfektif::where('bulan', $bulan)->where('tahun', $tahun)->first();
-        $kehadiran = $hari->jumlah - $absen->total_SIA;
         if ($cek) {
             $gaji = $cek;
             $insentif = $cek->insentif_marketing;
+            $kehadiran = $cek->absen;
         } else {
             $gaji = $staff->detailStaff;
             if ($insentif) $insentif = $insentif->jumlah;
             else $insentif = 0;
+            $kehadiran = $hari->jumlah - $absen->total_SIA;
         }
         if (!$absen) return redirect()->route('admin.penggajian.staff')->with(['error' => 'Pegawai ini belum di absen, silahkan absen di hrd']);
         return view('admin.keuangan.detailStaff', compact('gaji', 'absen', 'insentif', 'kehadiran'));

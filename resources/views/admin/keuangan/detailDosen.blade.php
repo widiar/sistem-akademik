@@ -593,7 +593,7 @@
                     @enderror
                 </div>
             </div>
-            <h3>Total Gaji : Rp. <span id="gaji-total"></span></h3>
+            <h3 style="display: none">Total Gaji : Rp. <span id="gaji-total"></span></h3>
             <input type="hidden" name="gajiTotal">
             <div class="float-right">
                 <button class="btn btn-primary" type="submit">Save</button>
