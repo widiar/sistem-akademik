@@ -49,7 +49,7 @@
                 @foreach ($dosen as $ban)
                 <tr>
                     <td>{{ ++$no }}</td>
-                    <td>{{ $ban->nip }}</td>
+                    <td>{{ $ban->nidn }}</td>
                     <td>{{ $ban->nama }}</td>
                     <td class="text-center">
                         <button class="btn btn-edit btn-sm btn-primary" data-id="{{ $ban->id }}"><i

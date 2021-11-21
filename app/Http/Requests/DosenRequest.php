@@ -49,9 +49,12 @@ class DosenRequest extends FormRequest
         if ($this->pengujiTugasAkhir > 0) {
             $additional['pengujiTugasAkhirNama'] = 'required';
         }
+        if ($this->kerjaPraktek > 0) {
+            $additional['kerjaPraktekNama'] = 'required';
+        }
 
         return [
-            'nip' => 'required',
+            'nidn' => 'required',
             'nama' => 'required',
             'ta2pembimbing1' => 'required|numeric',
             'ta2pembimbing2' => 'required|numeric',
@@ -69,7 +72,7 @@ class DosenRequest extends FormRequest
     public function messages()
     {
         return [
-            // 'required' => 'This field is required',
+            'required' => 'This field is required',
         ];
     }
 }

@@ -166,7 +166,7 @@ class GajiController extends Controller
             $data[] = [
                 'id' => $dt->id,
                 'no' => ++$no,
-                'nip' => $dt->nip,
+                'nip' => $dt->nidn,
                 'nama' => $dt->nama,
                 'aksi' => $dt->slipDosen->count()
             ];

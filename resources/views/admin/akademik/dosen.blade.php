@@ -37,7 +37,7 @@
                 @foreach ($dosen as $ban)
                 <tr>
                     <td>{{ ++$no }}</td>
-                    <td>{{ $ban->nip }}</td>
+                    <td>{{ $ban->nidn }}</td>
                     <td>{{ $ban->nama }}</td>
                 </tr>
                 @endforeach

@@ -8,10 +8,31 @@
         <form action="{{ route('admin.staff.store') }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
-                <label for="nip">NIP/NIDN</label>
+                <label for="kategori">Jabatan</label>
+                <select name="jabatan[]" multiple="multiple"
+                    class="jabatan w-100  @error('jabatan') is-invalid @enderror" style="width: 100%">
+                    <option {{ (is_array(old('jabatan')) && in_array("dosen", old('jabatan'))) ? ' selected' : '' }}
+                        value="dosen">Dosen</option>
+                    <option {{ (is_array(old('jabatan')) && in_array("staff", old('jabatan'))) ? ' selected' : '' }}
+                        value="staff">Staff</option>
+                </select>
+                @error('jabatan')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="form-group nip">
+                <label for="nip">NIP</label>
                 <input type="text" name="nip" class="form-control  @error('nip') is-invalid @enderror"
                     value="{{ old('nip') }}">
                 @error('nip')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="form-group nidn">
+                <label for="nidn">NIDN</label>
+                <input type="text" name="nidn" class="form-control  @error('nidn') is-invalid @enderror"
+                    value="{{ old('nidn') }}">
+                @error('nidn')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
@@ -28,19 +49,6 @@
                 <input type="email" name="email" class="form-control  @error('email') is-invalid @enderror"
                     value="{{ old('email') }}">
                 @error('email')
-                <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-            <div class="form-group">
-                <label for="kategori">Jabatan</label>
-                <select name="jabatan[]" multiple="multiple"
-                    class="jabatan w-100  @error('jabatan') is-invalid @enderror" style="width: 100%">
-                    <option {{ (is_array(old('jabatan')) && in_array("dosen", old('jabatan'))) ? ' selected' : '' }}
-                        value="dosen">Dosen</option>
-                    <option {{ (is_array(old('jabatan')) && in_array("staff", old('jabatan'))) ? ' selected' : '' }}
-                        value="staff">Staff</option>
-                </select>
-                @error('jabatan')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
@@ -608,10 +616,22 @@
     function handleJabatan()
     {
         var cek = $(".jabatan").val()
-        if (cek.includes("dosen")) $(".dosen").fadeIn(300)
-        else $(".dosen").fadeOut(300)
-        if (cek.includes("staff")) $(".staff").fadeIn(300)
-        else $(".staff").fadeOut(300)
+        if (cek.includes("dosen")) {
+            $(".dosen").fadeIn(300)
+            $('.nidn').fadeIn(300)
+        }
+        else {
+            $(".dosen").fadeOut(300)
+            $('.nidn').fadeOut(300)
+        } 
+        if (cek.includes("staff")) {
+            $(".staff").fadeIn(300)
+            $('.nip').fadeIn(300)
+        }
+        else {
+            $(".staff").fadeOut(300)
+            $('.nip').fadeOut(300)
+        }
     }
 </script>
 @endsection

@@ -75,8 +75,8 @@
         <h3 class="text-center m-0">Bulan {{ date('F', mktime(0, 0, 0, $gaji->bulan, 10)) }}</h3>
         <table class="bio">
             <tr>
-                <th>NIP</th>
-                <td>{{ $gaji->pegawai->nip }}</td>
+                <th>NIDN</th>
+                <td>{{ $gaji->pegawai->nidn }}</td>
             </tr>
             <tr>
                 <th>Nama</th>

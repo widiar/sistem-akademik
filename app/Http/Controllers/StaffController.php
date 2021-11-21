@@ -45,7 +45,8 @@ class StaffController extends Controller
         if (in_array("staff", $request->jabatan)) $is_staff = TRUE;
         else $is_staff = NULL;
         $pegawai = Pegawai::create([
-            'nip' => $request->nip,
+            'nip' => ($is_staff) ? $request->nip : NULL,
+            'nidn' => ($is_dosen) ? $request->nidn : NULL,
             'nama' =>  $request->nama,
             'email' => $request->email,
             'is_dosen' => ($is_dosen) ? $is_dosen : NULL,
@@ -142,7 +143,8 @@ class StaffController extends Controller
         if (in_array("staff", $request->jabatan)) $is_staff = TRUE;
         else $is_staff = NULL;
         $data = Pegawai::with(['dosen', 'staff', 'detailDosen', 'detailStaff'])->find($id);
-        $data->nip = $request->nip;
+        $data->nip = ($is_staff) ? $request->nip : NULL;
+        $data->nidn = ($is_dosen) ? $request->nidn : NULL;
         $data->nama = $request->nama;
         $data->email = $request->email;
         $data->is_dosen = $is_dosen;

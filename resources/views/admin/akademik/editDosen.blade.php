@@ -3,7 +3,7 @@
 @section('title', 'Update Dosen')
 
 @section('main-content')
-@if ($errors->any())
+{{-- @if ($errors->any())
 <div class="alert alert-danger">
     <ul>
         @foreach ($errors->all() as $error)
@@ -11,17 +11,17 @@
         @endforeach
     </ul>
 </div>
-@endif
+@endif --}}
 <div class="card shadow mx-3">
     <div class="card-body">
         <form action="{{ route('admin.dosen.update', $pegawai->id) }}" method="post" enctype="multipart/form-data">
             @csrf
             @method("PATCH")
             <div class="form-group">
-                <label for="nip">NIP</label>
-                <input type="text" name="nip" readonly class="form-control  @error('nip') is-invalid @enderror"
-                    value="{{ old('nip', $pegawai->nip) }}">
-                @error('nip')
+                <label for="nidn">NIDN</label>
+                <input type="text" name="nidn" readonly class="form-control  @error('nidn') is-invalid @enderror"
+                    value="{{ old('nidn', $pegawai->nidn) }}">
+                @error('nidn')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
@@ -57,7 +57,7 @@
                     </div>
                     <div class="nama-ta2-pembimbing1 col-md-6 col-xs-12">
                         <div class="form-group">
-                            <label for="ta2pembimbing1nama">Nama TA 2 (Pembimbing 1)</label>
+                            <label for="ta2pembimbing1nama">Nama Mahasiswa</label>
                             <select name="ta2pembimbing1nama[]" id="ta2pembimbing1nama" multiple="multiple"
                                 class="form-control custom-select">
                                 @if($pegawai->dosen->count() > 0)
@@ -67,7 +67,7 @@
                                 @endif
                             </select>
                             @error('ta2pembimbing1nama')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                            <p class="text-danger">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
@@ -84,7 +84,7 @@
                     </div>
                     <div class="nama-ta2-pembimbing1 col-md-6 col-xs-12">
                         <div class="form-group">
-                            <label for="ta2pembimbing2nama">Nama TA 2 (Pembimbing 2)</label>
+                            <label for="ta2pembimbing2nama">Nama Mahasiswa</label>
                             <select name="ta2pembimbing2nama[]" id="ta2pembimbing2nama" multiple="multiple"
                                 class="form-control custom-select">
                                 @if($pegawai->dosen->count() > 0)
@@ -94,7 +94,7 @@
                                 @endif
                             </select>
                             @error('ta2pembimbing2nama')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                            <p class="text-danger">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
@@ -116,7 +116,7 @@
                     </div>
                     <div class="nama-ta2-pembimbing1 col-md-6 col-xs-12">
                         <div class="form-group">
-                            <label for="skripsi2pembimbing1nama">Nama Skripsi 2 (Pembimbing 1)</label>
+                            <label for="skripsi2pembimbing1nama">Nama Mahasiswa</label>
                             <select name="skripsi2pembimbing1nama[]" id="skripsi2pembimbing1nama" multiple="multiple"
                                 class="form-control custom-select">
                                 @if($pegawai->dosen->count() > 0)
@@ -126,7 +126,7 @@
                                 @endif
                             </select>
                             @error('skripsi2pembimbing1nama')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                            <p class="text-danger">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
@@ -143,7 +143,7 @@
                     </div>
                     <div class="nama-ta2-pembimbing1 col-md-6 col-xs-12">
                         <div class="form-group">
-                            <label for="skripsi2pembimbing2nama">Nama Skripsi 2 (Pembimbing 2)</label>
+                            <label for="skripsi2pembimbing2nama">Nama Mahasiswa</label>
                             <select name="skripsi2pembimbing2nama[]" id="skripsi2pembimbing2nama" multiple="multiple"
                                 class="form-control custom-select">
                                 @if($pegawai->dosen->count() > 0)
@@ -153,7 +153,7 @@
                                 @endif
                             </select>
                             @error('skripsi2pembimbing2nama')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                            <p class="text-danger">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
@@ -175,7 +175,7 @@
                     </div>
                     <div class="col-md-6 col-xs-12">
                         <div class="form-group">
-                            <label for="seminarSkripsiNama">Seminar Skripsi (Nama Mhs)</label>
+                            <label for="seminarSkripsiNama">Nama Mahasiswa</label>
                             <select name="seminarSkripsiNama[]" id="seminarSkripsiNama" multiple="multiple"
                                 class="form-control custom-select">
                                 @if($pegawai->dosen->count() > 0)
@@ -187,7 +187,7 @@
                                 @endif
                             </select>
                             @error('seminarSkripsiNama')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                            <p class="text-danger">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
@@ -202,7 +202,7 @@
                     </div>
                     <div class="nama-ta2-pembimbing1 col-md-6 col-xs-12">
                         <div class="form-group">
-                            <label for="seminarTerbukaNama">Seminar Terbuka (Nama Mhs)</label>
+                            <label for="seminarTerbukaNama">Nama Mahasiswa</label>
                             <select name="seminarTerbukaNama[]" id="seminarTerbukaNama" multiple="multiple"
                                 class="form-control custom-select">
                                 @if($pegawai->dosen->count() > 0)
@@ -214,7 +214,7 @@
                                 @endif
                             </select>
                             @error('seminarTerbukaNama')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                            <p class="text-danger">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
@@ -229,7 +229,7 @@
                     </div>
                     <div class="nama-ta2-pembimbing1 col-md-6 col-xs-12">
                         <div class="form-group">
-                            <label for="proposalNama">Proposal Tugas Akhir (Nama Mhs)</label>
+                            <label for="proposalNama">Nama Mahasiswa</label>
                             <select name="proposalNama[]" id="proposalNama" multiple="multiple"
                                 class="form-control custom-select">
                                 @if($pegawai->dosen->count() > 0)
@@ -241,7 +241,7 @@
                                 @endif
                             </select>
                             @error('proposalNama')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                            <p class="text-danger">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
@@ -256,7 +256,7 @@
                     </div>
                     <div class="nama-ta2-pembimbing1 col-md-6 col-xs-12">
                         <div class="form-group">
-                            <label for="pengujiTugasAkhirNama">Tugas Akhir (Nama Mhs)</label>
+                            <label for="pengujiTugasAkhirNama">Nama Mahasiswa</label>
                             <select name="pengujiTugasAkhirNama[]" id="pengujiTugasAkhirNama" multiple="multiple"
                                 class="form-control custom-select">
                                 @if($pegawai->dosen->count() > 0)
@@ -268,7 +268,7 @@
                                 @endif
                             </select>
                             @error('pengujiTugasAkhirNama')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                            <p class="text-danger">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
@@ -301,7 +301,7 @@
                 </div>
                 <div class="kerja-praktek-nama col-md-6 col-xs-12">
                     <div class="form-group">
-                        <label for="kerjaPraktekNama">Kerja Praktek Nama (Mhs)</label>
+                        <label for="kerjaPraktekNama">Nama Mahasiswa</label>
                         <select name="kerjaPraktekNama[]" id="kerjaPraktekNama" multiple="multiple"
                             class="form-control custom-select">
                             @if($pegawai->dosen->count() > 0)
@@ -311,7 +311,7 @@
                             @endif
                         </select>
                         @error('kerjaPraktekNama')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                        <p class="text-danger">{{ $message }}</p>
                         @enderror
                     </div>
                 </div>
