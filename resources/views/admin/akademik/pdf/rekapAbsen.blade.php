@@ -50,7 +50,7 @@
         @endphp
         <tr>
             <th class="text-large text-center">{{ $dosen->nama }}</th>
-            <th class="text-large text-center">{{ $dosen->nip }}</th>
+            <th class="text-large text-center">{{ $dosen->nidn }}</th>
         </tr>
         @foreach($absen as $dt)
         <tr>

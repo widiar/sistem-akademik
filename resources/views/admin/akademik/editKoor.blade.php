@@ -18,10 +18,10 @@
             @csrf
             @method("PUT")
             <div class="form-group">
-                <label for="nip">NIP</label>
-                <input type="text" name="nip" readonly class="form-control  @error('nip') is-invalid @enderror"
-                    value="{{ old('nip', $pegawai->nip) }}">
-                @error('nip')
+                <label for="nidn">NIDN</label>
+                <input type="text" name="nidn" readonly class="form-control  @error('nidn') is-invalid @enderror"
+                    value="{{ old('nidn', $pegawai->nidn) }}">
+                @error('nidn')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>

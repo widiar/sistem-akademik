@@ -29,7 +29,8 @@ class PegawaiRequest extends FormRequest
         $dosen = '';
         if (is_array($this->jabatan) && in_array("dosen", $this->jabatan)) $dosen = '|required';
         return [
-            'nip' => 'required',
+            'nip' => $staff,
+            'nidn' => $dosen,
             'nama' => 'required',
             'jabatan' => 'required',
             'email' => 'required|email',

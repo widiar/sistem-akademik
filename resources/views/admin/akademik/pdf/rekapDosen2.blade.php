@@ -44,7 +44,7 @@
         @foreach($dosen as $data)
         <tr>
             <th class="text-large text-center mw-200">{{ $data->nama }}</th>
-            <th class="text-large text-center mw-200">{{ $data->nip }}</th>
+            <th class="text-large text-center mw-200">{{ $data->nidn }}</th>
         </tr>
         @if($data->dosen->count() > 0)
 

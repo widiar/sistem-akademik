@@ -155,7 +155,7 @@
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
-            <h3>Jumlah Gaji Kotor : Rp <span id="gaji-kotor">0</span></h3>
+            <h3 style="display: none">Jumlah Gaji Kotor : Rp <span id="gaji-kotor">0</span></h3>
             <hr>
             <h3>Potongan</h3>
             <hr>
@@ -360,9 +360,9 @@
                     </div>
                 </div>
             </div>
-            <h3>Jumlah Potongan : Rp <span id="potongan">0</span></h3>
+            <h3 style="display: none">Jumlah Potongan : Rp <span id="potongan">0</span></h3>
             <hr>
-            <h3>Jumlah Gaji Bersih : Rp <span id="gaji-bersih">0</span></h3>
+            <h3 style="display: none">Jumlah Gaji Bersih : Rp <span id="gaji-bersih">0</span></h3>
             <input type="hidden" name="gajiBersih">
             <input type="hidden" name="gajiKotor">
             <input type="hidden" name="potongan">
@@ -429,14 +429,16 @@
             gajiBersih = gajiKotor - potongan
             $("#gaji-bersih").text(gajiBersih)
             $("#gaji-bersih").simpleMoneyFormat()
-        }
 
-        $(".form-gaji").submit(function(e){
             $("input[name='gajiBersih']").val(gajiBersih)
             $("input[name='gajiKotor']").val(gajiKotor)
             $("input[name='potongan']").val(potongan)
-            return true;
-        })
+        }
+
+        // $(".form-gaji").submit(function(e){
+            
+        //     return true;
+        // })
     })
 </script>
 @endsection

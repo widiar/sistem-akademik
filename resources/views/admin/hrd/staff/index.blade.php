@@ -25,7 +25,7 @@
             <thead>
                 <tr>
                     <th>NO</th>
-                    <th>NIP</th>
+                    {{-- <th>NIP</th> --}}
                     <th>Nama</th>
                     <th>Email</th>
                     <th>Jabatan</th>
@@ -45,7 +45,7 @@
                 @endphp
                 <tr>
                     <td>{{ ++$no }}</td>
-                    <td>{{ $ban->nip }}</td>
+                    {{-- <td>{{ $ban->nip }}</td> --}}
                     <td>{{ $ban->nama }}</td>
                     <td>{{ $ban->email }}</td>
                     <td>{{ $jabatan }}</td>

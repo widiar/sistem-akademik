@@ -5,7 +5,7 @@
 @section('main-content')
 <div class="tanggal m-3 row">
     <div class="col-md-6 col-xs-12">
-        <label for="">Pilih Tanggal</label>
+        <label for="">Pilih Bulan</label>
         <div class="input-group">
             <input type="text" id="tgl" class="form-control datepicker" value="{{ date('m-Y') }}">
             <div class="input-group-append">
@@ -33,7 +33,7 @@
             <thead>
                 <tr>
                     <th>NO</th>
-                    <th>NIP</th>
+                    <th>NIDN</th>
                     <th>Nama</th>
                     <th class="text-center">Aksi</th>
                 </tr>
