@@ -8,7 +8,7 @@
         <form action="{{ route('admin.staff.store') }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
-                <label for="nip">NIP</label>
+                <label for="nip">NIP/NIDN</label>
                 <input type="text" name="nip" class="form-control  @error('nip') is-invalid @enderror"
                     value="{{ old('nip') }}">
                 @error('nip')

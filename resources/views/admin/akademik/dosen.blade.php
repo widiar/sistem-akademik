@@ -25,7 +25,7 @@
             <thead>
                 <tr>
                     <th>NO</th>
-                    <th>NIP</th>
+                    <th>NIDN</th>
                     <th>Nama</th>
                 </tr>
             </thead>

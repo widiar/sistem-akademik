@@ -33,7 +33,7 @@
             <thead>
                 <tr>
                     <th>NO</th>
-                    <th>NIP</th>
+                    <th>NIDN</th>
                     <th>Nama</th>
                     {{-- <th>Kategori</th> --}}
                     <th class="text-center">Aksi</th>

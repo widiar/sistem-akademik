@@ -9,7 +9,7 @@
             @csrf
             @method('PATCH')
             <div class="form-group">
-                <label for="nip">NIP</label>
+                <label for="nip">NIP/NIDN</label>
                 <input type="text" name="nip" class="form-control  @error('nip') is-invalid @enderror"
                     value="{{ old('nip', @$data->nip) }}">
                 @error('nip')

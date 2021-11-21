@@ -36,7 +36,7 @@
             <thead>
                 <tr>
                     <th>NO</th>
-                    <th>NIP</th>
+                    <th>NIDN</th>
                     <th>Nama</th>
                     <th class="text-center">Aksi</th>
                 </tr>
