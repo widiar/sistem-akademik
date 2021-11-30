@@ -1,6 +1,6 @@
 @extends('admin.template.dashboard')
 
-@section('title', 'Dosen')
+@section('title', 'Insentif Marketing')
 
 @section('main-content')
 @if(session('success'))
