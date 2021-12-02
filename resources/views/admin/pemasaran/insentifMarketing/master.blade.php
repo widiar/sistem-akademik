@@ -15,41 +15,72 @@
         <form action="" method="post" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
-                <label for="daftar">Presenter Daftar</label>
-                <input type="text" name="daftar" class="form-control  @error('daftar') is-invalid @enderror"
-                    value="{{ old('daftar', @$data->daftar) }}">
-                @error('daftar')
+                <label for="daftar_regular">Daftar Regular</label>
+                <input required type="text" name="daftar_regular"
+                    class="form-control  @error('daftar_regular') is-invalid @enderror"
+                    value="{{ old('daftar_regular', @$data->daftar_regular) }}">
+                @error('daftar_regular')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
             <div class="form-group">
-                <label for="regular">Registrasi Regular</label>
-                <input type="text" name="regular" class="form-control  @error('regular') is-invalid @enderror"
-                    value="{{ old('regular', @$data->regular) }}">
-                @error('regular')
+                <label for="daftar_dd_inter">Daftar Double Degree International</label>
+                <input required type="text" name="daftar_dd_inter"
+                    class="form-control  @error('daftar_dd_inter') is-invalid @enderror"
+                    value="{{ old('daftar_dd_inter', @$data->daftar_dd_inter) }}">
+                @error('daftar_dd_inter')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
             <div class="form-group">
-                <label for="karyawan">Registrasi Karyawan</label>
-                <input type="text" name="karyawan" class="form-control  @error('karyawan') is-invalid @enderror"
-                    value="{{ old('karyawan', @$data->karyawan) }}">
-                @error('karyawan')
+                <label for="daftar_dd_nasional">Daftar Double Degree Nasional</label>
+                <input required type="text" name="daftar_dd_nasional"
+                    class="form-control  @error('daftar_dd_nasional') is-invalid @enderror"
+                    value="{{ old('daftar_dd_nasional', @$data->daftar_dd_nasional) }}">
+                @error('daftar_dd_nasional')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
             <div class="form-group">
-                <label for="international">Registrasi Internasional</label>
-                <input type="text" name="international"
-                    class="form-control  @error('international') is-invalid @enderror"
-                    value="{{ old('international', @$data->international) }}">
-                @error('international')
+                <label for="registrasi_regular">Registrasi Regular</label>
+                <input required type="text" name="registrasi_regular"
+                    class="form-control  @error('registrasi_regular') is-invalid @enderror"
+                    value="{{ old('registrasi_regular', @$data->registrasi_regular) }}">
+                @error('registrasi_regular')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label for="registrasi_bisnis">Registrasi Bisnis</label>
+                <input required type="text" name="registrasi_bisnis"
+                    class="form-control  @error('registrasi_bisnis') is-invalid @enderror"
+                    value="{{ old('registrasi_bisnis', @$data->registrasi_bisnis) }}">
+                @error('registrasi_bisnis')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label for="registrasi_dd_inter">Registrasi Double Degree Internasional</label>
+                <input required type="text" name="registrasi_dd_inter"
+                    class="form-control  @error('registrasi_dd_inter') is-invalid @enderror"
+                    value="{{ old('registrasi_dd_inter', @$data->registrasi_dd_inter) }}">
+                @error('registrasi_dd_inter')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label for="registrasi_dd_nasional">Registrasi Double Degree Nasional</label>
+                <input required type="text" name="registrasi_dd_nasional"
+                    class="form-control  @error('registrasi_dd_nasional') is-invalid @enderror"
+                    value="{{ old('registrasi_dd_nasional', @$data->registrasi_dd_nasional) }}">
+                @error('registrasi_dd_nasional')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
             <div class="form-group">
                 <label for="wawancara">Wawancara</label>
-                <input type="text" name="wawancara" class="form-control  @error('wawancara') is-invalid @enderror"
+                <input required type="text" name="wawancara"
+                    class="form-control  @error('wawancara') is-invalid @enderror"
                     value="{{ old('wawancara', @$data->wawancara) }}">
                 @error('wawancara')
                 <div class="invalid-feedback">{{ $message }}</div>

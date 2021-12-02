@@ -25,21 +25,27 @@ class MasterInsentifRequest extends FormRequest
     public function rules()
     {
         return [
-            'daftar' => 'required|integer',
-            'regular' => 'required|integer',
-            'karyawan' => 'required|integer',
-            'international' => 'required|integer',
-            'wawancara' => 'required|integer',
+            'daftar_regular' => 'required|numeric',
+            'daftar_dd_inter' => 'required|numeric',
+            'daftar_dd_nasional' => 'required|numeric',
+            'registrasi_regular' => 'required|numeric',
+            'registrasi_bisnis' => 'required|numeric',
+            'registrasi_dd_inter' => 'required|numeric',
+            'registrasi_dd_nasional' => 'required|numeric',
+            'wawancara' => 'required|numeric',
         ];
     }
 
     public function prepareForValidation()
     {
         $this->merge([
-            'daftar' => str_replace(',', '', $this->daftar),
-            'regular' => str_replace(',', '', $this->regular),
-            'karyawan' => str_replace(',', '', $this->karyawan),
-            'international' => str_replace(',', '', $this->international),
+            'daftar_regular' => str_replace(',', '', $this->daftar_regular),
+            'daftar_dd_inter' => str_replace(',', '', $this->daftar_dd_inter),
+            'daftar_dd_nasional' => str_replace(',', '', $this->daftar_dd_nasional),
+            'registrasi_regular' => str_replace(',', '', $this->registrasi_regular),
+            'registrasi_bisnis' => str_replace(',', '', $this->registrasi_bisnis),
+            'registrasi_dd_inter' => str_replace(',', '', $this->registrasi_dd_inter),
+            'registrasi_dd_nasional' => str_replace(',', '', $this->registrasi_dd_nasional),
             'wawancara' => str_replace(',', '', $this->wawancara),
         ]);
     }

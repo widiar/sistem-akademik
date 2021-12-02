@@ -155,18 +155,24 @@ class InsentifController extends Controller
         $cek = MasterInsentifMarketing::all();
         if ($cek->count() > 0) {
             $data = $cek[0];
-            $data->daftar = $request->daftar;
-            $data->regular = $request->regular;
-            $data->karyawan = $request->karyawan;
-            $data->international = $request->international;
+            $data->daftar_regular = $request->daftar_regular;
+            $data->daftar_dd_inter = $request->daftar_dd_inter;
+            $data->daftar_dd_nasional = $request->daftar_dd_nasional;
+            $data->registrasi_regular = $request->registrasi_regular;
+            $data->registrasi_bisnis = $request->registrasi_bisnis;
+            $data->registrasi_dd_inter = $request->registrasi_dd_inter;
+            $data->registrasi_dd_nasional = $request->registrasi_dd_nasional;
             $data->wawancara = $request->wawancara;
             $data->save();
         } else {
             MasterInsentifMarketing::create([
-                'daftar' => $request->daftar,
-                'regular' => $request->regular,
-                'karyawan' => $request->karyawan,
-                'international' => $request->international,
+                'daftar_regular' => $request->daftar_regular,
+                'daftar_dd_inter' => $request->daftar_dd_inter,
+                'daftar_dd_nasional' => $request->daftar_dd_nasional,
+                'registrasi_regular' => $request->registrasi_regular,
+                'registrasi_bisnis' => $request->registrasi_bisnis,
+                'registrasi_dd_inter' => $request->registrasi_dd_inter,
+                'registrasi_dd_nasional' => $request->registrasi_dd_nasional,
                 'wawancara' => $request->wawancara,
             ]);
         }
