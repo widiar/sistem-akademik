@@ -87,35 +87,58 @@
         <hr width="50%" align="left">
         <table class="table">
             <tr>
-                <th>Persenter Daftar</th>
-                <td>{{ $gaji->total_daftar }}</td>
+                <th>Daftar Regular</th>
+                <td>{{ $gaji->total_daftar_regular }}</td>
                 <td>x</td>
-                <td>Rp {{ number_format($gaji->daftar ,2,",",".") }}</td>
-                <td>Rp {{ number_format($gaji->total_daftar * $gaji->daftar ,2,",",".") }}</td>
+                <td>Rp {{ number_format($gaji->daftar_regular ,2,",",".") }}</td>
+                <td>Rp {{ number_format($gaji->total_daftar_regular * $gaji->daftar_regular ,2,",",".") }}</td>
+            </tr>
+            <tr>
+                <th>Daftar Double Degree Internasional</th>
+                <td>{{ $gaji->total_daftar_dd_inter }}</td>
+                <td>x</td>
+                <td>Rp {{ number_format($gaji->daftar_dd_inter ,2,",",".") }}</td>
+                <td>Rp {{ number_format($gaji->total_daftar_dd_inter * $gaji->daftar_dd_inter ,2,",",".") }}</td>
+            </tr>
+            <tr>
+                <th>Daftar Double Degree Nasional</th>
+                <td>{{ $gaji->total_daftar_dd_nasional }}</td>
+                <td>x</td>
+                <td>Rp {{ number_format($gaji->daftar_dd_nasional ,2,",",".") }}</td>
+                <td>Rp {{ number_format($gaji->total_daftar_dd_nasional * $gaji->daftar_dd_nasional ,2,",",".") }}</td>
             </tr>
             <tr>
                 <th>Registrasi Regular</th>
-                <td>{{ $gaji->total_regular }}</td>
+                <td>{{ $gaji->total_registrasi_regular }}</td>
                 <td>x</td>
-                <td>Rp {{ number_format($gaji->regular ,2,",",".") }}</td>
-                <td>Rp {{ number_format($gaji->total_regular * $gaji->regular ,2,",",".") }}</td>
+                <td>Rp {{ number_format($gaji->registrasi_regular ,2,",",".") }}</td>
+                <td>Rp {{ number_format($gaji->total_registrasi_regular * $gaji->registrasi_regular ,2,",",".") }}</td>
             </tr>
             <tr>
-                <th>Registrasi Karyawan</th>
-                <td>{{ $gaji->total_karyawan }}</td>
+                <th>Registrasi Bisnis</th>
+                <td>{{ $gaji->total_registrasi_bisnis }}</td>
                 <td>x</td>
-                <td>Rp {{ number_format($gaji->karyawan ,2,",",".") }}</td>
-                <td>Rp {{ number_format($gaji->total_karyawan * $gaji->karyawan ,2,",",".") }}</td>
+                <td>Rp {{ number_format($gaji->registrasi_bisnis ,2,",",".") }}</td>
+                <td>Rp {{ number_format($gaji->total_registrasi_bisnis * $gaji->registrasi_bisnis ,2,",",".") }}</td>
             </tr>
             <tr>
-                <th>Registrasi International</th>
-                <td>{{ $gaji->total_international }}</td>
+                <th>Registrasi Double Degree International</th>
+                <td>{{ $gaji->total_registrasi_dd_inter }}</td>
                 <td>x</td>
-                <td>Rp {{ number_format($gaji->international ,2,",",".") }}</td>
-                <td>Rp {{ number_format($gaji->total_international * $gaji->international ,2,",",".") }}</td>
+                <td>Rp {{ number_format($gaji->registrasi_dd_inter ,2,",",".") }}</td>
+                <td>Rp {{ number_format($gaji->total_registrasi_dd_inter * $gaji->registrasi_dd_inter ,2,",",".") }}
+                </td>
+            </tr>
+            <tr>
+                <th>Registrasi Double Degree Nasional</th>
+                <td>{{ $gaji->total_registrasi_dd_nasional }}</td>
+                <td>x</td>
+                <td>Rp {{ number_format($gaji->registrasi_dd_nasional ,2,",",".") }}</td>
+                <td>Rp {{ number_format($gaji->total_registrasi_dd_nasional * $gaji->registrasi_dd_nasional ,2,",",".")
+                    }}</td>
             </tr>
             <tr style="border-bottom: 1px solid black;">
-                <th>Presenter Wawancara</th>
+                <th>Wawancara</th>
                 <td>{{ $gaji->total_wawancara }}</td>
                 <td>x</td>
                 <td>Rp {{ number_format($gaji->wawancara ,2,",",".") }}</td>

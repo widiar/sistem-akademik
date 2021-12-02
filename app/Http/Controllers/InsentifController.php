@@ -124,14 +124,21 @@ class InsentifController extends Controller
             'bulan' => $bulan,
             'tahun' => $tahun,
         ]);
-        $data->total_daftar = $request->daftarTotal;
-        $data->daftar = $request->daftar;
-        $data->total_regular = $request->regularTotal;
-        $data->regular = $request->regular;
-        $data->total_karyawan = $request->karyawanTotal;
-        $data->karyawan = $request->karyawan;
-        $data->total_international = $request->internationalTotal;
-        $data->international = $request->international;
+        $data->total_daftar_regular = $request->total_daftar_regular;
+        $data->daftar_regular = $request->daftar_regular;
+        $data->total_daftar_dd_inter = $request->total_daftar_dd_inter;
+        $data->daftar_dd_inter = $request->daftar_dd_inter;
+        $data->total_daftar_dd_nasional = $request->total_daftar_dd_nasional;
+        $data->daftar_dd_nasional = $request->daftar_dd_nasional;
+        $data->total_registrasi_regular = $request->total_registrasi_regular;
+        $data->registrasi_regular = $request->registrasi_regular;
+        $data->total_registrasi_bisnis = $request->total_registrasi_bisnis;
+        $data->registrasi_bisnis = $request->registrasi_bisnis;
+        $data->total_registrasi_dd_inter = $request->total_registrasi_dd_inter;
+        $data->registrasi_dd_inter = $request->registrasi_dd_inter;
+        $data->total_registrasi_dd_nasional = $request->total_registrasi_dd_nasional;
+        $data->registrasi_dd_nasional = $request->registrasi_dd_nasional;
+
         $data->total_wawancara = $request->wawancaraTotal;
         $data->wawancara = $request->wawancara;
         $data->jumlah = $request->total;
