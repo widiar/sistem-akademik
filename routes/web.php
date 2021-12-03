@@ -28,6 +28,8 @@ use UniSharp\LaravelFilemanager\Lfm;
 Route::get('dev', [SiteController::class, 'dev']);
 
 Route::get('/', [SiteController::class, 'index'])->name("home");
+Route::get('about', [SiteController::class, 'about'])->name('about');
+Route::get('contact', [SiteController::class, 'contact'])->name('contact');
 Route::get('news/{slug}', [SiteController::class, 'news'])->name('news');
 Route::get('news', [SiteController::class, 'allNews'])->name('news.all');
 

@@ -29,6 +29,16 @@ class SiteController extends Controller
         return view('listNews', compact('news'));
     }
 
+    public function about()
+    {
+        return view('about');
+    }
+
+    public function contact()
+    {
+        return view('contact');
+    }
+
     public function dev()
     {
         $pdf = PDF::loadView('pdf');
