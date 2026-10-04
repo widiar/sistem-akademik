@@ -31,7 +31,7 @@
                         <div class="address">
                             <i class="icofont-google-map"></i>
                             <h4>Location:</h4>
-                            <p>A108 Adam Street, New York, NY 535022</p>
+                            <p>Jl. Raya Kampus Udayana No.20, Jimbaran</p>
                         </div>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                         <div class="address">
                             <i class="icofont-envelope"></i>
                             <h4>Email:</h4>
-                            <p>info@example.com</p>
+                            <p>info@stikom-bali.ac.id</p>
                         </div>
                     </div>
                 </div>
@@ -50,7 +50,7 @@
                         <div class="address">
                             <i class="icofont-phone"></i>
                             <h4>Call:</h4>
-                            <p>+1 5589 55488 55s</p>
+                            <p>0811-3881-288</p>
                         </div>
                     </div>
                 </div>
@@ -76,15 +76,9 @@
                         <div class="pic"><img src="https://ik.imagekit.io/prbydmwbm8c/dummy-profile-pic_10R7S25OM.png"
                                 class="img-fluid" alt=""></div>
                         <div class="member-info">
-                            <h4>Walter White</h4>
-                            <span>Chief Executive Officer</span>
-                            <p>Explicabo voluptatem mollitia et repellat</p>
-                            <div class="social">
-                                <a href=""><i class="ri-twitter-fill"></i></a>
-                                <a href=""><i class="ri-facebook-fill"></i></a>
-                                <a href=""><i class="ri-instagram-fill"></i></a>
-                                <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
-                            </div>
+                            <h4>Ari Yoga</h4>
+                            <span>Penulis 1</span>
+                            <p>Saya Ari Yoga sebagai Penulis 1 pada Project ini.</p>
                         </div>
                     </div>
                 </div>
@@ -94,15 +88,9 @@
                         <div class="pic"><img src="https://ik.imagekit.io/prbydmwbm8c/dummy-profile-pic_10R7S25OM.png"
                                 class="img-fluid" alt=""></div>
                         <div class="member-info">
-                            <h4>Sarah Jhonson</h4>
-                            <span>Product Manager</span>
-                            <p>Aut maiores voluptates amet et quis</p>
-                            <div class="social">
-                                <a href=""><i class="ri-twitter-fill"></i></a>
-                                <a href=""><i class="ri-facebook-fill"></i></a>
-                                <a href=""><i class="ri-instagram-fill"></i></a>
-                                <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
-                            </div>
+                            <h4>Aditya</h4>
+                            <span>Penulis 2</span>
+                            <p>Saya Aditya Sebagai penulis 2 pada Project ini.</p>
                         </div>
                     </div>
                 </div>

@@ -27,9 +27,12 @@
 
             <div class="content">
                 <h2>ITB STIKOM BALI</h2>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro odio id iure. Expedita amet deleniti
-                    eaque iusto commodi blanditiis nihil dolor minus temporibus? Officiis quia nisi porro optio dolores
-                    cumque.</p>
+                <p>Institut Teknologi dan Bisnis (ITB) STIKOM Bali merupakan salah satu perguruan
+                tinggi swasta yang bertempat di Bali dan bergerak pada bidang pengajaran Teknologi
+                dan Bisnis dengan berbagai penghargaan dan prestasi yang dimiliki baik tingkat
+                nasional maupun tingkat internasional. Institut Teknologi dan Bisnis (ITB) STIKOM
+                Bali merupakan salah satu kampus IT di Bali yang berhasil menghasilkan lulusan
+                lulusan dengan kualitas terbaik dan berguna untuk masyarakat.</p>
             </div>
 
         </div>
